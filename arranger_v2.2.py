@@ -2,11 +2,11 @@ import os
 import shutil
 from pathlib import Path
 
-pathInput = "D:/Chiafile/Input/"
-pathOutput = "D:/Chiafile/Output/"
+pathInput = "D:/work/Chiafile/Input/"
+pathOutput = "D:/work/Chiafile/Output/"
 pathNewOrder = pathOutput + "DON MOI/"
 pathColor = pathNewOrder + "COLORS/"
-pathOutputRoot = "D:/Chiafile/Output"
+pathOutputRoot = "D:/work/Chiafile/Output"
 
 colorList = [
     "RED",
