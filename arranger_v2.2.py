@@ -127,31 +127,33 @@ def arrangeFilesBySize():
 
 
 def main():
-    key1 = input(
-        " NHẬP 0 - ĐỂ CHỌN FOLDER CHỨA INPUT VÀ OUTPUT (NHẤN BẤT KỲ ĐỂ THOÁT): "
-    )
-    if key1 == "0":
-        getNewPathInput(pathInput, pathOutput)
-        print("0. ĐỂ XÓA FOLDER CŨ VÀ TẠO FOLDERS MỚI")
-        print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
-        key2 = input("NHẬP SỐ: ")
-        if key2 == "0":
-            createTemplate()
-            print("VICTOR'S TOOL IS WORKING...")
-            print("- - - - - - - - - - - - - - - - - - -")
-            arrangeFilesByColor()
-            arrangeFilesBySize()
-            os.system("pause")
-        elif key2 == "1":
-            print("VICTOR'S TOOL IS WORKING...")
-            print("- - - - - - - - - - - - - - - - - - -")
-            arrangeFilesByColor()
-            arrangeFilesBySize()
-            os.system("pause")
-        else:
-            exit
+    # key1 = input(
+    #     " NHẬP 0 - ĐỂ CHỌN FOLDER CHỨA INPUT VÀ OUTPUT (NHẤN BẤT KỲ ĐỂ THOÁT): "
+    # )
+    # if key1 == "0":
+    #     getNewPathInput(pathInput, pathOutput)
+    print("0. ĐỂ XÓA FOLDER CŨ VÀ TẠO FOLDERS MỚI")
+    print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
+    key2 = input("NHẬP SỐ: ")
+    if key2 == "0":
+        createTemplate()
+        print("VICTOR'S TOOL IS WORKING...")
+        print("- - - - - - - - - - - - - - - - - - -")
+        arrangeFilesByColor()
+        arrangeFilesBySize()
+        os.system("pause")
+    elif key2 == "1":
+        print("VICTOR'S TOOL IS WORKING...")
+        print("- - - - - - - - - - - - - - - - - - -")
+        arrangeFilesByColor()
+        arrangeFilesBySize()
+        os.system("pause")
     else:
         exit
+
+
+# else:
+#     exit
 
 
 main()

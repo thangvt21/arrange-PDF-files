@@ -106,7 +106,7 @@
         "kind": 2,
         "importPath": "arranger_v2.2",
         "description": "arranger_v2.2",
-        "peekOfCode": "def main():\n    key1 = input(\n        \" NHẬP 0 - ĐỂ CHỌN FOLDER CHỨA INPUT VÀ OUTPUT (NHẤN BẤT KỲ ĐỂ THOÁT): \"\n    )\n    if key1 == \"0\":\n        getNewPathInput(pathInput, pathOutput)\n        print(\"0. ĐỂ XÓA FOLDER CŨ VÀ TẠO FOLDERS MỚI\")\n        print(\"1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ\")\n        key2 = input(\"NHẬP SỐ: \")\n        if key2 == \"0\":",
+        "peekOfCode": "def main():\n    # key1 = input(\n    #     \" NHẬP 0 - ĐỂ CHỌN FOLDER CHỨA INPUT VÀ OUTPUT (NHẤN BẤT KỲ ĐỂ THOÁT): \"\n    # )\n    # if key1 == \"0\":\n    #     getNewPathInput(pathInput, pathOutput)\n    print(\"0. ĐỂ XÓA FOLDER CŨ VÀ TẠO FOLDERS MỚI\")\n    print(\"1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ\")\n    key2 = input(\"NHẬP SỐ: \")\n    if key2 == \"0\":",
         "detail": "arranger_v2.2",
         "documentation": {}
     },
