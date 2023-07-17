@@ -3,6 +3,7 @@ import shutil
 from pathlib import Path
 from tkinter import *
 from tkinter import filedialog
+import tkinter
 
 pathInput = "E:/US/PDFFILES/Input/"
 pathOutput = "E:/US/PDFFILES/Output/"
@@ -38,14 +39,14 @@ data = [
 typeList = ["MUGS", "DON UU TIEN", "IARTGROUP", "FIX ISSUES"]
 
 
-# Chọn đường dẫn đến thư mục sẽ chứa thư mục Input và Output (cần tạo trước Input, Output sẽ tự động tạo khi chạy app)
+# Chọn đường dẫn đến thư mục sẽ chứa thư mục Input và Output (cần tạo trước folder Input; folder Output sẽ tự động tạo khi chạy app)
 def getNewPathInput(pathInput, pathOutput):
     print("SELECT FOLDER THAT CONTAINS INPUT: ")
-    root = Tk()
-    root.withdraw()
-    filepathRoot = filedialog.askdirectory()
+    root = Tk()  # open tkinter dialog
+    filepathRoot = filedialog.askdirectory()  # get root path
     pathInput = filepathRoot + "/Input/"
     pathOutput = filepathRoot + "/Output/"
+    root.withdraw()  # Hide tkinter dialog
     print("- - - - - - - - - - - - - - - - - - -")
     print("  INPUT DIRECTORY: ", pathInput)
     print("  OUTPUT DIRECTORY: ", pathOutput)
@@ -139,11 +140,13 @@ def main():
             print("- - - - - - - - - - - - - - - - - - -")
             arrangeFilesByColor()
             arrangeFilesBySize()
+            os.system("pause")
         elif key2 == "1":
             print("VICTOR'S TOOL IS WORKING...")
             print("- - - - - - - - - - - - - - - - - - -")
             arrangeFilesByColor()
             arrangeFilesBySize()
+            os.system("pause")
         else:
             exit
     else:

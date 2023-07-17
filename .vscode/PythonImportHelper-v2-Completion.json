@@ -1,0 +1,419 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "shutil",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "shutil",
+        "description": "shutil",
+        "detail": "shutil",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "*",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "filedialog",
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "isExtraImport": true,
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
+        "label": "getNewPathInput",
+        "kind": 2,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "def getNewPathInput(pathInput, pathOutput):\n    print(\"SELECT FOLDER THAT CONTAINS INPUT: \")\n    root = Tk()  # open tkinter dialog\n    filepathRoot = filedialog.askdirectory()  # get root path\n    pathInput = filepathRoot + \"/Input/\"\n    pathOutput = filepathRoot + \"/Output/\"\n    root.withdraw()  # Hide tkinter dialog\n    print(\"- - - - - - - - - - - - - - - - - - -\")\n    print(\"  INPUT DIRECTORY: \", pathInput)\n    print(\"  OUTPUT DIRECTORY: \", pathOutput)",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "createTemplate",
+        "kind": 2,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "def createTemplate():\n    print(\"OLD FOLDERS WILL BE REMOVED!\")\n    print(\"- - - - - - - - - - - - - - - - - - -\")\n    isExist = os.path.exists(pathOutput)\n    if isExist:\n        shutil.rmtree(pathOutput)\n    print(\"OLD FOLDERS WERE REMOVED!\")\n    print(\"- - - - - - - - - - - - - - - - - - -\")\n    print(\"NOW CREATING NEW FOLDERS.\")\n    for typer in typeList:",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "arrangeFilesByColor",
+        "kind": 2,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "def arrangeFilesByColor():\n    os.chdir(pathInput)\n    count = 0\n    for file in os.listdir():\n        name, size = os.path.splitext(file)\n        splitByUnderline = name.split(\"_\")\n        splitted = [s.strip() for s in splitByUnderline]\n        splitByColor = splitted[2].split(\"-\")\n        for color in colorList:\n            if splitByColor[1] == color:",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "arrangeFilesBySize",
+        "kind": 2,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "def arrangeFilesBySize():\n    os.chdir(pathInput)\n    count = 0\n    for file in os.listdir():\n        name, size = os.path.splitext(file)\n        splitByUnderline = name.split(\"_\")\n        splitted = [s.strip() for s in splitByUnderline]\n        splitBySize = splitted[2].split(\"-\")\n        if splitted[5] != \"1-1\":\n            if splitted[1] == \"FB\":",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "def main():\n    key1 = input(\n        \" NHẬP 0 - ĐỂ CHỌN FOLDER CHỨA INPUT VÀ OUTPUT (NHẤN BẤT KỲ ĐỂ THOÁT): \"\n    )\n    if key1 == \"0\":\n        getNewPathInput(pathInput, pathOutput)\n        print(\"0. ĐỂ XÓA FOLDER CŨ VÀ TẠO FOLDERS MỚI\")\n        print(\"1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ\")\n        key2 = input(\"NHẬP SỐ: \")\n        if key2 == \"0\":",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "pathInput",
+        "kind": 5,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "pathInput = \"E:/US/PDFFILES/Input/\"\npathOutput = \"E:/US/PDFFILES/Output/\"\npathNewOrder = pathOutput + \"DON MOI/\"\npathColor = pathNewOrder + \"COLORS/\"\n# pathOutputRoot = \"E:/US/PDFFILES/Output\"\ncolorList = [\n    \"RED\",\n    \"NAVY\",\n    \"ROYALBLUE\",\n    \"LIGHTBLUE\",",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "pathOutput",
+        "kind": 5,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "pathOutput = \"E:/US/PDFFILES/Output/\"\npathNewOrder = pathOutput + \"DON MOI/\"\npathColor = pathNewOrder + \"COLORS/\"\n# pathOutputRoot = \"E:/US/PDFFILES/Output\"\ncolorList = [\n    \"RED\",\n    \"NAVY\",\n    \"ROYALBLUE\",\n    \"LIGHTBLUE\",\n    \"CHARCOAL\",",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "pathNewOrder",
+        "kind": 5,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "pathNewOrder = pathOutput + \"DON MOI/\"\npathColor = pathNewOrder + \"COLORS/\"\n# pathOutputRoot = \"E:/US/PDFFILES/Output\"\ncolorList = [\n    \"RED\",\n    \"NAVY\",\n    \"ROYALBLUE\",\n    \"LIGHTBLUE\",\n    \"CHARCOAL\",\n    \"DARKHEATHER\",",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "pathColor",
+        "kind": 5,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "pathColor = pathNewOrder + \"COLORS/\"\n# pathOutputRoot = \"E:/US/PDFFILES/Output\"\ncolorList = [\n    \"RED\",\n    \"NAVY\",\n    \"ROYALBLUE\",\n    \"LIGHTBLUE\",\n    \"CHARCOAL\",\n    \"DARKHEATHER\",\n    \"SPORTGREY\",",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "colorList",
+        "kind": 5,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "colorList = [\n    \"RED\",\n    \"NAVY\",\n    \"ROYALBLUE\",\n    \"LIGHTBLUE\",\n    \"CHARCOAL\",\n    \"DARKHEATHER\",\n    \"SPORTGREY\",\n    \"MAROON\",\n]",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "data",
+        "kind": 5,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "data = [\n    [\"3XL\", \"2XL\", \"XL\", \"L\", \"M\", \"S\"],\n    [\"3XL LARGE\", \"2XL LARGE\", \"XL LARGE\", \"LARGE\", \"MEDIUM\", \"SMALL\", \"SET\"],\n    [\n        \"3XL LARGE FB\",\n        \"2XL LARGE FB\",\n        \"XL LARGE FB\",\n        \"LARGE FB\",\n        \"MEDIUM FB\",\n        \"SMALL FB\",",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "typeList",
+        "kind": 5,
+        "importPath": "arranger_v2.2",
+        "description": "arranger_v2.2",
+        "peekOfCode": "typeList = [\"MUGS\", \"DON UU TIEN\", \"IARTGROUP\", \"FIX ISSUES\"]\n# Chọn đường dẫn đến thư mục sẽ chứa thư mục Input và Output (cần tạo trước folder Input; folder Output sẽ tự động tạo khi chạy app)\ndef getNewPathInput(pathInput, pathOutput):\n    print(\"SELECT FOLDER THAT CONTAINS INPUT: \")\n    root = Tk()  # open tkinter dialog\n    filepathRoot = filedialog.askdirectory()  # get root path\n    pathInput = filepathRoot + \"/Input/\"\n    pathOutput = filepathRoot + \"/Output/\"\n    root.withdraw()  # Hide tkinter dialog\n    print(\"- - - - - - - - - - - - - - - - - - -\")",
+        "detail": "arranger_v2.2",
+        "documentation": {}
+    },
+    {
+        "label": "createTemplate",
+        "kind": 2,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "def createTemplate():\n    isExist = os.path.exists(pathOutputRoot)\n    if isExist:\n        shutil.rmtree(pathOutputRoot)\n        print(\"Old files was deleted !!!\")\n    print(\"Now creating new files...\")\n    print(\"----------------------------------------------------------------\")\n    for typer in typeList:\n        os.makedirs(pathOutput + typer)\n        print(pathOutput + typer + \" ... created\")",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "organizeFilesByColor",
+        "kind": 2,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "def organizeFilesByColor():\n    os.chdir(pathInput)\n    for file in os.listdir():\n        name, size = os.path.splitext(file)\n        splitByUnderline = name.split(\"_\")\n        splitted = [s.strip() for s in splitByUnderline]\n        splitBySizeS = splitted[2].split(\"-\")\n        if splitBySizeS[0] == \"S\":\n            if splitted[5] == \"1-1\" or splitted[4] == \"1-1\":\n                shutil.move(file, pathNewOrder + \"SMALL\")",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "organizeFilesBySize",
+        "kind": 2,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "def organizeFilesBySize():\n    os.chdir(pathInput)\n    print(\"Organizing files...\")\n    print(\"----------------------------------------------------------------\")\n    for file in os.listdir():\n        name, size = os.path.splitext(file)\n        splitByUnderline = name.split(\"_\")\n        splitted = [s.strip() for s in splitByUnderline]\n        if  splitted[5] == \"1-1\":\n            splitBySize = splitted[2].split(\"-\")",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "def main():\n    key = input(\"Tao mới folder nhập 0, chia tiếp files nhập 1: \")\n    if key == \"0\":\n        createTemplate()\n        organizeFilesByColor()\n        organizeFilesBySize()\n    elif key == \"1\":\n        organizeFilesByColor()\n        organizeFilesBySize()\n    else:",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "pathInput",
+        "kind": 5,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "pathInput = \"D:/OrganizeFiles/Input\"\npathOutput = \"D:/OrganizeFiles/Output/\"\npathNewOrder = pathOutput + \"DON MOI/\"\npathColor = pathNewOrder + \"COLORS/\"\npathOutputRoot = \"D:/OrganizeFiles/Output\"\nsizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "pathOutput",
+        "kind": 5,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "pathOutput = \"D:/OrganizeFiles/Output/\"\npathNewOrder = pathOutput + \"DON MOI/\"\npathColor = pathNewOrder + \"COLORS/\"\npathOutputRoot = \"D:/OrganizeFiles/Output\"\nsizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",\n    \"SET\",",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "pathNewOrder",
+        "kind": 5,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "pathNewOrder = pathOutput + \"DON MOI/\"\npathColor = pathNewOrder + \"COLORS/\"\npathOutputRoot = \"D:/OrganizeFiles/Output\"\nsizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",\n    \"SET\",\n    \"SMALL\",",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "pathColor",
+        "kind": 5,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "pathColor = pathNewOrder + \"COLORS/\"\npathOutputRoot = \"D:/OrganizeFiles/Output\"\nsizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",\n    \"SET\",\n    \"SMALL\",\n    \"LARGE\",",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "pathOutputRoot",
+        "kind": 5,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "pathOutputRoot = \"D:/OrganizeFiles/Output\"\nsizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",\n    \"SET\",\n    \"SMALL\",\n    \"LARGE\",\n}",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "sizeList",
+        "kind": 5,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "sizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",\n    \"SET\",\n    \"SMALL\",\n    \"LARGE\",\n}\nsizeListFB = {",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "sizeListFB",
+        "kind": 5,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "sizeListFB = {\n    \"3XL LARGE FB\",\n    \"2XL LARGE FB\",\n    \"XL LARGE FB\",\n    \"MEDIUM FB\",\n    \"SET FB\",\n    \"LARGE FB\",\n}\ncolorList = [\n    \"RED\",",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "colorList",
+        "kind": 5,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "colorList = [\n    \"RED\",\n    \"NAVY\",\n    \"ROYALBLUE\",\n    \"LIGHTBLUE\",\n    \"CHARCOAL\",\n    \"DARKHEATHER\",\n    \"SPORTGREY\",\n    \"MAROON\",\n]",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "typeList",
+        "kind": 5,
+        "importPath": "organize_v2.1",
+        "description": "organize_v2.1",
+        "peekOfCode": "typeList = [\"MUGS\", \"DON UU TIEN\", \"IARTGROUP\", \"FIX ISSUES\"]\ndef createTemplate():\n    isExist = os.path.exists(pathOutputRoot)\n    if isExist:\n        shutil.rmtree(pathOutputRoot)\n        print(\"Old files was deleted !!!\")\n    print(\"Now creating new files...\")\n    print(\"----------------------------------------------------------------\")\n    for typer in typeList:\n        os.makedirs(pathOutput + typer)",
+        "detail": "organize_v2.1",
+        "documentation": {}
+    },
+    {
+        "label": "createTemplate",
+        "kind": 2,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "def createTemplate():\n    isExist = os.path.exists(pathOutputRoot)\n    if isExist:\n        shutil.rmtree(pathOutputRoot)\n        print(\"Old files was deleted !!!\")\n    print(\"Now creating new files...\")\n    print(\"----------------------------------------------------------------\")\n    for typer in typeList:\n        os.makedirs(pathOutput + typer)\n        print(pathOutput + typer + \" ... created\")",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "organizeFilesByColor",
+        "kind": 2,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "def organizeFilesByColor():\n    os.chdir(pathInput)\n    for file in os.listdir():\n        name, size = os.path.splitext(file)\n        splitByUnderline = name.split(\"_\")\n        splitted = [s.strip() for s in splitByUnderline]\n        if splitted[3] == \"size\" or splitted[3] == \"2\" or splitted[3] == \"1\":\n            shutil.move(file, pathNewOrder + \"SMALL\")\n        else:\n            splitByColor = splitted[2].split(\"-\")",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "organizeFilesBySize",
+        "kind": 2,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "def organizeFilesBySize():\n    os.chdir(pathInput)\n    print(\"Organizing files...\")\n    print(\"----------------------------------------------------------------\")\n    for file in os.listdir():\n        name, size = os.path.splitext(file)\n        splitByUnderline = name.split(\"_\")\n        splitted = [s.strip() for s in splitByUnderline]\n        if splitted[5] == \"1-1\":\n            splitBySize = splitted[2].split(\"-\")",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "def main():\n    key = input(\"Tao mới folder nhập 0, chia tiếp files nhập 1: \")\n    if key == \"0\":\n        createTemplate()\n        organizeFilesByColor()\n        organizeFilesBySize()\n    elif key == \"1\":\n        organizeFilesByColor()\n        organizeFilesBySize()\n    else:",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "pathInput",
+        "kind": 5,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "pathInput = \"F:/OrganizeFIles/Input\"\npathOutput = \"F:/OrganizeFIles/Output/\"\npathNewOrder = pathOutput + \"DON MOI/\"\npathColor = pathNewOrder + \"COLORS/\"\npathOutputRoot = \"F:/OrganizeFIles/Output\"\nsizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "pathOutput",
+        "kind": 5,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "pathOutput = \"F:/OrganizeFIles/Output/\"\npathNewOrder = pathOutput + \"DON MOI/\"\npathColor = pathNewOrder + \"COLORS/\"\npathOutputRoot = \"F:/OrganizeFIles/Output\"\nsizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",\n    \"SET\",",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "pathNewOrder",
+        "kind": 5,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "pathNewOrder = pathOutput + \"DON MOI/\"\npathColor = pathNewOrder + \"COLORS/\"\npathOutputRoot = \"F:/OrganizeFIles/Output\"\nsizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",\n    \"SET\",\n    \"SMALL\",",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "pathColor",
+        "kind": 5,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "pathColor = pathNewOrder + \"COLORS/\"\npathOutputRoot = \"F:/OrganizeFIles/Output\"\nsizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",\n    \"SET\",\n    \"SMALL\",\n    \"LARGE\",",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "pathOutputRoot",
+        "kind": 5,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "pathOutputRoot = \"F:/OrganizeFIles/Output\"\nsizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",\n    \"SET\",\n    \"SMALL\",\n    \"LARGE\",\n}",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "sizeList",
+        "kind": 5,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "sizeList = {\n    \"3XL LARGE\",\n    \"2XL LARGE\",\n    \"XL LARGE\",\n    \"MEDIUM\",\n    \"SET\",\n    \"SMALL\",\n    \"LARGE\",\n}\nsizeListFB = {",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "sizeListFB",
+        "kind": 5,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "sizeListFB = {\n    \"3XL LARGE FB\",\n    \"2XL LARGE FB\",\n    \"XL LARGE FB\",\n    \"MEDIUM FB\",\n    \"SET FB\",\n    \"LARGE FB\",\n}\ncolorList = [\n    \"RED\",",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "colorList",
+        "kind": 5,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "colorList = [\n    \"RED\",\n    \"NAVY\",\n    \"ROYALBLUE\",\n    \"LIGHTBLUE\",\n    \"CHARCOAL\",\n    \"DARKHEATHER\",\n    \"SPORTGREY\",\n    \"MAROON\",\n]",
+        "detail": "organize_v2",
+        "documentation": {}
+    },
+    {
+        "label": "typeList",
+        "kind": 5,
+        "importPath": "organize_v2",
+        "description": "organize_v2",
+        "peekOfCode": "typeList = [\"MUGS\", \"DON UU TIEN\", \"IARTGROUP\", \"FIX ISSUES\"]\ndef createTemplate():\n    isExist = os.path.exists(pathOutputRoot)\n    if isExist:\n        shutil.rmtree(pathOutputRoot)\n        print(\"Old files was deleted !!!\")\n    print(\"Now creating new files...\")\n    print(\"----------------------------------------------------------------\")\n    for typer in typeList:\n        os.makedirs(pathOutput + typer)",
+        "detail": "organize_v2",
+        "documentation": {}
+    }
+]
