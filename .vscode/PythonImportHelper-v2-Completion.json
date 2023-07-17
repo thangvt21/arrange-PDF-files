@@ -50,6 +50,15 @@
         "documentation": {}
     },
     {
+        "label": "tkinter",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tkinter",
+        "description": "tkinter",
+        "detail": "tkinter",
+        "documentation": {}
+    },
+    {
         "label": "*",
         "importPath": "tkinter",
         "description": "tkinter",
@@ -70,7 +79,7 @@
         "kind": 2,
         "importPath": "arranger_v2.2",
         "description": "arranger_v2.2",
-        "peekOfCode": "def getNewPathInput(pathInput, pathOutput):\n    print(\"SELECT FOLDER THAT CONTAINS INPUT: \")\n    root = Tk()\n    root.withdraw()\n    filepathRoot = filedialog.askdirectory()\n    pathInput = filepathRoot + \"/Input/\"\n    pathOutput = filepathRoot + \"/Output/\"\n    print(\"- - - - - - - - - - - - - - - - - - -\")\n    print(\"  INPUT DIRECTORY: \", pathInput)\n    print(\"  OUTPUT DIRECTORY: \", pathOutput)",
+        "peekOfCode": "def getNewPathInput(pathInput, pathOutput):\n    print(\"SELECT FOLDER THAT CONTAINS INPUT: \")\n    root = Tk()  # open tkinter dialog\n    filepathRoot = filedialog.askdirectory()  # get root path\n    pathInput = filepathRoot + \"/Input/\"\n    pathOutput = filepathRoot + \"/Output/\"\n    root.withdraw()  # Hide tkinter dialog\n    print(\"- - - - - - - - - - - - - - - - - - -\")\n    print(\"  INPUT DIRECTORY: \", pathInput)\n    print(\"  OUTPUT DIRECTORY: \", pathOutput)",
         "detail": "arranger_v2.2",
         "documentation": {}
     },
@@ -169,7 +178,7 @@
         "kind": 5,
         "importPath": "arranger_v2.2",
         "description": "arranger_v2.2",
-        "peekOfCode": "typeList = [\"MUGS\", \"DON UU TIEN\", \"IARTGROUP\", \"FIX ISSUES\"]\n# Chọn đường dẫn đến thư mục sẽ chứa thư mục Input và Output (cần tạo trước Input, Output sẽ tự động tạo khi chạy app)\ndef getNewPathInput(pathInput, pathOutput):\n    print(\"SELECT FOLDER THAT CONTAINS INPUT: \")\n    root = Tk()\n    root.withdraw()\n    filepathRoot = filedialog.askdirectory()\n    pathInput = filepathRoot + \"/Input/\"\n    pathOutput = filepathRoot + \"/Output/\"\n    print(\"- - - - - - - - - - - - - - - - - - -\")",
+        "peekOfCode": "typeList = [\"MUGS\", \"DON UU TIEN\", \"IARTGROUP\", \"FIX ISSUES\"]\n# Chọn đường dẫn đến thư mục sẽ chứa thư mục Input và Output (cần tạo trước folder Input; folder Output sẽ tự động tạo khi chạy app)\ndef getNewPathInput(pathInput, pathOutput):\n    print(\"SELECT FOLDER THAT CONTAINS INPUT: \")\n    root = Tk()  # open tkinter dialog\n    filepathRoot = filedialog.askdirectory()  # get root path\n    pathInput = filepathRoot + \"/Input/\"\n    pathOutput = filepathRoot + \"/Output/\"\n    root.withdraw()  # Hide tkinter dialog\n    print(\"- - - - - - - - - - - - - - - - - - -\")",
         "detail": "arranger_v2.2",
         "documentation": {}
     },
