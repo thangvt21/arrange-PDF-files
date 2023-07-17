@@ -3,13 +3,12 @@ import shutil
 from pathlib import Path
 from tkinter import *
 from tkinter import filedialog
-import tkinter
 
 pathInput = "E:/US/PDFFILES/Input/"
 pathOutput = "E:/US/PDFFILES/Output/"
 pathNewOrder = pathOutput + "DON MOI/"
 pathColor = pathNewOrder + "COLORS/"
-# pathOutputRoot = "E:/US/PDFFILES/Output"
+
 
 colorList = [
     "RED",
@@ -63,16 +62,16 @@ def createTemplate():
     print("OLD FOLDERS WERE REMOVED!")
     print("- - - - - - - - - - - - - - - - - - -")
     print("NOW CREATING NEW FOLDERS.")
-    for typer in typeList:
+    for typer in typeList:  # tạo folder theo typeList
         os.makedirs(pathOutput + typer)
         print(pathOutput + typer + " ... CREATED!")
     for size in data[1]:
-        os.makedirs(pathNewOrder + size)
+        os.makedirs(pathNewOrder + size)  # tạo folder theo sizeList
         print(pathNewOrder + size + " ... CREATED!")
     for sizefb in data[2]:
-        os.makedirs(pathNewOrder + sizefb)
+        os.makedirs(pathNewOrder + sizefb)  # tạo folder theo sizeListFB
         print(pathNewOrder + sizefb + " ... CREATED!")
-    os.makedirs(pathColor)
+    os.makedirs(pathColor)  # tạo folder theo colorList
     for color in colorList:
         os.makedirs(pathColor + color)
         print(pathColor + color + " ... CREATED!")
@@ -83,12 +82,12 @@ def createTemplate():
 # Chia files vào các folder theo các màu: RED, NAVY, ROYALBLUE, ... có trong colorList[]
 def arrangeFilesByColor():
     os.chdir(pathInput)
-    count = 0
+    count = 0  # for counting files
     for file in os.listdir():
         name, size = os.path.splitext(file)
-        splitByUnderline = name.split("_")
+        splitByUnderline = name.split("_")  # lấy data phân cách theo dấu "_"
         splitted = [s.strip() for s in splitByUnderline]
-        splitByColor = splitted[2].split("-")
+        splitByColor = splitted[2].split("-")  # lấy data phân cách theo dấu "-"
         for color in colorList:
             if splitByColor[1] == color:
                 shutil.move(file, pathColor + color)
@@ -99,13 +98,15 @@ def arrangeFilesByColor():
 # Chia files vào các folder theo các sizes: 3XL, 2XL,... có trong data[]
 def arrangeFilesBySize():
     os.chdir(pathInput)
-    count = 0
+    count = 0  # for counting files
     for file in os.listdir():
         name, size = os.path.splitext(file)
-        splitByUnderline = name.split("_")
-        splitted = [s.strip() for s in splitByUnderline]
-        splitBySize = splitted[2].split("-")
-        if splitted[5] != "1-1":
+        splitByUnderline = name.split("_")  # lấy data phân cách theo dấu "_"
+        splitted = [
+            s.strip() for s in splitByUnderline
+        ]  # xóa khoảng trắng 2 đầu string
+        splitBySize = splitted[2].split("-")  # lấy data phân cách theo dấu "-"
+        if splitted[5] != "1-1":  # Sắp xếp files SET và SET FB
             if splitted[1] == "FB":
                 shutil.move(file, pathNewOrder + "SET FB")
                 count += 1
