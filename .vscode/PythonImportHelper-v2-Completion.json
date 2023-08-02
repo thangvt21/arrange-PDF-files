@@ -151,7 +151,7 @@
         "kind": 5,
         "importPath": "arranger_v2.2",
         "description": "arranger_v2.2",
-        "peekOfCode": "colorList = [\n    \"RED\",\n    \"NAVY\",\n    \"ROYALBLUE\",\n    \"LIGHTBLUE\",\n    \"CHARCOAL\",\n    \"DARKHEATHER\",\n    \"SPORTGREY\",\n    \"MAROON\",\n]",
+        "peekOfCode": "colorList = [\n    \"RED\",\n    \"NAVY\",\n    \"ROYALBLUE\",\n    \"LIGHTBLUE\",\n    \"CHARCOAL\",\n    \"DARKHEATHER\",\n    \"SPORTGREY\",\n    \"MAROON\",\n    \"SAND\",",
         "detail": "arranger_v2.2",
         "documentation": {}
     },
@@ -169,7 +169,7 @@
         "kind": 5,
         "importPath": "arranger_v2.2",
         "description": "arranger_v2.2",
-        "peekOfCode": "typeList = [\"MUGS\", \"DON UU TIEN\", \"IARTGROUP\", \"FIX ISSUES\"]\n# Chọn đường dẫn đến thư mục sẽ chứa thư mục Input và Output (cần tạo trước folder Input; folder Output sẽ tự động tạo khi chạy app)\ndef getNewPathInput(pathInput, pathOutput):\n    print(\"SELECT FOLDER THAT CONTAINS INPUT: \")\n    root = Tk()  # open tkinter dialog\n    filepathRoot = filedialog.askdirectory()  # get root path\n    pathInput = filepathRoot + \"/Input/\"\n    pathOutput = filepathRoot + \"/Output/\"\n    root.withdraw()  # Hide tkinter dialog\n    print(\"- - - - - - - - - - - - - - - - - - -\")",
+        "peekOfCode": "typeList = [\"MUGS\", \"DON UU TIEN\", \"FIX ISSUES\"]  # \"IARTGROUP\"\n# Chọn đường dẫn đến thư mục sẽ chứa thư mục Input và Output (cần tạo trước folder Input; folder Output sẽ tự động tạo khi chạy app)\ndef getNewPathInput(pathInput, pathOutput):\n    print(\"SELECT FOLDER THAT CONTAINS INPUT: \")\n    root = Tk()  # open tkinter dialog\n    filepathRoot = filedialog.askdirectory()  # get root path\n    pathInput = filepathRoot + \"/Input/\"\n    pathOutput = filepathRoot + \"/Output/\"\n    root.withdraw()  # Hide tkinter dialog\n    print(\"- - - - - - - - - - - - - - - - - - -\")",
         "detail": "arranger_v2.2",
         "documentation": {}
     },
