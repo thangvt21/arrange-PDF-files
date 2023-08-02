@@ -19,26 +19,20 @@ colorList = [
     "DARKHEATHER",
     "SPORTGREY",
     "MAROON",
+    "SAND",
+    "LIGHTPINK",
 ]
 
 data = [
     ["3XL", "2XL", "XL", "L", "M", "S"],
     ["3XL LARGE", "2XL LARGE", "XL LARGE", "LARGE", "MEDIUM", "SMALL", "SET"],
-    [
-        "3XL LARGE FB",
-        "2XL LARGE FB",
-        "XL LARGE FB",
-        "LARGE FB",
-        "MEDIUM FB",
-        "SMALL FB",
-        "SET FB",
-    ],
+    ["3XL LARGE FB","2XL LARGE FB","XL LARGE FB","LARGE FB","MEDIUM FB","SMALL FB","SET FB",]
 ]
 
-typeList = ["MUGS", "DON UU TIEN", "IARTGROUP", "FIX ISSUES"]
+typeList = ["MUGS", "DON UU TIEN", "FIX ISSUES"]  # "IARTGROUP"
 
 
-# Chọn đường dẫn đến thư mục sẽ chứa thư mục Input và Output (cần tạo trước folder Input; folder Output sẽ tự động tạo khi chạy app)
+# Choose file path of folder that contains Input và Output (need create folder Input before running tool; folder Output will be automatically created)
 def getNewPathInput(pathInput, pathOutput):
     print("SELECT FOLDER THAT CONTAINS INPUT: ")
     root = Tk()  # open tkinter dialog
@@ -52,7 +46,7 @@ def getNewPathInput(pathInput, pathOutput):
     print("- - - - - - - - - - - - - - - - - - -")
 
 
-# Tạo cây thư mục theo Sizes và Colors, folder Output sẽ tự động tạo ra bên trong đường dẫn được chọn
+# Create document directory by Sizes và Colors, folder Output will be automatically created
 def createTemplate():
     print("OLD FOLDERS WILL BE REMOVED!")
     print("- - - - - - - - - - - - - - - - - - -")
@@ -62,16 +56,16 @@ def createTemplate():
     print("OLD FOLDERS WERE REMOVED!")
     print("- - - - - - - - - - - - - - - - - - -")
     print("NOW CREATING NEW FOLDERS.")
-    for typer in typeList:  # tạo folder theo typeList
+    for typer in typeList:  # create folder by typeList
         os.makedirs(pathOutput + typer)
         print(pathOutput + typer + " ... CREATED!")
     for size in data[1]:
-        os.makedirs(pathNewOrder + size)  # tạo folder theo sizeList
+        os.makedirs(pathNewOrder + size)  # create folder by sizeList
         print(pathNewOrder + size + " ... CREATED!")
     for sizefb in data[2]:
-        os.makedirs(pathNewOrder + sizefb)  # tạo folder theo sizeListFB
+        os.makedirs(pathNewOrder + sizefb)  # create folder by sizeListFB
         print(pathNewOrder + sizefb + " ... CREATED!")
-    os.makedirs(pathColor)  # tạo folder theo colorList
+    os.makedirs(pathColor)  # create folder by colorList
     for color in colorList:
         os.makedirs(pathColor + color)
         print(pathColor + color + " ... CREATED!")
@@ -79,15 +73,15 @@ def createTemplate():
     print("- - - - - - - - - - - - - - - - - - -")
 
 
-# Chia files vào các folder theo các màu: RED, NAVY, ROYALBLUE, ... có trong colorList[]
+# Arrange files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
 def arrangeFilesByColor():
     os.chdir(pathInput)
-    count = 0  # for counting files
+    count = 0  # for counting arranged files
     for file in os.listdir():
         name, size = os.path.splitext(file)
-        splitByUnderline = name.split("_")  # lấy data phân cách theo dấu "_"
+        splitByUnderline = name.split("_")  # get data that was splitted by "_"
         splitted = [s.strip() for s in splitByUnderline]
-        splitByColor = splitted[2].split("-")  # lấy data phân cách theo dấu "-"
+        splitByColor = splitted[2].split("-")  # get data that was splitted by "-"
         for color in colorList:
             if splitByColor[1] == color:
                 shutil.move(file, pathColor + color)
@@ -95,18 +89,18 @@ def arrangeFilesByColor():
     print(" ", count, "FILES BY COLOR DONE.")
 
 
-# Chia files vào các folder theo các sizes: 3XL, 2XL,... có trong data[]
+# Arrange files by Sizes: 3XL, 2XL,... in data[]
 def arrangeFilesBySize():
     os.chdir(pathInput)
     count = 0  # for counting files
     for file in os.listdir():
         name, size = os.path.splitext(file)
-        splitByUnderline = name.split("_")  # lấy data phân cách theo dấu "_"
+        splitByUnderline = name.split("_")  # get data that was splitted by "_"
         splitted = [
             s.strip() for s in splitByUnderline
         ]  # xóa khoảng trắng 2 đầu string
-        splitBySize = splitted[2].split("-")  # lấy data phân cách theo dấu "-"
-        if splitted[5] != "1-1":  # Sắp xếp files SET và SET FB
+        splitBySize = splitted[2].split("-")  # get data that was splitted by "-"
+        if splitted[5] != "1-1":  # Arrange files by SET and SET FB
             if splitted[1] == "FB":
                 shutil.move(file, pathNewOrder + "SET FB")
                 count += 1
@@ -127,31 +121,28 @@ def arrangeFilesBySize():
 
 
 def main():
-    key1 = input(
-        " NHẬP 0 - ĐỂ CHỌN FOLDER CHỨA INPUT VÀ OUTPUT (NHẤN BẤT KỲ ĐỂ THOÁT): "
-    )
-    if key1 == "0":
-        getNewPathInput(pathInput, pathOutput)
-        print("0. ĐỂ XÓA FOLDER CŨ VÀ TẠO FOLDERS MỚI")
-        print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
-        key2 = input("NHẬP SỐ: ")
-        if key2 == "0":
-            createTemplate()
-            print("VICTOR'S TOOL IS WORKING...")
-            print("- - - - - - - - - - - - - - - - - - -")
-            arrangeFilesByColor()
-            arrangeFilesBySize()
-            os.system("pause")
-        elif key2 == "1":
-            print("VICTOR'S TOOL IS WORKING...")
-            print("- - - - - - - - - - - - - - - - - - -")
-            arrangeFilesByColor()
-            arrangeFilesBySize()
-            os.system("pause")
-        else:
-            exit
+    # key1 = input(
+    #     " NHẬP 0 - ĐỂ CHỌN FOLDER CHỨA INPUT VÀ OUTPUT (NHẤN BẤT KỲ ĐỂ THOÁT): "
+    # )
+    # if key1 == "0":
+    #     getNewPathInput(pathInput, pathOutput)
+    print("0. ĐỂ XÓA FOLDER CŨ VÀ TẠO FOLDERS MỚI")
+    print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
+    key2 = input("NHẬP SỐ: ")
+    if key2 == "0":
+        createTemplate()
+        print("VICTOR'S TOOL IS WORKING...")
+        print("- - - - - - - - - - - - - - - - - - -")
+        arrangeFilesByColor()
+        arrangeFilesBySize()
+        os.system("pause")
+    elif key2 == "1":
+        print("VICTOR'S TOOL IS WORKING...")
+        print("- - - - - - - - - - - - - - - - - - -")
+        arrangeFilesByColor()
+        arrangeFilesBySize()
+        os.system("pause")
     else:
         exit
-
 
 main()
