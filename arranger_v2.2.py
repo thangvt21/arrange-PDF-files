@@ -20,13 +20,13 @@ colorList = [
     "SPORTGREY",
     "MAROON",
     "SAND",
-    "LIGHTPINK",
+    "LIGHTPINK", 
 ]
 
 data = [
     ["3XL", "2XL", "XL", "L", "M", "S"],
-    ["3XL LARGE", "2XL LARGE", "XL LARGE", "LARGE", "MEDIUM", "SMALL", "SET"],
-    ["3XL LARGE FB","2XL LARGE FB","XL LARGE FB","LARGE FB","MEDIUM FB","SMALL FB","SET FB",]
+    ["3XL LARGE", "2XL LARGE", "XL LARGE", "LARGE", "MEDIUM", "SET", "SMALL"],
+    ["3XL LARGE FB","2XL LARGE FB","XL LARGE FB","LARGE FB","MEDIUM FB","SET FB",]
 ]
 
 typeList = ["MUGS", "DON UU TIEN", "FIX ISSUES"]  # "IARTGROUP"
