@@ -3,9 +3,12 @@ import shutil
 from pathlib import Path
 from tkinter import *
 from tkinter import filedialog
+import datetime
 
+today = datetime.datetime.now()
+folderName = str(today.month) + "_" + str(today.day)
 pathInput = "E:/US/PDFFILES/Input/"
-pathOutput = "E:/US/PDFFILES/Output/"
+pathOutput = "E:/OneDrive - VAB/FS - POD/THANG 8/" + folderName +"/"
 pathNewOrder = pathOutput + "DON MOI/"
 pathColor = pathNewOrder + "COLORS/"
 
@@ -29,7 +32,7 @@ data = [
     ["3XL LARGE FB","2XL LARGE FB","XL LARGE FB","LARGE FB","MEDIUM FB","SET FB",]
 ]
 
-typeList = ["MUGS", "DON UU TIEN", "FIX ISSUES"]  # "IARTGROUP"
+typeList = ["MUGS", "DON UU TIEN", "FIX ISSUES"]
 
 
 # Choose file path of folder that contains Input và Output (need create folder Input before running tool; folder Output will be automatically created)
@@ -48,12 +51,6 @@ def getNewPathInput(pathInput, pathOutput):
 
 # Create document directory by Sizes và Colors, folder Output will be automatically created
 def createTemplate():
-    print("OLD FOLDERS WILL BE REMOVED!")
-    print("- - - - - - - - - - - - - - - - - - -")
-    isExist = os.path.exists(pathOutput)
-    if isExist:
-        shutil.rmtree(pathOutput)
-    print("OLD FOLDERS WERE REMOVED!")
     print("- - - - - - - - - - - - - - - - - - -")
     print("NOW CREATING NEW FOLDERS.")
     for typer in typeList:  # create folder by typeList
@@ -126,7 +123,7 @@ def main():
     # )
     # if key1 == "0":
     #     getNewPathInput(pathInput, pathOutput)
-    print("0. ĐỂ XÓA FOLDER CŨ VÀ TẠO FOLDERS MỚI")
+    print("0. TẠO FOLDERS MỚI")
     print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
     key2 = input("NHẬP SỐ: ")
     if key2 == "0":
