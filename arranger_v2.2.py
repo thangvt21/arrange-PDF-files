@@ -3,9 +3,12 @@ import shutil
 from pathlib import Path
 from tkinter import *
 from tkinter import filedialog
+import datetime
 
+today = datetime.datetime.now()
+folderName = str(today.month) + "_" + str(today.day)
 pathInput = "E:/US/PDFFILES/Input/"
-pathOutput = "E:/US/PDFFILES/Output/"
+pathOutput = "E:/OneDrive - VAB/FS - POD/THANG 8/" + folderName +"/"
 pathNewOrder = pathOutput + "DON MOI/"
 pathColor = pathNewOrder + "COLORS/"
 
@@ -29,7 +32,7 @@ data = [
     ["3XL LARGE FB","2XL LARGE FB","XL LARGE FB","LARGE FB","MEDIUM FB","SET FB",]
 ]
 
-typeList = ["MUGS", "DON UU TIEN", "FIX ISSUES"]  # "IARTGROUP"
+typeList = ["MUGS", "DON UU TIEN", "FIX ISSUES"]
 
 
 # Choose file path of folder that contains Input và Output (need create folder Input before running tool; folder Output will be automatically created)
@@ -48,12 +51,6 @@ def getNewPathInput(pathInput, pathOutput):
 
 # Create document directory by Sizes và Colors, folder Output will be automatically created
 def createTemplate():
-    print("OLD FOLDERS WILL BE REMOVED!")
-    print("- - - - - - - - - - - - - - - - - - -")
-    isExist = os.path.exists(pathOutput)
-    if isExist:
-        shutil.rmtree(pathOutput)
-    print("OLD FOLDERS WERE REMOVED!")
     print("- - - - - - - - - - - - - - - - - - -")
     print("NOW CREATING NEW FOLDERS.")
     for typer in typeList:  # create folder by typeList
@@ -76,7 +73,8 @@ def createTemplate():
 # Arrange files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
 def arrangeFilesByColor():
     os.chdir(pathInput)
-    count = 0  # for counting arranged files
+    countColor = 0  # for counting arranged files
+    inputQuantity = 0 # for counting files in input
     for file in os.listdir():
         name, size = os.path.splitext(file)
         splitByUnderline = name.split("_")  # get data that was splitted by "_"
@@ -85,14 +83,16 @@ def arrangeFilesByColor():
         for color in colorList:
             if splitByColor[1] == color:
                 shutil.move(file, pathColor + color)
-                count += 1
-    print(" ", count, "FILES BY COLOR DONE.")
+                countColor += 1
+        inputQuantity += 1
+    print(" ", inputQuantity, "FILES IN INPUT:")
+    print(" ", countColor, "FILES BY COLOR DONE.")
 
 
 # Arrange files by Sizes: 3XL, 2XL,... in data[]
 def arrangeFilesBySize():
     os.chdir(pathInput)
-    count = 0  # for counting files
+    countSize = 0  # for counting files
     for file in os.listdir():
         name, size = os.path.splitext(file)
         splitByUnderline = name.split("_")  # get data that was splitted by "_"
@@ -103,21 +103,21 @@ def arrangeFilesBySize():
         if splitted[5] != "1-1":  # Arrange files by SET and SET FB
             if splitted[1] == "FB":
                 shutil.move(file, pathNewOrder + "SET FB")
-                count += 1
+                countSize += 1
             else:
                 shutil.move(file, pathNewOrder + "SET")
-                count += 1
+                countSize += 1
         else:
             for i in range(6):
                 if splitBySize[0] == data[0][i]:
                     if splitted[1] == "FB":
                         shutil.move(file, pathNewOrder + data[2][i])
-                        count += 1
+                        countSize += 1
                     else:
                         shutil.move(file, pathNewOrder + data[1][i])
-                        count += 1
+                        countSize += 1
 
-    print(" ", count, "FILES BY SIZE DONE.")
+    print(" ", countSize, "FILES BY SIZE DONE.")
 
 
 def main():
@@ -126,7 +126,7 @@ def main():
     # )
     # if key1 == "0":
     #     getNewPathInput(pathInput, pathOutput)
-    print("0. ĐỂ XÓA FOLDER CŨ VÀ TẠO FOLDERS MỚI")
+    print("0. TẠO FOLDERS MỚI")
     print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
     key2 = input("NHẬP SỐ: ")
     if key2 == "0":
