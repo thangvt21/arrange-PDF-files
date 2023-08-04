@@ -74,6 +74,7 @@ def createTemplate():
 def arrangeFilesByColor():
     os.chdir(pathInput)
     count = 0  # for counting arranged files
+    inputQuantity = 0 # for counting files in input
     for file in os.listdir():
         name, size = os.path.splitext(file)
         splitByUnderline = name.split("_")  # get data that was splitted by "_"
@@ -83,6 +84,8 @@ def arrangeFilesByColor():
             if splitByColor[1] == color:
                 shutil.move(file, pathColor + color)
                 count += 1
+        inputQuantity += 1
+    print(" ", inputQuantity, "FILES IN INPUT:")
     print(" ", count, "FILES BY COLOR DONE.")
 
 
