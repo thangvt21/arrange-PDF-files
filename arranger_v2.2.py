@@ -6,7 +6,7 @@ from tkinter import filedialog
 import datetime
 
 today = datetime.datetime.now()
-folderName = str(today.month) + "_" + str(today.day)
+folderName = str(today.month) + "." + str(today.day)
 pathInput = "E:/US/PDFFILES/Input/"
 pathOutput = "E:/OneDrive - VAB/FS - POD/THANG 8/" + folderName +"/"
 pathNewOrder = pathOutput + "DON MOI/"
@@ -70,6 +70,38 @@ def createTemplate():
     print("- - - - - - - - - - - - - - - - - - -")
 
 
+# Count shirts
+def countShirt():
+    os.chdir(pathInput)
+    countSize = 0  # for counting files
+    countFB = 0 # for counting files FB
+    shirts = 0 # for counting shirts
+    shirtsFB = 0 # for counting shirts have FB
+    for file in os.listdir():
+        name, size = os.path.splitext(file)
+        splitByUnderline = name.split("_")  # get data that was splitted by "_"
+        splitted = [
+            s.strip() for s in splitByUnderline
+        ]  # xóa khoảng trắng 2 đầu string
+        splitBySize = splitted[2].split("-")  # get data that was splitted by "-"
+        if splitted[5] != "1-1":  # Arrange files by SET and SET FB
+            if splitted[1] == "FB":
+                countFB += 1
+            else:
+                countSize += 1
+        else:
+            for i in range(6):
+                if splitBySize[0] == data[0][i]:
+                    if splitted[1] == "FB":
+                        countFB += 1
+                    else:
+                        countSize += 1
+    shirtsFB = countFB / 2
+    shirts = countSize
+    print(" ", shirtsFB, "SHIRTS-FB DONE.")
+    print(" ", shirts, "SHIRTS DONE.")
+
+
 # Arrange files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
 def arrangeFilesByColor():
     os.chdir(pathInput)
@@ -93,6 +125,9 @@ def arrangeFilesByColor():
 def arrangeFilesBySize():
     os.chdir(pathInput)
     countSize = 0  # for counting files
+    countFB = 0 # for counting files FB
+    shirts = 0 # for counting shirts
+    shirtsFB = 0 # for counting shirts have FB
     for file in os.listdir():
         name, size = os.path.splitext(file)
         splitByUnderline = name.split("_")  # get data that was splitted by "_"
@@ -103,7 +138,7 @@ def arrangeFilesBySize():
         if splitted[5] != "1-1":  # Arrange files by SET and SET FB
             if splitted[1] == "FB":
                 shutil.move(file, pathNewOrder + "SET FB")
-                countSize += 1
+                countFB += 1
             else:
                 shutil.move(file, pathNewOrder + "SET")
                 countSize += 1
@@ -112,13 +147,22 @@ def arrangeFilesBySize():
                 if splitBySize[0] == data[0][i]:
                     if splitted[1] == "FB":
                         shutil.move(file, pathNewOrder + data[2][i])
-                        countSize += 1
+                        countFB += 1
                     else:
                         shutil.move(file, pathNewOrder + data[1][i])
                         countSize += 1
+    print(" ", countFB+countSize, "FILES DONE")
 
-    print(" ", countSize, "FILES BY SIZE DONE.")
-
+# def countSmall():
+#     pathSmall = pathNewOrder + "/SMALL"
+#     os.chdir(pathSmall)
+#     for file in os.listdir():
+#         name, size = os.path.splitext(file)
+#         splitByUnderline = name.split("_")  # get data that was splitted by "_"
+#         splitted = [
+#             s.strip() for s in splitByUnderline
+#         ] 
+#         print(len(splitByUnderline))
 
 def main():
     # key1 = input(
@@ -133,14 +177,18 @@ def main():
         createTemplate()
         print("VICTOR'S TOOL IS WORKING...")
         print("- - - - - - - - - - - - - - - - - - -")
+        countShirt()
         arrangeFilesByColor()
         arrangeFilesBySize()
+        # countSmall()
         os.system("pause")
     elif key2 == "1":
         print("VICTOR'S TOOL IS WORKING...")
         print("- - - - - - - - - - - - - - - - - - -")
+        countShirt()
         arrangeFilesByColor()
         arrangeFilesBySize()
+        # countSmall()
         os.system("pause")
     else:
         exit
