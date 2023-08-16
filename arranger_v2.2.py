@@ -9,7 +9,7 @@ import mysql.connector
 today = datetime.datetime.now()
 folderName = str(today.month) + "." + str(today.day)
 pathInput = "E:/US/PDFFILES/Input/"
-pathOutput = "E:/OneDrive - VAB/FS - POD/THANG 8/" + folderName +"/"
+pathOutput = "E:/OneDrive - VAB/FS - POD/THANG 8/" + folderName + "/"
 pathNewOrder = pathOutput + "DON MOI/"
 pathColor = pathNewOrder + "COLORS/"
 
@@ -24,19 +24,38 @@ colorList = [
     "SPORTGREY",
     "MAROON",
     "SAND",
-    "LIGHTPINK", 
+    "LIGHTPINK",
 ]
 
 data = [
     ["3XL", "2XL", "XL", "L", "M"],
     ["3XL LARGE", "2XL LARGE", "XL LARGE", "LARGE", "MEDIUM", "SET"],
-    ["3XL LARGE FB","2XL LARGE FB","XL LARGE FB","LARGE FB","MEDIUM FB","SET FB",]
+    [
+        "3XL LARGE FB",
+        "2XL LARGE FB",
+        "XL LARGE FB",
+        "LARGE FB",
+        "MEDIUM FB",
+        "SET FB",
+    ],
 ]
 
 dataFolder = [
-    ["3XL LARGE", "2XL LARGE", "XL LARGE", "LARGE", "MEDIUM", "SET", "SMALL"],
-    ["3XL LARGE FB","2XL LARGE FB","XL LARGE FB","LARGE FB","MEDIUM FB","SET FB",]
+    "3XL LARGE",
+    "2XL LARGE",
+    "XL LARGE",
+    "LARGE",
+    "MEDIUM",
+    "SET",
+    "SMALL",
+    "3XL LARGE FB",
+    "2XL LARGE FB",
+    "XL LARGE FB",
+    "LARGE FB",
+    "MEDIUM FB",
+    "SET FB",
 ]
+
 
 typeList = ["MUGS", "DON UU TIEN", "FIX ISSUES"]
 
@@ -45,11 +64,11 @@ STATUS = "UPLOADED"
 
 def updateDB(status, orderCode):
     conn = mysql.connector.connect(
-    host = "seller.flashship.net", 
-    user = "flashship", 
-    password = "sjvnZVc6cwqUzk", 
-    database = "fplatform",
-    auth_plugin='mysql_native_password'
+        host="seller.flashship.net",
+        user="flashship",
+        password="sjvnZVc6cwqUzk",
+        database="fplatform",
+        auth_plugin="mysql_native_password",
     )
     connObj = conn.cursor()
     querySmall = "UPDATE orders SET status = %s where order_code = %s"
@@ -57,7 +76,8 @@ def updateDB(status, orderCode):
     connObj.execute(querySmall, val)
     conn.commit()
     conn.close()
-    
+
+
 # Choose file path of folder that contains Input và Output (need create folder Input before running tool; folder Output will be automatically created)
 def getNewPathInput(pathInput, pathOutput):
     print("SELECT FOLDER THAT CONTAINS INPUT: ")
@@ -70,6 +90,7 @@ def getNewPathInput(pathInput, pathOutput):
     print("  INPUT DIRECTORY: ", pathInput)
     print("  OUTPUT DIRECTORY: ", pathOutput)
     print("- - - - - - - - - - - - - - - - - - -")
+
 
 # Create document directory by Sizes và Colors, folder Output will be automatically created
 def createTemplate():
@@ -91,37 +112,32 @@ def createTemplate():
     print("TEMPLATES CREATED.")
     print("- - - - - - - - - - - - - - - - - - -")
 
+
 # Arrange files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
 def arrangeFilesByColor():
     os.chdir(pathInput)
     countColor = 0  # for counting arranged files
-    inputQuantity = 0 # for counting files in input
+    inputQuantity = 0  # for counting files in input
     for file in os.listdir():
         name, size = os.path.splitext(file)
         splitByUnderline = name.split("_")  # get data that was splitted by "_"
         splitted = [s.strip() for s in splitByUnderline]
-        orderCode = splitted[4]
-        orderCodeS = splitted[3]
         splitByColor = splitted[2].split("-")  # get data that was splitted by "-"
         if splitByColor[0] == "S":
             shutil.move(file, pathNewOrder + "SMALL")
             countColor += 1
-            updateDB(STATUS,orderCodeS)
         elif splitted[5] != "1-1":  # Arrange files by SET and SET FB
             if splitted[1] == "FB":
                 shutil.move(file, pathNewOrder + "SET FB")
                 countColor += 1
-                updateDB(STATUS,orderCode)
             else:
                 shutil.move(file, pathNewOrder + "SET")
                 countColor += 1
-                updateDB(STATUS,orderCode)
         else:
             for color in colorList:
                 if splitByColor[1] == color:
                     shutil.move(file, pathColor + color)
                     countColor += 1
-                    updateDB(STATUS,orderCode)
         inputQuantity += 1
     print(" ", inputQuantity, "FILES IN INPUT:")
     print(" ", countColor, "FILES BY COLOR DONE.")
@@ -137,19 +153,44 @@ def arrangeFilesBySize():
         splitted = [
             s.strip() for s in splitByUnderline
         ]  # xóa khoảng trắng 2 đầu string
-        orderCode = splitted[4]
         splitBySize = splitted[2].split("-")  # get data that was splitted by "-"
         for i in range(5):
             if splitBySize[0] == data[0][i]:
                 if splitted[1] == "FB":
                     shutil.move(file, pathNewOrder + data[2][i])
                     countSize += 1
-                    updateDB(STATUS,orderCode)
                 else:
                     shutil.move(file, pathNewOrder + data[1][i])
                     countSize += 1
-                    updateDB(STATUS,orderCode)
     print(" ", countSize, "FILES DONE")
+
+
+def browseFolders():
+    os.chdir("D:/OneDrive - VAB/FS - POD/THANG 8/8.15/DON MOI/")
+    listOrderCode = []
+    for size in dataFolder:
+        for file in os.listdir(
+            "D:/OneDrive - VAB/FS - POD/THANG 8/8.15/DON MOI/" + size
+        ):
+            if size == "SMALL":
+                name, size = os.path.splitext(file)
+                splitByUnderline = name.split("_")  # get data that was splitted by "_"
+                splitted = [s.strip() for s in splitByUnderline]
+                listOrderCode.append(splitted[3])
+            else:
+                name, size = os.path.splitext(file)
+                splitByUnderline = name.split("_")  # get data that was splitted by "_"
+                splitted = [s.strip() for s in splitByUnderline]
+                listOrderCode.append(splitted[4])
+    for color in colorList:
+        for file in os.listdir(
+            "D:/OneDrive - VAB/FS - POD/THANG 8/8.15/DON MOI/COLORS/" + color
+        ):
+            name, size = os.path.splitext(file)
+            splitByUnderline = name.split("_")  # get data that was splitted by "_"
+            splitted = [s.strip() for s in splitByUnderline]
+            listOrderCode.append(splitted[4])
+    print(listOrderCode)
 
 
 def main():
@@ -158,23 +199,25 @@ def main():
     # )
     # if key1 == "0":
     #     getNewPathInput(pathInput, pathOutput)
-    print("0. TẠO FOLDERS MỚI")
-    print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
-    key2 = input("NHẬP SỐ: ")
-    if key2 == "0":
-        createTemplate()
-        print("VICTOR'S TOOL IS WORKING...")
-        print("- - - - - - - - - - - - - - - - - - -")
-        arrangeFilesByColor()
-        arrangeFilesBySize()
-        os.system("pause")
-    elif key2 == "1":
-        print("VICTOR'S TOOL IS WORKING...")
-        print("- - - - - - - - - - - - - - - - - - -")
-        arrangeFilesByColor()
-        arrangeFilesBySize()
-        os.system("pause")
-    else:
-        exit
-    
+    # print("0. TẠO FOLDERS MỚI")
+    # print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
+    # key2 = input("NHẬP SỐ: ")
+    # if key2 == "0":
+    #     createTemplate()
+    #     print("VICTOR'S TOOL IS WORKING...")
+    #     print("- - - - - - - - - - - - - - - - - - -")
+    #     arrangeFilesByColor()
+    #     arrangeFilesBySize()
+    #     os.system("pause")
+    # elif key2 == "1":
+    #     print("VICTOR'S TOOL IS WORKING...")
+    #     print("- - - - - - - - - - - - - - - - - - -")
+    #     arrangeFilesByColor()
+    #     arrangeFilesBySize()
+    #     os.system("pause")
+    # else:
+    #     exit
+    browseFolders()
+
+
 main()
