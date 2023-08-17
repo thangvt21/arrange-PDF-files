@@ -2,10 +2,12 @@ import os
 import shutil
 from pathlib import Path
 from tkinter import *
-from tkinter import filedialog
 import datetime
-import mysql.connector
 import pandas as pd
+from sqlalchemy import Integer, String, Table, create_engine, MetaData, Column
+
+# import mysql.connector
+# from tkinter import filedialog
 
 today = datetime.datetime.now()
 folderName = str(today.month) + "_" + str(today.day)
@@ -158,6 +160,21 @@ def arrangeFilesBySize():
     print(" ", countSize, "FILES DONE")
 
 
+def getDataBySizeFromTableOrderProduct(df):
+    connection_string = (
+        "mysql+pymysql://flashship:sjvnZVc6cwqUzk@seller.flashship.net:3306/fplatform"
+    )
+    engine = create_engine(connection_string)
+    connection = engine.connect()
+    query = "SELECT order_product.order_id, orders.order_code, order_product.line_id, order_product.product_name, order_product.quantity, order_product.both_side FROM order_product JOIN orders WHERE order_product.order_id = orders.id AND orders.order_code IN %(values)s AND order_product.created > '2023-08-15' AND order_product.created < '2023-08-17' GROUP BY order_product.order_id, order_product.line_id"
+    vari = {
+        "values": df["order_code"].astype(str).tolist(),
+    }
+    df_res = pd.read_sql(query, connection, params=vari)
+    engine.dispose()
+    return df_res
+
+
 # Use os.walk() for browsing all directories
 def browseFolders(path):
     count = 0
@@ -181,49 +198,76 @@ def browseFolders(path):
                 if len(splitted) > 9:
                     splitted = splitted[:-1]
                 df.loc[len(df)] = splitted
-                # print(splitted)
-    print(df)
+    df_MLXL = df[df["size"] != "S"]
+    df_S = df[df["size"] == "S"]
+    data_MLXL = getDataBySizeFromTableOrderProduct(df_MLXL)
+    data_S = getDataBySizeFromTableOrderProduct(df_S)
+    print(data_MLXL)
+    print(data_S)
 
 
 def updateDB(status, orderCode):
-    connection = mysql.connector.connect(
-        host="seller.flashship.net",
-        user="flashship",
-        password="sjvnZVc6cwqUzk",
-        database="fplatform",
-        auth_plugin="mysql_native_password",
+    connection_string = (
+        "mysql+pymysql://flashship:sjvnZVc6cwqUzk@seller.flashship.net:3306/fplatform"
     )
-    cursor = connection.cursor()
-    querySmall = "UPDATE orders SET status = %s where order_code = %s"
+    engine = create_engine(connection_string)
+    connection = engine.connect()
+    query = "UPDATE orders SET status = %s where order_code = %s"
     val = (status, orderCode)
-    cursor.execute(querySmall, val)
-    connection.commit()
-    print(cursor.rowcount)
-    connection.close()
+    df_res = pd.read_sql(query, connection, params=val)
+
+    # Define the metadata
+    metadata = MetaData()
+
+    # Define the table
+    table = Table(
+        "table_name",
+        metadata,
+        Column("id", Integer, primary_key=True),
+        Column("column_name", String(255)),
+    )
+
+    # Define the values to update
+    values = [
+        {"id": 1, "column_name": "new_value_1"},
+        {"id": 2, "column_name": "new_value_2"},
+        {"id": 3, "column_name": "new_value_3"},
+    ]
+
+    # Update the values
+    for value in values:
+        stmt = (
+            table.update()
+            .where(table.c.id == value["id"])
+            .values(column_name=value["column_name"])
+        )
+        engine.execute(stmt)
+
+    # Close the connection
+    engine.dispose()
 
 
 def main():
-    print("")
-    print("0. TẠO FOLDERS MỚI")
-    print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
-    key2 = input("NHẬP SỐ: ")
-    if key2 == "0":
-        createTemplate()
-        print("VICTOR'S TOOL IS WORKING...")
-        print("- - - - - - - - - - - - - - - - - - -")
-        arrangeFilesByColor()
-        arrangeFilesBySize()
-        os.system("pause")
-    elif key2 == "1":
-        print("VICTOR'S TOOL IS WORKING...")
-        print("- - - - - - - - - - - - - - - - - - -")
-        arrangeFilesByColor()
-        arrangeFilesBySize()
-        os.system("pause")
-    else:
-        exit
-    # path2Browse = "E:/OneDrive - VAB/FS - POD/THANG 8/8.16/DON MOI/"
-    # browseFolders(path2Browse)
+    # print("0. TẠO FOLDERS MỚI")
+    # print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
+    # key2 = input("NHẬP SỐ: ")
+    # if key2 == "0":
+    #     createTemplate()
+    #     print("VICTOR'S TOOL IS WORKING...")
+    #     print("- - - - - - - - - - - - - - - - - - -")
+    #     arrangeFilesByColor()
+    #     arrangeFilesBySize()
+    #     os.system("pause")
+    # elif key2 == "1":
+    #     print("VICTOR'S TOOL IS WORKING...")
+    #     print("- - - - - - - - - - - - - - - - - - -")
+    #     arrangeFilesByColor()
+    #     arrangeFilesBySize()
+    #     os.system("pause")
+    # else:
+    #     exit
+    path2Browse = "E:/OneDrive - VAB/FS - POD/THANG 8/8.16/DON MOI/"
+    browseFolders(path2Browse)
 
     # status = "UPLOADED"
     # orderCode = "8OEM9DIIN"
