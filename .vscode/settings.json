@@ -3,5 +3,9 @@
     "workbench.preferredDarkColorTheme": "GitHub Dark Dimmed",
     "workbench.iconTheme": "material-icon-theme",
     "editor.fontFamily": "Jetbrains Mono, Consolas, 'Courier New', monospace",
-    "files.autoSave": "onWindowChange"
+    "files.autoSave": "onWindowChange",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.formatting.provider": "none"
 }
