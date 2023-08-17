@@ -56,6 +56,7 @@ dataFolder = [
     "SET FB",
 ]
 
+
 typeList = ["MUGS", "DON UU TIEN", "FIX ISSUES"]
 
 STATUS = "UPLOADED"
@@ -116,6 +117,7 @@ def updateDB(status, orderCode):
 #     print("  INPUT DIRECTORY: ", pathInput)
 #     print("  OUTPUT DIRECTORY: ", pathOutput)
 #     print("- - - - - - - - - - - - - - - - - - -")
+
 
 
 # Create document directory by Sizes và Colors, folder Output will be automatically created
@@ -220,6 +222,5 @@ def main():
         exit
 
     browseFoldersAndUpdateDB()
-
 
 main()
