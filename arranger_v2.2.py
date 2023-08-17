@@ -2,9 +2,12 @@ import os
 import shutil
 from pathlib import Path
 from tkinter import *
-from tkinter import filedialog
 import datetime
-import mysql.connector
+import pandas as pd
+from sqlalchemy import Integer, String, Table, create_engine, MetaData, Column
+
+# import mysql.connector
+# from tkinter import filedialog
 
 today = datetime.datetime.now()
 folderName = str(today.month) + "_" + str(today.day)
@@ -62,49 +65,6 @@ typeList = ["MUGS", "DON UU TIEN", "FIX ISSUES"]
 STATUS = "UPLOADED"
 
 
-def splittedByUnderline(file):
-    name, size = os.path.splitext(file)
-    splitByUnderline = name.split("_")  # get data that was splitted by "_"
-    splitted = [s.strip() for s in splitByUnderline]
-    return splitted
-
-
-def splittedByExtension(file):
-    name, size = file.split(".pdf")
-    splitByUnderline = name.split("_")
-    splitted = [s.strip() for s in splitByUnderline]
-    return splitted
-
-
-def selectOrder():
-    conn = mysql.connector.connect(
-        host="seller.flashship.net",
-        user="flashship",
-        password="sjvnZVc6cwqUzk",
-        database="fplatform",
-        auth_plugin="mysql_native_password",
-    )
-    connObj = conn.cursor()
-    query = "SELECT quantity,variant_id,both_side,front_size_image,back_size_image FROM order_produst WHERE FIND_IN_SET(order_produst) GROUP BY orrder_id, line_id"
-    conn.close()
-
-
-def updateDB(status, orderCode):
-    conn = mysql.connector.connect(
-        host="seller.flashship.net",
-        user="flashship",
-        password="sjvnZVc6cwqUzk",
-        database="fplatform",
-        auth_plugin="mysql_native_password",
-    )
-    connObj = conn.cursor()
-    querySmall = "UPDATE orders SET status = %s where order_code = %s"
-    val = (status, orderCode)
-    connObj.execute(querySmall, val)
-    conn.commit()
-    conn.close()
-
-
 # Choose file path of folder that contains Input và Output (need create folder Input before running tool; folder Output will be automatically created)
 # def getNewPathInput(pathInput, pathOutput):
 #     print("SELECT FOLDER THAT CONTAINS INPUT: ")
@@ -117,7 +77,6 @@ def updateDB(status, orderCode):
 #     print("  INPUT DIRECTORY: ", pathInput)
 #     print("  OUTPUT DIRECTORY: ", pathOutput)
 #     print("- - - - - - - - - - - - - - - - - - -")
-
 
 
 # Create document directory by Sizes và Colors, folder Output will be automatically created
@@ -138,18 +97,34 @@ def createTemplate():
     print("- - - - - - - - - - - - - - - - - - -")
 
 
+def splittedByUnderline(file):
+    name, size = os.path.splitext(file)
+    name = name.replace("-", "_")
+    splitByUnderline = name.split("_")  # get data that was splitted by "_"
+    splitted = [s.strip() for s in splitByUnderline]
+    return splitted
+
+
+def splittedByExtension(file):
+    name, size = file.split(".pdf")
+    name = name.replace("-", "_")
+    splitByUnderline = name.split("_")
+    splitted = [s.strip() for s in splitByUnderline]
+    return splitted
+
+
 # Arrange files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
 def arrangeFilesByColor():
     os.chdir(pathInput)
     countColor = 0  # for counting arranged files
     inputQuantity = 0  # for counting files in input
     for file in os.listdir():
-        splitted = splittedByUnderline(file)
-        splitByColor = splitted[2].split("-")  # get data that was splitted by "-"
-        if splitByColor[0] == "S":
+        splitted = splittedByUnderline(file)  # get data that was splitted by "-"
+        # print(splitted)  # print
+        if splitted[2] == "S":
             shutil.move(file, pathNewOrder + "SMALL")
             countColor += 1
-        elif splitted[5] != "1-1":  # Arrange files by SET and SET FB
+        elif splitted[7] != "1":  # Arrange files by SET and SET FB
             if splitted[1] == "FB":
                 shutil.move(file, pathNewOrder + "SET FB")
                 countColor += 1
@@ -158,7 +133,7 @@ def arrangeFilesByColor():
                 countColor += 1
         else:
             for color in colorList:
-                if splitByColor[1] == color:
+                if splitted[3] == color:
                     shutil.move(file, pathColor + color)
                     countColor += 1
         inputQuantity += 1
@@ -171,10 +146,11 @@ def arrangeFilesBySize():
     os.chdir(pathInput)
     countSize = 0  # for counting files
     for file in os.listdir():
-        splitted = splittedByUnderline(file)  # xóa khoảng trắng 2 đầu string
-        splitBySize = splitted[2].split("-")  # get data that was splitted by "-"
+        splitted = splittedByUnderline(
+            file
+        )  # xóa khoảng trắng 2 đầu string  # get data that was splitted by "-"
         for i in range(5):
-            if splitBySize[0] == data[0][i]:
+            if splitted[2] == data[0][i]:
                 if splitted[1] == "FB":
                     shutil.move(file, pathNewOrder + data[2][i])
                     countSize += 1
@@ -184,43 +160,119 @@ def arrangeFilesBySize():
     print(" ", countSize, "FILES DONE")
 
 
+def getDataBySizeFromTableOrderProduct(df):
+    connection_string = (
+        "mysql+pymysql://flashship:sjvnZVc6cwqUzk@seller.flashship.net:3306/fplatform"
+    )
+    engine = create_engine(connection_string)
+    connection = engine.connect()
+    query = "SELECT order_product.order_id, orders.order_code, order_product.line_id, order_product.product_name, order_product.quantity, order_product.both_side FROM order_product JOIN orders WHERE order_product.order_id = orders.id AND orders.order_code IN %(values)s AND order_product.created > '2023-08-15' AND order_product.created < '2023-08-17' GROUP BY order_product.order_id, order_product.line_id"
+    vari = {
+        "values": df["order_code"].astype(str).tolist(),
+    }
+    df_res = pd.read_sql(query, connection, params=vari)
+    engine.dispose()
+    return df_res
+
+
 # Use os.walk() for browsing all directories
-def browseFoldersAndUpdateDB():
+def browseFolders(path):
     count = 0
-    for root, dirs, files in os.walk(
-        "E:/OneDrive - VAB/FS - POD/THANG 8/8.16/DON MOI/"
-    ):
+    df = pd.DataFrame(
+        {
+            "seller": [],
+            "both_side": [],
+            "size": [],
+            "color": [],
+            "group_id": [],
+            "order_code": [],
+            "quantity": [],
+            "total": [],
+            "side": [],
+        }
+    )
+    for root, dirs, files in os.walk(path):
         for file in files:
             if file.endswith(".pdf"):
                 splitted = splittedByExtension(file)
-                print(splitted)
+                if len(splitted) > 9:
+                    splitted = splitted[:-1]
+                df.loc[len(df)] = splitted
+    df_MLXL = df[df["size"] != "S"]
+    df_S = df[df["size"] == "S"]
+    data_MLXL = getDataBySizeFromTableOrderProduct(df_MLXL)
+    data_S = getDataBySizeFromTableOrderProduct(df_S)
+    print(data_MLXL)
+    print(data_S)
+
+
+def updateDB(status, orderCode):
+    connection_string = (
+        "mysql+pymysql://flashship:sjvnZVc6cwqUzk@seller.flashship.net:3306/fplatform"
+    )
+    engine = create_engine(connection_string)
+    connection = engine.connect()
+    query = "UPDATE orders SET status = %s where order_code = %s"
+    val = (status, orderCode)
+    df_res = pd.read_sql(query, connection, params=val)
+
+    # Define the metadata
+    metadata = MetaData()
+
+    # Define the table
+    table = Table(
+        "table_name",
+        metadata,
+        Column("id", Integer, primary_key=True),
+        Column("column_name", String(255)),
+    )
+
+    # Define the values to update
+    values = [
+        {"id": 1, "column_name": "new_value_1"},
+        {"id": 2, "column_name": "new_value_2"},
+        {"id": 3, "column_name": "new_value_3"},
+    ]
+
+    # Update the values
+    for value in values:
+        stmt = (
+            table.update()
+            .where(table.c.id == value["id"])
+            .values(column_name=value["column_name"])
+        )
+        engine.execute(stmt)
+
+    # Close the connection
+    engine.dispose()
 
 
 def main():
-    # key1 = input(
-    #     " NHẬP 0 - ĐỂ CHỌN FOLDER CHỨA INPUT VÀ OUTPUT (NHẤN BẤT KỲ ĐỂ THOÁT): "
-    # )
-    # if key1 == "0":
-    #     getNewPathInput(pathInput, pathOutput)
-    print("0. TẠO FOLDERS MỚI")
-    print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
-    key2 = input("NHẬP SỐ: ")
-    if key2 == "0":
-        createTemplate()
-        print("VICTOR'S TOOL IS WORKING...")
-        print("- - - - - - - - - - - - - - - - - - -")
-        arrangeFilesByColor()
-        arrangeFilesBySize()
-        os.system("pause")
-    elif key2 == "1":
-        print("VICTOR'S TOOL IS WORKING...")
-        print("- - - - - - - - - - - - - - - - - - -")
-        arrangeFilesByColor()
-        arrangeFilesBySize()
-        os.system("pause")
-    else:
-        exit
+    # print("0. TẠO FOLDERS MỚI")
+    # print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
+    # key2 = input("NHẬP SỐ: ")
+    # if key2 == "0":
+    #     createTemplate()
+    #     print("VICTOR'S TOOL IS WORKING...")
+    #     print("- - - - - - - - - - - - - - - - - - -")
+    #     arrangeFilesByColor()
+    #     arrangeFilesBySize()
+    #     os.system("pause")
+    # elif key2 == "1":
+    #     print("VICTOR'S TOOL IS WORKING...")
+    #     print("- - - - - - - - - - - - - - - - - - -")
+    #     arrangeFilesByColor()
+    #     arrangeFilesBySize()
+    #     os.system("pause")
+    # else:
+    #     exit
+    path2Browse = "E:/OneDrive - VAB/FS - POD/THANG 8/8.16/DON MOI/"
+    browseFolders(path2Browse)
 
-    browseFoldersAndUpdateDB()
+    # status = "UPLOADED"
+    # orderCode = "8OEM9DIIN"
+    # updateDB(status, orderCode)
+    # arrangeFilesByColor()
+
 
 main()
