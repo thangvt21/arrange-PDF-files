@@ -239,7 +239,7 @@ def browse_folders_for_pdf_files(path):
             "side": [],
         }
     )
-    for _, _, files in os.walk(path):
+    for root, dirs, files in os.walk(path):
         for file in files:
             if file.endswith(".pdf"):
                 splitted = splitted_by_extension(file)
@@ -250,8 +250,9 @@ def browse_folders_for_pdf_files(path):
     df_s = df_pdf[df_pdf["size"] == "S"]
     data_mlxl = getdata_bysize_from_db_order_product(df_mlxl)
     data_s = getdata_bysize_from_db_order_product(df_s)
-    print(data_mlxl)
-    print(data_s)
+    mlxl_count = data_mlxl["order_code"].value_counts()
+    s_count = data_s["order_code"].value_counts()
+    print(mlxl_count, s_count)
 
 
 def update_order_status(order_code, status):
@@ -276,24 +277,29 @@ def update_order_status(order_code, status):
     engine.dispose()
 
 
+def core():
+    """Core function"""
+    print("0. TẠO FOLDERS MỚI")
+    print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
+    key2 = input("NHẬP SỐ: ")
+    if key2 == "0":
+        create_template()
+        print("VICTOR'S TOOL IS WORKING...")
+        print("- - - - - - - - - - - - - - - - - - -")
+        organize_files_by_color()
+        organize_files_by_size()
+        os.system("pause")
+    elif key2 == "1":
+        print("VICTOR'S TOOL IS WORKING...")
+        print("- - - - - - - - - - - - - - - - - - -")
+        organize_files_by_color()
+        organize_files_by_size()
+        os.system("pause")
+
+
 def main():
     """Main function"""
-    # print("0. TẠO FOLDERS MỚI")
-    # print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
-    # key2 = input("NHẬP SỐ: ")
-    # if key2 == "0":
-    #     create_template()
-    #     print("VICTOR'S TOOL IS WORKING...")
-    #     print("- - - - - - - - - - - - - - - - - - -")
-    #     organize_files_by_color()
-    #     organize_files_by_size()
-    #     os.system("pause")
-    # elif key2 == "1":
-    #     print("VICTOR'S TOOL IS WORKING...")
-    #     print("- - - - - - - - - - - - - - - - - - -")
-    #     organize_files_by_color()
-    #     organize_files_by_size()
-    #     os.system("pause")
+    # core()
 
     path_2_browse = "E:/OneDrive - VAB/FS - POD/THANG 8/8.16/DON MOI/"
     browse_folders_for_pdf_files(path_2_browse)
