@@ -1,3 +1,4 @@
+"""Modules"""
 import os
 import shutil
 import datetime
@@ -111,11 +112,11 @@ def splitted_by_extension(file):
     return splitted
 
 
-# Arrange files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
-def arrange_files_by_color():
-    """arrange files by colors"""
+# Organize_files_by_color files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
+def organize_files_by_color():
+    """organize files by colors"""
     os.chdir(PATH_INPUT)
-    count_color = 0  # for counting arranged files
+    count_color = 0  # for counting organized files
     input_quantity = 0  # for counting files in input
     for file in os.listdir():
         splitted = splitted_by_underline(file)  # get data that was splitted by "-"
@@ -123,7 +124,7 @@ def arrange_files_by_color():
         if splitted[2] == "S":
             shutil.move(file, PATH_NEW_ORDER + "SMALL")
             count_color += 1
-        elif splitted[7] != "1":  # Arrange files by SET and SET FB
+        elif splitted[7] != "1":  # organize files by SET and SET FB
             if splitted[1] == "FB":
                 shutil.move(file, PATH_NEW_ORDER + "SET FB")
                 _count_color += 1
@@ -134,14 +135,14 @@ def arrange_files_by_color():
             for color in COLOR_LIST:
                 if splitted[3] == color:
                     shutil.move(file, PATH_COLOR + color)
-                    _count_color += 1
+                    count_color += 1
         input_quantity += 1
     print(" ", input_quantity, "FILES IN INPUT:")
     print(" ", count_color, "FILES BY COLOR DONE.")
 
 
-def arrange_files_by_size():
-    """# Arrange files by Sizes: 3XL, 2XL,... in data[]"""
+def organize_files_by_size():
+    """# organize files by sizes"""
     os.chdir(PATH_INPUT)
     count_size = 0  # for counting files
     for file in os.listdir():
@@ -159,7 +160,7 @@ def arrange_files_by_size():
     print(" ", count_size, "FILES DONE")
 
 
-def get_data_by_size_from_table_order_product(df_input):
+def getdata_bysize_from_db_order_product(df_input):
     """Get data by size from order_product
 
     Args:
@@ -168,24 +169,60 @@ def get_data_by_size_from_table_order_product(df_input):
     Returns:
         pandas.dataframe: data by size
     """
+    param_values = {
+        "values": df_input["order_code"].astype(str).tolist(),
+        "date_from": "2023-08-15",
+        "date_to": "2023-08-18",
+    }
     connection_string = (
         "mysql+pymysql://flashship:sjvnZVc6cwqUzk@seller.flashship.net:3306/fplatform"
     )
     engine = db.create_engine(connection_string)
-    connection = engine.connect()
-    query = "SELECT order_product.order_id, orders.order_code, order_product.line_id, order_product.product_name, order_product.quantity, order_product.both_side FROM order_product JOIN orders WHERE order_product.order_id = orders.id AND orders.order_code IN %(values)s AND order_product.created > '2023-08-15' AND order_product.created < '2023-08-17' GROUP BY order_product.order_id, order_product.line_id"
-    vari = {
-        "values": df_input["order_code"].astype(str).tolist(),
-    }
-    df_res = pd.read_sql(query, connection, params=vari)
+    conn = engine.connect()
+    meta = db.MetaData()
+    product_check = db.Table("product_check", meta, autoload_with=engine)
+    stmt = db.select(
+        product_check.c[
+            "order_id",
+            "order_code",
+            "line_id",
+            "product_name",
+            "quantity",
+            "front_image_size",
+            "back_image_size",
+            "both_side",
+        ]
+    ).where(
+        (product_check.c.order_code.in_(db.bindparam("values", expanding=True)))
+        & (product_check.c.created > db.bindparam("date_from"))
+        & (product_check.c.created < db.bindparam("date_to"))
+    )
+    result = conn.execute(
+        stmt,
+        param_values,
+    )
+    res = result.fetchall()
     engine.dispose()
+    df_res = pd.DataFrame(
+        {
+            "order_id": [],
+            "order_code": [],
+            "line_id": [],
+            "product_name": [],
+            "quantity": [],
+            "front_image_size": [],
+            "back_image_size": [],
+            "both_side": [],
+        }
+    )
+    for item in res:
+        df_res.loc[len(df_res)] = item
     return df_res
 
 
-# Use os.walk() for browsing all directories
 def browse_folders_for_pdf_files(path):
     """browse for finding .pdf files in a given directory (path)
-
+    using os.walk() for browsing all directories
     Args:
         path (String): path of the directory
     """
@@ -211,8 +248,8 @@ def browse_folders_for_pdf_files(path):
                 df_pdf.loc[len(df_pdf)] = splitted
     df_mlxl = df_pdf[df_pdf["size"] != "S"]
     df_s = df_pdf[df_pdf["size"] == "S"]
-    data_mlxl = get_data_by_size_from_table_order_product(df_mlxl)
-    data_s = get_data_by_size_from_table_order_product(df_s)
+    data_mlxl = getdata_bysize_from_db_order_product(df_mlxl)
+    data_s = getdata_bysize_from_db_order_product(df_s)
     print(data_mlxl)
     print(data_s)
 
@@ -248,23 +285,22 @@ def main():
     #     create_template()
     #     print("VICTOR'S TOOL IS WORKING...")
     #     print("- - - - - - - - - - - - - - - - - - -")
-    #     arrange_files_by_color()
-    #     arrange_files_by_size()
+    #     organize_files_by_color()
+    #     organize_files_by_size()
     #     os.system("pause")
     # elif key2 == "1":
     #     print("VICTOR'S TOOL IS WORKING...")
     #     print("- - - - - - - - - - - - - - - - - - -")
-    #     arrange_files_by_color()
-    #     arrange_files_by_size()
+    #     organize_files_by_color()
+    #     organize_files_by_size()
     #     os.system("pause")
-    # else:
-    #     exit
-    # path2Browse = "E:/OneDrive - VAB/FS - POD/THANG 8/8.16/DON MOI/"
-    # browse_folders_for_pdf_files(path2Browse)
 
-    status = "UPLOADED"
-    order_code = "8OEM9DIIN"
-    update_order_status(order_code, status)
+    path_2_browse = "E:/OneDrive - VAB/FS - POD/THANG 8/8.16/DON MOI/"
+    browse_folders_for_pdf_files(path_2_browse)
+
+    # status = "UPLOADED"
+    # order_code = "8OEM9DIIN"
+    # update_order_status(order_code, status)
 
 
 main()
