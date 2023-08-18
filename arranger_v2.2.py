@@ -1,23 +1,19 @@
 import os
 import shutil
-from pathlib import Path
-from tkinter import *
 import datetime
 import pandas as pd
-from sqlalchemy import Integer, String, Table, create_engine, MetaData, Column
+import sqlalchemy as db
 
-# import mysql.connector
-# from tkinter import filedialog
 
 today = datetime.datetime.now()
-folderName = str(today.month) + "_" + str(today.day)
-pathInput = "E:/US/PDFFILES/Input/"
-pathOutput = "E:/OneDrive - VAB/FS - POD/THANG 8/" + folderName + "/"
-pathNewOrder = pathOutput + "DON MOI/"
-pathColor = pathNewOrder + "COLORS/"
+FOLDER_NAME = str(today.month) + "_" + str(today.day)
+PATH_INPUT = "E:/US/PDFFILES/Input/"
+PATH_OUTPUT = "E:/OneDrive - VAB/FS - POD/THANG 8/" + FOLDER_NAME + "/"
+PATH_NEW_ORDER = PATH_OUTPUT + "DON MOI/"
+PATH_COLOR = PATH_NEW_ORDER + "COLORS/"
 
 
-colorList = [
+COLOR_LIST = [
     "RED",
     "NAVY",
     "ROYALBLUE",
@@ -30,7 +26,7 @@ colorList = [
     "LIGHTPINK",
 ]
 
-data = [
+DATA = [
     ["3XL", "2XL", "XL", "L", "M"],
     ["3XL LARGE", "2XL LARGE", "XL LARGE", "LARGE", "MEDIUM", "SET"],
     [
@@ -43,7 +39,7 @@ data = [
     ],
 ]
 
-dataFolder = [
+DATA_FOLDER = [
     "3XL LARGE",
     "2XL LARGE",
     "XL LARGE",
@@ -60,115 +56,126 @@ dataFolder = [
 ]
 
 
-typeList = ["MUGS", "DON UU TIEN", "FIX ISSUES"]
+TYPE_LIST = ["MUGS", "DON UU TIEN", "FIX ISSUES"]
 
 STATUS = "UPLOADED"
 
 
-# Choose file path of folder that contains Input và Output (need create folder Input before running tool; folder Output will be automatically created)
-# def getNewPathInput(pathInput, pathOutput):
-#     print("SELECT FOLDER THAT CONTAINS INPUT: ")
-#     root = Tk()  # open tkinter dialog
-#     filepathRoot = filedialog.askdirectory()  # get root path
-#     pathInput = filepathRoot + "/Input/"
-#     pathOutput = filepathRoot + "/Output/"
-#     root.withdraw()  # Hide tkinter dialog
-#     print("- - - - - - - - - - - - - - - - - - -")
-#     print("  INPUT DIRECTORY: ", pathInput)
-#     print("  OUTPUT DIRECTORY: ", pathOutput)
-#     print("- - - - - - - - - - - - - - - - - - -")
-
-
-# Create document directory by Sizes và Colors, folder Output will be automatically created
-def createTemplate():
+def create_template():
+    """create folder template for uploading"""
     print("- - - - - - - - - - - - - - - - - - -")
     print("NOW CREATING NEW FOLDERS.")
-    for typer in typeList:  # create folder by typeList
-        os.makedirs(pathOutput + typer)
-        print(pathOutput + typer + " ... CREATED!")
-    for size in dataFolder:
-        os.makedirs(pathNewOrder + size)  # create folder by sizeList
-        print(pathNewOrder + size + " ... CREATED!")
-    os.makedirs(pathColor)  # create folder by colorList
-    for color in colorList:
-        os.makedirs(pathColor + color)
-        print(pathColor + color + " ... CREATED!")
+    for typer in TYPE_LIST:  # create folder by typeList
+        os.makedirs(PATH_OUTPUT + typer)
+        print(PATH_OUTPUT + typer + " ... CREATED!")
+    for size in DATA_FOLDER:
+        os.makedirs(PATH_NEW_ORDER + size)  # create folder by sizeList
+        print(PATH_NEW_ORDER + size + " ... CREATED!")
+    os.makedirs(PATH_COLOR)  # create folder by colorList
+    for color in COLOR_LIST:
+        os.makedirs(PATH_COLOR + color)
+        print(PATH_COLOR + color + " ... CREATED!")
     print("TEMPLATES CREATED.")
     print("- - - - - - - - - - - - - - - - - - -")
 
 
-def splittedByUnderline(file):
-    name, size = os.path.splitext(file)
+def splitted_by_underline(file):
+    """get word that splited by underline
+
+    Args:
+        file (_.pdf_): file with .pdf extension
+
+    Returns:
+        list: list of words
+    """
+    name, _ = os.path.splitext(file)
     name = name.replace("-", "_")
-    splitByUnderline = name.split("_")  # get data that was splitted by "_"
-    splitted = [s.strip() for s in splitByUnderline]
+    split_by_underline = name.split("_")  # get data that was splitted by "_"
+    splitted = [s.strip() for s in split_by_underline]
     return splitted
 
 
-def splittedByExtension(file):
-    name, size = file.split(".pdf")
+def splitted_by_extension(file):
+    """get word that splited by .pdf extension
+
+    Args:
+        file (_.pdf_): file with .pdf extension
+
+    Returns:
+        list: list of words
+    """
+    name, _ = file.split(".pdf")
     name = name.replace("-", "_")
-    splitByUnderline = name.split("_")
-    splitted = [s.strip() for s in splitByUnderline]
+    split_by_underline = name.split("_")
+    splitted = [s.strip() for s in split_by_underline]
     return splitted
 
 
 # Arrange files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
-def arrangeFilesByColor():
-    os.chdir(pathInput)
-    countColor = 0  # for counting arranged files
-    inputQuantity = 0  # for counting files in input
+def arrange_files_by_color():
+    """arrange files by colors"""
+    os.chdir(PATH_INPUT)
+    count_color = 0  # for counting arranged files
+    input_quantity = 0  # for counting files in input
     for file in os.listdir():
-        splitted = splittedByUnderline(file)  # get data that was splitted by "-"
+        splitted = splitted_by_underline(file)  # get data that was splitted by "-"
         # print(splitted)  # print
         if splitted[2] == "S":
-            shutil.move(file, pathNewOrder + "SMALL")
-            countColor += 1
+            shutil.move(file, PATH_NEW_ORDER + "SMALL")
+            count_color += 1
         elif splitted[7] != "1":  # Arrange files by SET and SET FB
             if splitted[1] == "FB":
-                shutil.move(file, pathNewOrder + "SET FB")
-                countColor += 1
+                shutil.move(file, PATH_NEW_ORDER + "SET FB")
+                _count_color += 1
             else:
-                shutil.move(file, pathNewOrder + "SET")
-                countColor += 1
+                shutil.move(file, PATH_NEW_ORDER + "SET")
+                count_color += 1
         else:
-            for color in colorList:
+            for color in COLOR_LIST:
                 if splitted[3] == color:
-                    shutil.move(file, pathColor + color)
-                    countColor += 1
-        inputQuantity += 1
-    print(" ", inputQuantity, "FILES IN INPUT:")
-    print(" ", countColor, "FILES BY COLOR DONE.")
+                    shutil.move(file, PATH_COLOR + color)
+                    _count_color += 1
+        input_quantity += 1
+    print(" ", input_quantity, "FILES IN INPUT:")
+    print(" ", count_color, "FILES BY COLOR DONE.")
 
 
-# Arrange files by Sizes: 3XL, 2XL,... in data[]
-def arrangeFilesBySize():
-    os.chdir(pathInput)
-    countSize = 0  # for counting files
+def arrange_files_by_size():
+    """# Arrange files by Sizes: 3XL, 2XL,... in data[]"""
+    os.chdir(PATH_INPUT)
+    count_size = 0  # for counting files
     for file in os.listdir():
-        splitted = splittedByUnderline(
+        splitted = splitted_by_underline(
             file
         )  # xóa khoảng trắng 2 đầu string  # get data that was splitted by "-"
         for i in range(5):
-            if splitted[2] == data[0][i]:
+            if splitted[2] == DATA[0][i]:
                 if splitted[1] == "FB":
-                    shutil.move(file, pathNewOrder + data[2][i])
-                    countSize += 1
+                    shutil.move(file, PATH_NEW_ORDER + DATA[2][i])
+                    count_size += 1
                 else:
-                    shutil.move(file, pathNewOrder + data[1][i])
-                    countSize += 1
-    print(" ", countSize, "FILES DONE")
+                    shutil.move(file, PATH_NEW_ORDER + DATA[1][i])
+                    count_size += 1
+    print(" ", count_size, "FILES DONE")
 
 
-def getDataBySizeFromTableOrderProduct(df):
+def get_data_by_size_from_table_order_product(df_input):
+    """Get data by size from order_product
+
+    Args:
+        df (pandas.dataframe): dataframe
+
+    Returns:
+        pandas.dataframe: data by size
+    """
     connection_string = (
         "mysql+pymysql://flashship:sjvnZVc6cwqUzk@seller.flashship.net:3306/fplatform"
     )
-    engine = create_engine(connection_string)
+    engine = db.create_engine(connection_string)
     connection = engine.connect()
     query = "SELECT order_product.order_id, orders.order_code, order_product.line_id, order_product.product_name, order_product.quantity, order_product.both_side FROM order_product JOIN orders WHERE order_product.order_id = orders.id AND orders.order_code IN %(values)s AND order_product.created > '2023-08-15' AND order_product.created < '2023-08-17' GROUP BY order_product.order_id, order_product.line_id"
     vari = {
-        "values": df["order_code"].astype(str).tolist(),
+        "values": df_input["order_code"].astype(str).tolist(),
     }
     df_res = pd.read_sql(query, connection, params=vari)
     engine.dispose()
@@ -176,9 +183,13 @@ def getDataBySizeFromTableOrderProduct(df):
 
 
 # Use os.walk() for browsing all directories
-def browseFolders(path):
-    count = 0
-    df = pd.DataFrame(
+def browse_folders_for_pdf_files(path):
+    """browse for finding .pdf files in a given directory (path)
+
+    Args:
+        path (String): path of the directory
+    """
+    df_pdf = pd.DataFrame(
         {
             "seller": [],
             "both_side": [],
@@ -191,88 +202,69 @@ def browseFolders(path):
             "side": [],
         }
     )
-    for root, dirs, files in os.walk(path):
+    for _, _, files in os.walk(path):
         for file in files:
             if file.endswith(".pdf"):
-                splitted = splittedByExtension(file)
+                splitted = splitted_by_extension(file)
                 if len(splitted) > 9:
                     splitted = splitted[:-1]
-                df.loc[len(df)] = splitted
-    df_MLXL = df[df["size"] != "S"]
-    df_S = df[df["size"] == "S"]
-    data_MLXL = getDataBySizeFromTableOrderProduct(df_MLXL)
-    data_S = getDataBySizeFromTableOrderProduct(df_S)
-    print(data_MLXL)
-    print(data_S)
+                df_pdf.loc[len(df_pdf)] = splitted
+    df_mlxl = df_pdf[df_pdf["size"] != "S"]
+    df_s = df_pdf[df_pdf["size"] == "S"]
+    data_mlxl = get_data_by_size_from_table_order_product(df_mlxl)
+    data_s = get_data_by_size_from_table_order_product(df_s)
+    print(data_mlxl)
+    print(data_s)
 
 
-def updateDB(status, orderCode):
+def update_order_status(order_code, status):
+    """Update order status to table orders
+
+    Args:
+        order_code (String): order code
+        status (String): status of order
+    """
     connection_string = (
         "mysql+pymysql://flashship:sjvnZVc6cwqUzk@seller.flashship.net:3306/fplatform"
     )
-    engine = create_engine(connection_string)
-    connection = engine.connect()
-    query = "UPDATE orders SET status = %s where order_code = %s"
-    val = (status, orderCode)
-    df_res = pd.read_sql(query, connection, params=val)
-
-    # Define the metadata
-    metadata = MetaData()
-
-    # Define the table
-    table = Table(
-        "table_name",
-        metadata,
-        Column("id", Integer, primary_key=True),
-        Column("column_name", String(255)),
+    engine = db.create_engine(connection_string)
+    conn = engine.connect()
+    meta = db.MetaData()
+    orders = db.Table("orders", meta, autoload_with=engine)
+    stmt = (
+        db.update(orders).where(orders.c.order_code == order_code).values(status=status)
     )
-
-    # Define the values to update
-    values = [
-        {"id": 1, "column_name": "new_value_1"},
-        {"id": 2, "column_name": "new_value_2"},
-        {"id": 3, "column_name": "new_value_3"},
-    ]
-
-    # Update the values
-    for value in values:
-        stmt = (
-            table.update()
-            .where(table.c.id == value["id"])
-            .values(column_name=value["column_name"])
-        )
-        engine.execute(stmt)
-
-    # Close the connection
+    conn.execute(stmt)
+    conn.commit()
     engine.dispose()
 
 
 def main():
+    """Main function"""
     # print("0. TẠO FOLDERS MỚI")
     # print("1. ĐỂ CHIA TIẾP FILES VÀO FOLDERS CŨ")
     # key2 = input("NHẬP SỐ: ")
     # if key2 == "0":
-    #     createTemplate()
+    #     create_template()
     #     print("VICTOR'S TOOL IS WORKING...")
     #     print("- - - - - - - - - - - - - - - - - - -")
-    #     arrangeFilesByColor()
-    #     arrangeFilesBySize()
+    #     arrange_files_by_color()
+    #     arrange_files_by_size()
     #     os.system("pause")
     # elif key2 == "1":
     #     print("VICTOR'S TOOL IS WORKING...")
     #     print("- - - - - - - - - - - - - - - - - - -")
-    #     arrangeFilesByColor()
-    #     arrangeFilesBySize()
+    #     arrange_files_by_color()
+    #     arrange_files_by_size()
     #     os.system("pause")
     # else:
     #     exit
-    path2Browse = "E:/OneDrive - VAB/FS - POD/THANG 8/8.16/DON MOI/"
-    browseFolders(path2Browse)
+    # path2Browse = "E:/OneDrive - VAB/FS - POD/THANG 8/8.16/DON MOI/"
+    # browse_folders_for_pdf_files(path2Browse)
 
-    # status = "UPLOADED"
-    # orderCode = "8OEM9DIIN"
-    # updateDB(status, orderCode)
-    # arrangeFilesByColor()
+    status = "UPLOADED"
+    order_code = "8OEM9DIIN"
+    update_order_status(order_code, status)
 
 
 main()
