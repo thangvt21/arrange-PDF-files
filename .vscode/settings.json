@@ -1,11 +1,12 @@
 {
-    "workbench.colorTheme": "GitHub Dark Dimmed",
-    "workbench.preferredDarkColorTheme": "GitHub Dark Dimmed",
+    "workbench.colorTheme": "GitHub Dark Default",
+    "workbench.preferredDarkColorTheme": "Default Dark+",
     "workbench.iconTheme": "material-icon-theme",
     "editor.fontFamily": "Jetbrains Mono, Consolas, 'Courier New', monospace",
     "files.autoSave": "onWindowChange",
     "[python]": {
         "editor.defaultFormatter": "ms-python.black-formatter"
     },
-    "python.formatting.provider": "none"
+    "python.formatting.provider": "none",
+    "workbench.preferredHighContrastColorTheme": "GitHub Dark Default"
 }
