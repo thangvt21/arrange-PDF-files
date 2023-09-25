@@ -8,7 +8,7 @@ PATH_LABEL = ""
 
 
 def read_pdf(filename):
-    pages = ""
+    pdf_text = ""
     try:
         images = convert_from_path(filename)
         for i, image in enumerate(images):
@@ -16,16 +16,16 @@ def read_pdf(filename):
             image.save(filename, "JPEG")
             tess.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract"
             text = tess.image_to_string(Image.open(filename))
-            pages = "" + text
+            pdf_text = "" + text
 
     except Exception as e:
         print(str(e))
 
-    clean = "".join(pages.replace("\n", " "))
+    clean_pdf_text = "".join(pdf_text.replace("\n", " "))
     # print(clean)
     pattern = r"\d{4} \d{4} \d{4} \d{4} \d{4} \d{2}"
-    match = re.search(pattern, clean)
-    if pages:
+    match = re.search(pattern, clean_pdf_text)
+    if clean_pdf_text:
         print(match.group())
 
 
