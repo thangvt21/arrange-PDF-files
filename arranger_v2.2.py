@@ -7,12 +7,13 @@ import sqlalchemy as db
 
 
 today = datetime.datetime.now()
-FOLDER_NAME = str(today.month) + "_" + str(today.day)
-PATH_INPUT = "E:/US/PDFFILES/Input/"
-PATH_OUTPUT = "E:/OneDrive - VAB/FS - POD/THANG 8/" + FOLDER_NAME + "/"
+FOLDER_NAME = str(today.month) + "." + str(today.day)
+PATH_INPUT = "E:/US/PDFFILES/Input"
+PATH_OUTPUT = "E:/OneDrive - VAB/FS - POD/THANG 9/" + FOLDER_NAME + "/"
 PATH_NEW_ORDER = PATH_OUTPUT + "DON MOI/"
 PATH_COLOR = PATH_NEW_ORDER + "COLORS/"
-
+PATH_BLACK = PATH_NEW_ORDER + "BLACK/"
+PATH_WHITE = PATH_NEW_ORDER + "WHITE/"
 
 COLOR_LIST = [
     "RED",
@@ -25,6 +26,7 @@ COLOR_LIST = [
     "MAROON",
     "SAND",
     "LIGHTPINK",
+    "FORESTGREEN",
 ]
 
 DATA = [
@@ -46,18 +48,19 @@ DATA_FOLDER = [
     "XL LARGE",
     "LARGE",
     "MEDIUM",
-    "SET",
-    "SMALL",
+    # "SMALL",
+    # "SET",
     "3XL LARGE FB",
     "2XL LARGE FB",
     "XL LARGE FB",
     "LARGE FB",
     "MEDIUM FB",
-    "SET FB",
+    # "SET FB",
 ]
 
+CORE_COLORS = ["BLACK", "WHITE"]
 
-TYPE_LIST = ["MUGS", "DON UU TIEN", "FIX ISSUES"]
+TYPE_LIST = ["DON UU TIEN", "FIX ISSUES"]
 
 STATUS = "UPLOADED"
 
@@ -69,13 +72,24 @@ def create_template():
     for typer in TYPE_LIST:  # create folder by typeList
         os.makedirs(PATH_OUTPUT + typer)
         print(PATH_OUTPUT + typer + " ... CREATED!")
+    # for size in DATA_FOLDER:
+    #     os.makedirs(PATH_NEW_ORDER + size)  # create folder by sizeList
+    #     print(PATH_NEW_ORDER + size + " ... CREATED!")
+    for core in CORE_COLORS:  # create folder by sizeList
+        os.makedirs(PATH_NEW_ORDER + core)
     for size in DATA_FOLDER:
-        os.makedirs(PATH_NEW_ORDER + size)  # create folder by sizeList
-        print(PATH_NEW_ORDER + size + " ... CREATED!")
+        os.makedirs(PATH_BLACK + size)
+        os.makedirs(PATH_WHITE + size)  # create folder by sizeList
+        print(PATH_BLACK + size + " ... CREATED!")
+        print(PATH_WHITE + size + " ... CREATED!")
+    os.makedirs(PATH_NEW_ORDER + "SMALL")
+    os.makedirs(PATH_NEW_ORDER + "SET")
+    os.makedirs(PATH_NEW_ORDER + "SET FB")
     os.makedirs(PATH_COLOR)  # create folder by colorList
     for color in COLOR_LIST:
         os.makedirs(PATH_COLOR + color)
         print(PATH_COLOR + color + " ... CREATED!")
+    print(PATH_COLOR + "SMALL/" + " ... CREATED!")
     print("TEMPLATES CREATED.")
     print("- - - - - - - - - - - - - - - - - - -")
 
@@ -120,16 +134,15 @@ def organize_files_by_color():
     input_quantity = 0  # for counting files in input
     for file in os.listdir():
         splitted = splitted_by_underline(file)  # get data that was splitted by "-"
-        # print(splitted)  # print
         if splitted[2] == "S":
             shutil.move(file, PATH_NEW_ORDER + "SMALL")
             count_color += 1
         elif splitted[7] != "1":  # organize files by SET and SET FB
             if splitted[1] == "FB":
-                shutil.move(file, PATH_NEW_ORDER + "SET FB")
-                _count_color += 1
+                shutil.move(file, PATH_NEW_ORDER + "SET FB/")
+                count_color += 1
             else:
-                shutil.move(file, PATH_NEW_ORDER + "SET")
+                shutil.move(file, PATH_NEW_ORDER + "SET/")
                 count_color += 1
         else:
             for color in COLOR_LIST:
@@ -149,15 +162,25 @@ def organize_files_by_size():
         splitted = splitted_by_underline(
             file
         )  # xóa khoảng trắng 2 đầu string  # get data that was splitted by "-"
-        for i in range(5):
-            if splitted[2] == DATA[0][i]:
-                if splitted[1] == "FB":
-                    shutil.move(file, PATH_NEW_ORDER + DATA[2][i])
-                    count_size += 1
-                else:
-                    shutil.move(file, PATH_NEW_ORDER + DATA[1][i])
-                    count_size += 1
-    print(" ", count_size, "FILES DONE")
+        if splitted[3] == "BLACK":
+            for i in range(5):
+                if splitted[2] == DATA[0][i]:
+                    if splitted[1] == "FB":
+                        shutil.move(file, PATH_BLACK + DATA[2][i])
+                        count_size += 1
+                    else:
+                        shutil.move(file, PATH_BLACK + DATA[1][i])
+                        count_size += 1
+        elif splitted[3] == "WHITE":
+            for i in range(5):
+                if splitted[2] == DATA[0][i]:
+                    if splitted[1] == "FB":
+                        shutil.move(file, PATH_WHITE + DATA[2][i])
+                        count_size += 1
+                    else:
+                        shutil.move(file, PATH_WHITE + DATA[1][i])
+                        count_size += 1
+    print(" ", count_size, "FILES BY SIZE DONE")
 
 
 def getdata_bysize_from_db_order_product(df_input):
@@ -299,10 +322,10 @@ def core():
 
 def main():
     """Main function"""
-    # core()
+    core()
 
-    path_2_browse = "E:/OneDrive - VAB/FS - POD/THANG 8/8.16/DON MOI/"
-    browse_folders_for_pdf_files(path_2_browse)
+    # path_2_browse = "E:/OneDrive - VAB/FS - POD/THANG 8/8.16/DON MOI/"
+    # browse_folders_for_pdf_files(path_2_browse)
 
     # status = "UPLOADED"
     # order_code = "8OEM9DIIN"
