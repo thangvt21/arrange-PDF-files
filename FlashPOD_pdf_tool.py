@@ -1,4 +1,7 @@
-"""Modules"""
+"""Modules
+    Author: thangvt21
+    Github: https://github.com/thangvt21
+"""
 import os
 import shutil
 import datetime
