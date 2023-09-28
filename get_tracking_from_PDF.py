@@ -4,7 +4,7 @@ from PIL import Image
 from pdf2image import convert_from_path
 import re
 
-PATH_LABEL = "E:/US/PDFFILES/Label"
+PATH_LABEL = r"E:\THANGVT\tools\arranger_v2.2\arrange-PDF-files\download"
 
 
 def read_pdf(filename):
@@ -28,7 +28,8 @@ def read_pdf(filename):
             pattern = r"\d{4} \d{4} \d{4} \d{4} \d{4} \d{2}"
             match = re.search(pattern, clean_pdf_text)
             if clean_pdf_text:
-                print(match.group())
+                # print(match.group())
+                return match.group()
     except Exception as e:
         print(str(e))
 
@@ -37,7 +38,7 @@ for root, dirs, files in os.walk(PATH_LABEL):
     for file in files:
         name, _ = file.split(".pdf")
         path_pdf = PATH_LABEL + "/" + file
-        read_pdf(path_pdf)
+        print(read_pdf(path_pdf) + " - " + name)
 
 # path_pdf = "E:/US/PDFFILES/Label/label.pdf"
 # read_pdf(path_pdf)
