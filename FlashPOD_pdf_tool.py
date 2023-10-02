@@ -10,17 +10,28 @@ import sqlalchemy as db
 
 
 today = datetime.datetime.now()
-FOLDER_NAME = str(today.month) + "." + str(today.day)
+FOLDER_NAME = str(today.month) + "_" + str(today.day)
 # path input where contains PDF files for organizing
-PATH_INPUT = "E:/US/PDFFILES/Input"
-# path output for uploading files
-PATH_OUTPUT = "D:/OneDrive - VAB/FS - POD/THANG 9/" + FOLDER_NAME + "/"
+# PATH_INPUT = "E:/US/TSHIRT/TEST"
 
-# PATHS
+
+# PATHS ONEDRIVE
+PATH_INPUT = "E:/US/TSHIRT/TEST"
+PATH_OUTPUT = "E:/OneDrive - VAB/FS - POD/THANG 10/" + FOLDER_NAME + "/"
 PATH_NEW_ORDER = PATH_OUTPUT + "DON MOI/"
 PATH_COLOR = PATH_NEW_ORDER + "COLORS/"
 PATH_BLACK = PATH_NEW_ORDER + "BLACK/"
 PATH_WHITE = PATH_NEW_ORDER + "WHITE/"
+
+
+# PATHS DROPBOX
+PATH_INPUT_DROPBOX = "E:/US/TSHIRT/TEST - COPY"
+PATH_OUTPUT_DROPBOX = "E:/Dropbox/THANG 10/" + FOLDER_NAME + "/"
+PATH_NEW_ORDER_DROPBOX = PATH_OUTPUT_DROPBOX + "DON MOI/"
+PATH_COLOR_DROPBOX = PATH_NEW_ORDER_DROPBOX + "COLORS/"
+PATH_BLACK_DROPBOX = PATH_NEW_ORDER_DROPBOX + "BLACK/"
+PATH_WHITE_DROPBOX = PATH_NEW_ORDER_DROPBOX + "WHITE/"
+
 
 # LISTS
 LIST_FOLDER_S_SET = ["SMALL", "SET", "SET FB"]
@@ -89,26 +100,39 @@ def create_template():
     print("- - - - - - - - - - - - - - - - - - -")
     print("NOW CREATING NEW FOLDERS.")
     for typer in TYPE_LIST:  # create folder by typeList
-        os.makedirs(PATH_OUTPUT + typer)
-        print(PATH_OUTPUT + typer + " ... CREATED!")
+        # os.makedirs(PATH_OUTPUT + typer)
+        os.makedirs(PATH_OUTPUT_DROPBOX + typer)
+        # print(PATH_OUTPUT + typer + " ... CREATED!")
+        print(PATH_OUTPUT_DROPBOX + typer + " ... CREATED!")
     # for size in DATA_FOLDER:
     #     os.makedirs(PATH_NEW_ORDER + size)  # create folder by sizeList
     #     print(PATH_NEW_ORDER + size + " ... CREATED!")
     for core in CORE_COLORS:  # create folder by sizeList
-        os.makedirs(PATH_NEW_ORDER + core)
+        # os.makedirs(PATH_NEW_ORDER + core)
+        os.makedirs(PATH_NEW_ORDER_DROPBOX + core)
     for size in DATA_FOLDER:
-        os.makedirs(PATH_BLACK + size)
-        os.makedirs(PATH_WHITE + size)  # create folder by sizeList
-        print(PATH_BLACK + size + " ... CREATED!")
-        print(PATH_WHITE + size + " ... CREATED!")
-    os.makedirs(PATH_NEW_ORDER + "SMALL")
-    os.makedirs(PATH_NEW_ORDER + "SET")
-    os.makedirs(PATH_NEW_ORDER + "SET FB")
-    os.makedirs(PATH_COLOR)  # create folder by colorList
+        # os.makedirs(PATH_BLACK + size)
+        os.makedirs(PATH_BLACK_DROPBOX + size)
+        # os.makedirs(PATH_WHITE + size)  # create folder by sizeList
+        os.makedirs(PATH_WHITE_DROPBOX + size)
+        # print(PATH_BLACK + size + " ... CREATED!")
+        print(PATH_BLACK_DROPBOX + size + " ... CREATED!")
+        # print(PATH_WHITE + size + " ... CREATED!")
+        print(PATH_WHITE_DROPBOX + size + " ... CREATED!")
+    # os.makedirs(PATH_NEW_ORDER + "SMALL")
+    # os.makedirs(PATH_NEW_ORDER + "SET")
+    # os.makedirs(PATH_NEW_ORDER + "SET FB")
+    # os.makedirs(PATH_COLOR)
+    os.makedirs(PATH_NEW_ORDER_DROPBOX + "SMALL")
+    os.makedirs(PATH_NEW_ORDER_DROPBOX + "SET")
+    os.makedirs(PATH_NEW_ORDER_DROPBOX + "SET FB")
+    os.makedirs(PATH_COLOR_DROPBOX)
+    # create folder by colorList
     for color in COLOR_LIST:
-        os.makedirs(PATH_COLOR + color)
-        print(PATH_COLOR + color + " ... CREATED!")
-    print(PATH_COLOR + "SMALL/" + " ... CREATED!")
+        # os.makedirs(PATH_COLOR + color)
+        os.makedirs(PATH_COLOR_DROPBOX + color)
+        # print(PATH_COLOR + color + " ... CREATED!")
+        print(PATH_COLOR_DROPBOX + color + " ... CREATED!")
     print("TEMPLATES CREATED.")
     print("- - - - - - - - - - - - - - - - - - -")
 
@@ -145,67 +169,78 @@ def splitted_by_extension(file):
     return splitted
 
 
+def find_file(root_directory, target_file):
+    for root, dirs, files in os.walk(root_directory):
+        if target_file in files:
+            return os.path.join(root, target_file)
+    return None
+
+
 def organize_by_seller():
-    os.chdir(PATH_INPUT)
+    os.chdir(PATH_INPUT_DROPBOX)
     count_seller = 0
     for file in os.listdir():
         splitted = splitted_by_underline(file)
         for other in OTHERS_LIST:
             if splitted[0] == other:
-                shutil.move(file, PATH_OUTPUT + "KHACH TU MUA LABEL")
+                shutil.move(file, PATH_OUTPUT_DROPBOX + "KHACH TU MUA LABEL")
 
 
 # Organize_files_by_color files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
 def organize_by_color():
     """organize files by colors"""
-    os.chdir(PATH_INPUT)
-    count_color = 0  # for counting organized files
-    input_quantity = 0  # for counting files in input
+    os.chdir(PATH_INPUT_DROPBOX)
+    # count_color = 0  # for counting organized files
+    # input_quantity = 0  # for counting files in input
     for file in os.listdir():
-        splitted = splitted_by_underline(file)
+        splitted = splitted_by_underline(file)  # get data that was splitted by "-"
         if splitted[2] == "S":
             if len(splitted) == 9:
                 if splitted[6] != "1" or splitted[8] != "1":
-                    shutil.move(file, PATH_NEW_ORDER + "SET")
+                    shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET")
                 else:
-                    shutil.move(file, PATH_NEW_ORDER + "SMALL")
-            else:
-                if len(splitted) == 10:
-                    if splitted[7] != "1" or splitted[9] != "1":
-                        shutil.move(file, PATH_NEW_ORDER + "SET")
-                    else:
-                        shutil.move(file, PATH_NEW_ORDER + "SMALL")
-        elif splitted[7] != "1":  # organize files by SET and SET FB
+                    shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SMALL")
+            elif len(splitted) == 10:
+                if splitted[7] != "1" or splitted[9] != "1":
+                    shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET")
+                else:
+                    shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SMALL")
+        elif splitted[7] != "1":  # Arrange files by SET and SET FB
             if splitted[1] == "FB":
-                shutil.move(file, PATH_NEW_ORDER + "SET FB")
+                shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET FB")
             else:
-                shutil.move(file, PATH_NEW_ORDER + "SET")
+                shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET")
         else:
             for color in COLOR_LIST:
                 if splitted[3] == color:
-                    shutil.move(file, PATH_COLOR + color)
+                    shutil.move(file, PATH_COLOR_DROPBOX + color)
 
 
 def organize_by_size():
     """# organize files by sizes"""
-    os.chdir(PATH_INPUT)
+    os.chdir(PATH_INPUT_DROPBOX)
     count_size = 0  # for counting files
     for file in os.listdir():
+        file2 = file
         splitted = splitted_by_underline(file)
         if splitted[3] == "BLACK":
             for i in range(5):
                 if splitted[2] == DATA[0][i]:
                     if splitted[1] == "FB":
-                        shutil.move(file, PATH_BLACK + DATA[2][i])
+                        # shutil.move(file, PATH_BLACK + DATA[2][i])
+                        shutil.move(file, PATH_BLACK_DROPBOX + DATA[2][i])
                     else:
-                        shutil.move(file, PATH_BLACK + DATA[1][i])
+                        # shutil.move(file, PATH_BLACK + DATA[1][i])
+                        shutil.move(file, PATH_BLACK_DROPBOX + DATA[1][i])
         elif splitted[3] == "WHITE":
             for i in range(5):
                 if splitted[2] == DATA[0][i]:
                     if splitted[1] == "FB":
-                        shutil.move(file, PATH_WHITE + DATA[2][i])
+                        # shutil.move(file, PATH_WHITE + DATA[2][i])
+                        shutil.move(file, PATH_WHITE_DROPBOX + DATA[2][i])
                     else:
-                        shutil.move(file, PATH_WHITE + DATA[1][i])
+                        # shutil.move(file, PATH_WHITE + DATA[1][i])
+                        shutil.move(file, PATH_WHITE_DROPBOX + DATA[1][i])
 
     def getdata_bysize_from_db_order_product(df_input):
         """Get data by size from order_product
@@ -322,38 +357,59 @@ def organize_by_size():
 
 def count_files():
     sum_files = 0
+    sum_files_dropbox = 0
     print("  " + "WHITE :")
     for folder in DATA_FOLDER:
-        _, _, file_white = next(os.walk(PATH_WHITE + folder))
-        sum_files += len(file_white)
-        if len(file_white) > 0:
-            print("   ", folder, len(file_white))
+        # _, _, file_white = next(os.walk(PATH_WHITE + folder))
+        _, _, file_white_dropbox = next(os.walk(PATH_WHITE_DROPBOX + folder))
+        # sum_files += len(file_white)
+        sum_files_dropbox += len(file_white_dropbox)
+        # if len(file_white) > 0:
+        #     print("   ", folder, len(file_white))
+        if len(file_white_dropbox) > 0:
+            print("   ", folder, len(file_white_dropbox), "DROPBOX")
     print("---------------------------------------------------")
     print("  " + "BLACK :")
     for folder1 in DATA_FOLDER:
-        _, _, file_black = next(os.walk(PATH_BLACK + folder1))
-        sum_files += len(file_black)
-        if len(file_black) > 0:
-            print("   ", folder1, len(file_black))
+        # _, _, file_black = next(os.walk(PATH_BLACK + folder1))
+        _, _, file_black_dropbox = next(os.walk(PATH_BLACK_DROPBOX + folder1))
+        # sum_files += len(file_black)
+        sum_files_dropbox += len(file_black_dropbox)
+        # if len(file_black) > 0:
+        #     print("   ", folder1, len(file_black))
+        if len(file_black_dropbox) > 0:
+            print("   ", folder1, len(file_black_dropbox), "DROPBOX")
     print("---------------------------------------------------")
     print("  " + "COLORS :")
     for folder_color in COLOR_LIST:
-        _, _, file_color = next(os.walk(PATH_COLOR + folder_color))
-        sum_files += len(file_color)
-        if len(file_color) > 0:
-            print("   ", folder_color, len(file_color))
+        # _, _, file_color = next(os.walk(PATH_COLOR + folder_color))
+        _, _, file_color_dropbox = next(os.walk(PATH_COLOR_DROPBOX + folder_color))
+        # sum_files += len(file_color)
+        sum_files_dropbox += len(file_color_dropbox)
+        # if len(file_color) > 0:
+        #     print("   ", folder_color, len(file_color))
+        if len(file_color_dropbox) > 0:
+            print("   ", folder_color, len(file_color_dropbox), "DROPBOX")
     print("---------------------------------------------------")
     for folder0 in LIST_FOLDER_S_SET:
-        _, _, file0 = next(os.walk(PATH_NEW_ORDER + folder0))
-        sum_files += len(file0)
-        if len(file0) > 0:
-            print("   ", folder0, len(file0))
+        # _, _, file0 = next(os.walk(PATH_NEW_ORDER + folder0))
+        _, _, file0_dropbox = next(os.walk(PATH_NEW_ORDER_DROPBOX + folder0))
+        # sum_files += len(file0)
+        sum_files_dropbox += len(file0_dropbox)
+        # if len(file0) > 0:
+        # print("   ", folder0, len(file0))
+        if len(file0_dropbox) > 0:
+            print("   ", folder0, len(file0_dropbox), "DROPBOX")
     print("---------------------------------------------------")
-    print("DON MOI: ", sum_files)
+    # print("DON MOI: ", sum_files)
+    print("DON MOI DROPBOX: ", sum_files_dropbox)
     for folder2 in TYPE_LIST:
-        _, _, files = next(os.walk(PATH_OUTPUT + folder2))
-        if len(files) > 0:
-            print(folder2 + " : ", len(files))
+        # _, _, files = next(os.walk(PATH_OUTPUT + folder2))
+        _, _, files_dropbox = next(os.walk(PATH_OUTPUT_DROPBOX + folder2))
+        # if len(files) > 0:
+        #     print(folder2 + " : ", len(files))
+        if len(files_dropbox) > 0:
+            print(folder2 + " : ", len(files_dropbox), "DROPBOX")
     print("---------------------------------------------------")
     print("DONE.")
 

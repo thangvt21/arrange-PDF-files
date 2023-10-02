@@ -5,6 +5,7 @@ from pdf2image import convert_from_path
 import re
 
 PATH_LABEL = r"E:\THANGVT\tools\arranger_v2.2\arrange-PDF-files\download"
+PATH_IMAGE = "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/img/"
 
 
 def read_pdf(filename):
@@ -14,15 +15,11 @@ def read_pdf(filename):
         for i, image in enumerate(images):
             name = "page_" + str(i) + "_" + os.path.basename(filename) + ".jpeg"
             image.save(
-                "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/img/" + name,
+                PATH_IMAGE + name,
                 "JPEG",
             )
             tess.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract"
-            text = tess.image_to_string(
-                Image.open(
-                    "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/img/" + name
-                )
-            )
+            text = tess.image_to_string(Image.open(PATH_IMAGE + name))
             pdf_text = "" + text
             clean_pdf_text = "".join(pdf_text.replace("\n", " "))
             pattern = r"\d{4} \d{4} \d{4} \d{4} \d{4} \d{2}"
