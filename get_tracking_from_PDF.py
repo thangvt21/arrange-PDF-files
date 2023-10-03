@@ -35,7 +35,7 @@ for root, dirs, files in os.walk(PATH_LABEL):
     for file in files:
         name, _ = file.split(".pdf")
         path_pdf = PATH_LABEL + "/" + file
-        print(read_pdf(path_pdf) + " - " + name)
+        print(str(read_pdf(path_pdf)) + " - " + name)
 
 # path_pdf = "E:/US/PDFFILES/Label/label.pdf"
 # read_pdf(path_pdf)
