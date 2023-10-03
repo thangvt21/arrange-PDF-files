@@ -10,7 +10,7 @@ import sqlalchemy as db
 
 
 today = datetime.datetime.now()
-FOLDER_NAME = str(today.month) + "_" + str(today.day)
+FOLDER_NAME = str(today.month) + "." + str(today.day)
 # path input where contains PDF files for organizing
 # PATH_INPUT = "E:/US/TSHIRT/TEST"
 
@@ -25,7 +25,7 @@ PATH_WHITE = PATH_NEW_ORDER + "WHITE/"
 
 
 # PATHS DROPBOX
-PATH_INPUT_DROPBOX = "E:/US/TSHIRT/TEST - COPY"
+PATH_INPUT_DROPBOX = "E:/US/PDFFILES/Input"
 PATH_OUTPUT_DROPBOX = "E:/Dropbox/THANG 10/" + FOLDER_NAME + "/"
 PATH_NEW_ORDER_DROPBOX = PATH_OUTPUT_DROPBOX + "DON MOI/"
 PATH_COLOR_DROPBOX = PATH_NEW_ORDER_DROPBOX + "COLORS/"
@@ -78,14 +78,11 @@ DATA_FOLDER = [
     "XL LARGE",
     "LARGE",
     "MEDIUM",
-    # "SMALL",
-    # "SET",
     "3XL LARGE FB",
     "2XL LARGE FB",
     "XL LARGE FB",
     "LARGE FB",
     "MEDIUM FB",
-    # "SET FB",
 ]
 
 CORE_COLORS = ["BLACK", "WHITE"]
@@ -182,7 +179,10 @@ def organize_by_seller():
     for file in os.listdir():
         splitted = splitted_by_underline(file)
         for other in OTHERS_LIST:
-            if splitted[0] == other:
+            if len(splitted) == 17:
+                if splitted[8] == other or splitted[16] == other:
+                    shutil.move(file, PATH_OUTPUT_DROPBOX + "KHACH TU MUA LABEL")
+            elif len(splitted) != 17 and splitted[8] == other:
                 shutil.move(file, PATH_OUTPUT_DROPBOX + "KHACH TU MUA LABEL")
 
 
@@ -190,29 +190,27 @@ def organize_by_seller():
 def organize_by_color():
     """organize files by colors"""
     os.chdir(PATH_INPUT_DROPBOX)
-    # count_color = 0  # for counting organized files
-    # input_quantity = 0  # for counting files in input
     for file in os.listdir():
         splitted = splitted_by_underline(file)  # get data that was splitted by "-"
-        if splitted[2] == "S":
+        if splitted[3] == "S":
             if len(splitted) == 9:
-                if splitted[6] != "1" or splitted[8] != "1":
+                if splitted[6] != "1":
                     shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET")
                 else:
                     shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SMALL")
-            elif len(splitted) == 10:
-                if splitted[7] != "1" or splitted[9] != "1":
+            elif len(splitted) == 17:
+                if splitted[6] != "1" or splitted[14] != "1":
                     shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET")
                 else:
                     shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SMALL")
-        elif splitted[7] != "1":  # Arrange files by SET and SET FB
-            if splitted[1] == "FB":
+        elif splitted[6] != "1":  # Arrange files by SET and SET FB
+            if splitted[2] == "FB":
                 shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET FB")
             else:
                 shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET")
         else:
             for color in COLOR_LIST:
-                if splitted[3] == color:
+                if splitted[4] == color:
                     shutil.move(file, PATH_COLOR_DROPBOX + color)
 
 
@@ -223,19 +221,19 @@ def organize_by_size():
     for file in os.listdir():
         file2 = file
         splitted = splitted_by_underline(file)
-        if splitted[3] == "BLACK":
+        if splitted[4] == "BLACK":
             for i in range(5):
-                if splitted[2] == DATA[0][i]:
-                    if splitted[1] == "FB":
+                if splitted[3] == DATA[0][i]:
+                    if splitted[2] == "FB":
                         # shutil.move(file, PATH_BLACK + DATA[2][i])
                         shutil.move(file, PATH_BLACK_DROPBOX + DATA[2][i])
                     else:
                         # shutil.move(file, PATH_BLACK + DATA[1][i])
                         shutil.move(file, PATH_BLACK_DROPBOX + DATA[1][i])
-        elif splitted[3] == "WHITE":
+        elif splitted[4] == "WHITE":
             for i in range(5):
-                if splitted[2] == DATA[0][i]:
-                    if splitted[1] == "FB":
+                if splitted[3] == DATA[0][i]:
+                    if splitted[2] == "FB":
                         # shutil.move(file, PATH_WHITE + DATA[2][i])
                         shutil.move(file, PATH_WHITE_DROPBOX + DATA[2][i])
                     else:
