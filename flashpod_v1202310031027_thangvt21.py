@@ -26,7 +26,7 @@ PATH_WHITE = PATH_NEW_ORDER + "WHITE/"
 
 # PATHS DROPBOX
 PATH_INPUT_DROPBOX = "E:/US/PDFFILES/Input"
-PATH_OUTPUT_DROPBOX = "E:/FlashPOD Dropbox/FlashPOD/THANG 10/" + FOLDER_NAME + "/"
+PATH_OUTPUT_DROPBOX = "E:/Dropbox/THANG 10/" + FOLDER_NAME + "/"
 PATH_NEW_ORDER_DROPBOX = PATH_OUTPUT_DROPBOX + "DON MOI/"
 PATH_COLOR_DROPBOX = PATH_NEW_ORDER_DROPBOX + "COLORS/"
 PATH_BLACK_DROPBOX = PATH_NEW_ORDER_DROPBOX + "BLACK/"
@@ -186,8 +186,17 @@ def organize_by_seller():
                 shutil.move(file, PATH_OUTPUT_DROPBOX + "KHACH TU MUA LABEL")
 
 
-# Organize_files_by_color files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
 def organize_by_color():
+    os.chdir(PATH_INPUT_DROPBOX)
+    for file in os.listdir():
+        for color in COLOR_LIST:
+            splitted = splitted_by_underline(file)
+            if splitted[4] == color:
+                shutil.move(file, PATH_COLOR_DROPBOX + color)
+
+
+# Organize_files_by_color files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
+def organize_by_small():
     """organize files by colors"""
     os.chdir(PATH_INPUT_DROPBOX)
     for file in os.listdir():
@@ -208,10 +217,10 @@ def organize_by_color():
                 shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET FB")
             else:
                 shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET")
-        else:
-            for color in COLOR_LIST:
-                if splitted[4] == color:
-                    shutil.move(file, PATH_COLOR_DROPBOX + color)
+        # else:
+        #     for color in COLOR_LIST:
+        #         if splitted[4] == color:
+        #             shutil.move(file, PATH_COLOR_DROPBOX + color)
 
 
 def organize_by_size():
@@ -424,6 +433,7 @@ def core():
         print("- - - - - - - - - - - - - - - - - - -")
         organize_by_seller()
         organize_by_color()
+        organize_by_small()
         organize_by_size()
         count_files()
         os.system("pause")
@@ -433,6 +443,7 @@ def core():
         print("- - - - - - - - - - - - - - - - - - -")
         organize_by_seller()
         organize_by_color()
+        organize_by_small()
         organize_by_size()
         print("VICTOR IS COUNTING FILES... ")
         print("---------------------------------------------------")
