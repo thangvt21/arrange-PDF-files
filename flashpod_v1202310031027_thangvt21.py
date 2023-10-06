@@ -11,8 +11,7 @@ import sqlalchemy as db
 
 today = datetime.datetime.now()
 FOLDER_NAME = str(today.month) + "." + str(today.day)
-# path input where contains PDF files for organizing
-# PATH_INPUT = "E:/US/TSHIRT/TEST"
+FOLDER_NAME_P2 = str(today.month) + "." + str(today.day - 1)
 
 
 # PATHS ONEDRIVE
@@ -26,7 +25,11 @@ PATH_WHITE = PATH_NEW_ORDER + "WHITE/"
 
 # PATHS DROPBOX
 PATH_INPUT_DROPBOX = "E:/US/PDFFILES/Input"
-PATH_OUTPUT_DROPBOX = "E:/Dropbox/THANG 10/" + FOLDER_NAME + "/"
+# PATH_OUTPUT_DROPBOX = "E:/Dropbox/THANG 10/" + FOLDER_NAME + "/"
+PATH_OUTPUT_DROPBOX = "E:/FlashPOD Dropbox/FlashPOD/THANG 10/" + FOLDER_NAME + "/"
+PATH_OUTPUT_DROPBOX_P2 = (
+    "E:/FlashPOD Dropbox/FlashPOD/THANG 10/" + FOLDER_NAME_P2 + "/" + FOLDER_NAME + "/"
+)
 PATH_NEW_ORDER_DROPBOX = PATH_OUTPUT_DROPBOX + "DON MOI/"
 PATH_COLOR_DROPBOX = PATH_NEW_ORDER_DROPBOX + "COLORS/"
 PATH_BLACK_DROPBOX = PATH_NEW_ORDER_DROPBOX + "BLACK/"
@@ -87,9 +90,9 @@ DATA_FOLDER = [
 
 CORE_COLORS = ["BLACK", "WHITE"]
 
-TYPE_LIST = ["DON UU TIEN", "FIX ISSUES", "KHACH TU MUA LABEL"]
+TYPE_LIST = ["DON UU TIEN", "FIX ISSUES", "KHACH TU MUA LABEL", "HOODIES"]
 
-STATUS = "UPLOADED"
+# STATUS = "UPLOADED"
 
 
 def create_template():
@@ -186,16 +189,22 @@ def organize_by_seller():
                 shutil.move(file, PATH_OUTPUT_DROPBOX + "KHACH TU MUA LABEL")
 
 
+# Organize_files_by_color files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
 def organize_by_color():
     os.chdir(PATH_INPUT_DROPBOX)
     for file in os.listdir():
         for color in COLOR_LIST:
             splitted = splitted_by_underline(file)
             if splitted[4] == color:
-                shutil.move(file, PATH_COLOR_DROPBOX + color)
+                if splitted[6] != "1":  # Arrange files by SET and SET FB
+                    if splitted[2] == "FB":
+                        shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET FB")
+                    else:
+                        shutil.move(file, PATH_NEW_ORDER_DROPBOX + "SET")
+                else:
+                    shutil.move(file, PATH_COLOR_DROPBOX + color)
 
 
-# Organize_files_by_color files by Colors: RED, NAVY, ROYALBLUE, ... in colorList[]
 def organize_by_small():
     """organize files by colors"""
     os.chdir(PATH_INPUT_DROPBOX)
