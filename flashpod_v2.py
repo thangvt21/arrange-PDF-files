@@ -10,12 +10,14 @@ folder_root = "THANG" + str(today.month)
 path_input = "E:/US/PDFFILES/Input"
 path_output = "E:/Dropbox/THANG 11/" + folder_name + "/"
 
-# SELLER_LIST = ["SELLERS", "MERCHFOX"]
-# COLOR = ["BLACK", "WHITE", "COLORS"]
-# SIZE = ["SMALL", "MEDIUM", "LARGE", "XL LARGE", "2XL LARGE", "3XL LARGE"]
-# POSITION = "FB"
-# TYPE = ["SHIRT", "HOODIE", "SWEATSHIRT"]
-# FOLDER_EXTRA = ["DON GUI LAI", "DON UU TIEN", "FIX ISSUES"]
+""" 
+    SELLER_LIST = ["DON MOI", "MERCHFOX"]
+    COLOR = ["BLACK", "WHITE", "COLORS"]
+    SIZE = ["SMALL", "MEDIUM", "LARGE", "XL LARGE", "2XL LARGE", "3XL LARGE"]
+    POSITION = "FB"
+    TYPE = ["SHIRT", "HOODIE", "SWEATSHIRT"]
+    FOLDER_EXTRA = ["DON GUI LAI", "DON UU TIEN", "FIX ISSUES"]
+""" 
 
 
 def splitted_by_underline(file):
