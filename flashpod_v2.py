@@ -17,8 +17,10 @@ path_output = "E:/Dropbox/THANG 11/" + folder_name + "/"
     POSITION = "FB"
     TYPE = ["SHIRT", "HOODIE", "SWEATSHIRT"]
     FOLDER_EXTRA = ["DON GUI LAI", "DON UU TIEN", "FIX ISSUES"]
+    SELF_LABEL = ["MERCHFOXSUPPORT", "MBTEAM", "NGUYENTHUY", "SUPPORTTUAN", "PHAMPHONGPHU", "TDATEAMSUPPORT"]
 """ 
 
+SELF_LABEL = ["MERCHFOXSUPPORT", "MBTEAM", "NGUYENTHUY", "SUPPORTTUAN", "PHAMPHONGPHU", "TDATEAMSUPPORT"]
 
 def splitted_by_underline(file):
     """Thay thế dấu "-" thành dấu "_" để đồng nhất
@@ -96,24 +98,28 @@ def create_order(file):
 
 def create_path(Order):
     order = Order
-    if order.seller == "MERCHFOX":
-        if order.set != "1":
-            path = os.path.join(path_output, order.seller, "SET " + order.side)
-        elif order.side == "FB":
-            path = os.path.join(
-                path_output, order.seller, order.color, order.size + " " + order.side
-            )
+    for seller in SELF_LABEL:
+        if order.seller == seller:
+            path = os.path.join(path_output, "KHACH TU MUA LABEL", order.size + " " + order.side)
+            return path
+        elif order.seller == "MERCHFOX":
+            if order.set != "1":
+                path = os.path.join(path_output, order.seller, "SET " + order.side)
+            elif order.side == "FB":
+                path = os.path.join(
+                    path_output, order.seller, order.color, order.size + " " + order.side
+                    )
+            else:
+                path = os.path.join(path_output, order.seller, order.color, order.size)
         else:
-            path = os.path.join(path_output, order.seller, order.color, order.size)
-    else:
-        if order.set != "1":
-            path = os.path.join(path_output, "DON MOI", "SET " + order.side)
-        elif order.side == "FB":
-            path = os.path.join(
-                path_output, "DON MOI", order.color, order.size + " " + order.side
-            )
-        else:
-            path = os.path.join(path_output, "DON MOI", order.color, order.size)
+            if order.set != "1":
+                path = os.path.join(path_output, "DON MOI", "SET " + order.side)
+            elif order.side == "FB":
+                path = os.path.join(
+                    path_output, "DON MOI", order.color, order.size + " " + order.side
+                )
+            else:
+                path = os.path.join(path_output, "DON MOI", order.color, order.size)
     return path
 
 
