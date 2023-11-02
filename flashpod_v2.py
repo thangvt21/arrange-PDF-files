@@ -33,7 +33,7 @@ def splitted_by_underline(file):
             phân tách bởi dấu "-" hoặc "_"
             Để tách keyword cho tùy mục đích sử dụng (chia file, thống kê)
     Args:
-        file
+        File
 
     Actions:
         Thay thế dấu "-" thành dấu "_" để đồng nhất
