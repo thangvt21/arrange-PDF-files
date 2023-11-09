@@ -1,10 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-import shutil
-import urllib.request
 import urllib
 import os
+
 
 LIST_PREFIX = [
     "https://drive.google.com/file/d/",
@@ -13,10 +12,14 @@ LIST_PREFIX = [
     "/view?usp=sharing",
 ]
 
-list = pd.read_csv(r"E:\THANGVT\tools\arranger_v2.2\arrange-PDF-files\label_hod001.csv")
+list = pd.read_csv("E:/US/TSHIRT/linklabel_0911.csv")
 
 print(list)
 # list_url = []
+
+headers = {
+    "User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36 Edg/91.0.864.59"
+    }
 
 for i in range(0, len(list)):
     for j in LIST_PREFIX:
@@ -31,9 +34,8 @@ for i in range(0, len(list)):
         + str(list["linklabel"][i])
         + "&export=download"
     )
-    r = requests.get(url)
+    r = requests.get(url, headers=headers)
     filename = os.path.join("", url.split("/")[-1])
-    with open(
-        "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/download/filename", "wb"
-    ) as f:
-        f.write(r.content)
+    with open(f"{list["ordercode"][i]}.pdf", "wb") as fd:
+        fd.write(r.content)
+

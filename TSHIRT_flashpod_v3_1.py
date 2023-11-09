@@ -1,22 +1,29 @@
 import os
 import shutil
 import datetime
+import arrow
 
 today = datetime.datetime.now()
-folder_name = str(today.month) + "." + str(today.day)
-folder_name_P2 = str(today.month) + "." + str(today.day - 1) + " P2"
-folder_root = "THANG" + str(today.month)
+date = str(arrow.now().format("YYYYMMDD"))
 
-path_input = "E:/US/PDFFILES/Input"
-path_output = "E:/FlashPOD Dropbox/FlashPOD/THANG 11/11.6"
-# path_output = "E:/Dropbox/THANG 11/" + folder_name + "/"
-# SELLER_LIST = ["DON MOI", "MERCHFOX"]
-# COLOR = ["BLACK", "WHITE", "COLORS"]
-# SIZE = ["SMALL", "MEDIUM", "LARGE", "XL LARGE", "2XL LARGE", "3XL LARGE"]
-# POSITION = "FB"
-# TYPE = ["SHIRT", "HOODIE", "SWEATSHIRT"]
-# FOLDER_EXTRA = ["DON GUI LAI", "DON UU TIEN", "FIX ISSUES"]
-# SELF_LABEL = ["MERCHFOXSUPPORT", "MBTEAM", "NGUYENTHUY", "SUPPORTTUAN", "PHAMPHONGPHU", "TDATEAMSUPPORT"]
+folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
+
+path_input = "E:/US/PDFFILES/Input_TSHIRT"
+
+# path_P1 = "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_name + "/"
+# path_P2 = "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_name + "/"
+# path_P3 = "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_name + "/"
+# path_P4 = "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_name + "/"
+
+path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
+path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
+path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
+path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
+
+P1 = date + "_P1_"
+P2 = date + "_P2_"
+P3 = date + "_P3_"
+P4 = date + "_P4_"
 
 SELF_LABEL = [
     "MERCHFOXSUPPORT",
@@ -71,19 +78,6 @@ class Order:
 
 def create_order(file):
     splitted = splitted_by_underline(file)
-    match splitted[3]:
-        case "S":
-            splitted[3] = "SMALL"
-        case "M":
-            splitted[3] = "MEDIUM"
-        case "L":
-            splitted[3] = "LARGE"
-        case "XL":
-            splitted[3] = "XL LARGE"
-        case "2XL":
-            splitted[3] = "2XL LARGE"
-        case default:
-            splitted[3] = "3XL LARGE"
     order = Order(
         splitted[0],
         splitted[1],
@@ -99,42 +93,41 @@ def create_order(file):
 
 def create_path(Order):
     order = Order
-    for seller in SELF_LABEL:
-        if order.seller == seller:
-            path = os.path.join(path_output, "KHACH TU MUA LABEL")
-            return path
-        elif order.set != "1":
-            path = os.path.join(path_output, "DON MOI", "SET " + order.side)
-        elif order.color == "BLACK" or order.color == "WHITE":
-            if order.side == "FB":
-                path = os.path.join(
-                    path_output,
-                    "DON MOI",
-                    order.color,
-                    order.size + " " + order.side,
-                )
-            else:
-                path = os.path.join(path_output, "DON MOI", order.color, order.size)
+    if order.set != "1":
+        path = os.path.join(path_P3, P3 + "SET")
+    elif order.color == "BLACK":
+        if order.side == "FB":
+            path = os.path.join(path_P4, P4 + order.color + "_" + order.side)
         else:
-            path = os.path.join(path_output, "DON MOI", "COLORS", order.color)
+            path = os.path.join(path_P4, P4 + order.color)
+    elif order.color == "WHITE":
+        if order.side == "FB":
+            path = os.path.join(
+                path_P3,
+                P3 + order.color + "_" + order.side,
+            )
+        else:
+            path = os.path.join(
+                path_P3,
+                P3 + order.color,
+            )
+    else:
+        path = os.path.join(
+            path_P1,
+            P1 + order.color,
+        )
     return path
 
 
-def count_pdf(path):
-    count = 0
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            if file.endswith(".pdf"):
-                count += 1
-    return count
+list_path = []
 
 
 def core():
-    list_path = []
     os.chdir(path_input)
     for file in os.listdir():
         order = create_order(file)
         path = create_path(order)
+        list_path.append(path)
         try:
             if os.path.exists(path):
                 shutil.move(file, path)
@@ -143,6 +136,12 @@ def core():
                 shutil.move(file, path)
         except IndexError as err:
             print("Error: ", err)
+
+    for path1 in list_path:
+        shutil.copy(
+            "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf",
+            path1,
+        )
 
 
 def main():
