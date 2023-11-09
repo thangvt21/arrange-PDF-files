@@ -8,15 +8,22 @@ folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_month = str(today.year) + "_" + str(today.month)
 date = str(arrow.now().format("YYYYMMDD"))
 
-path_input = "E:/US/PDFFILES/Input_SWEATSHIRT"
-# path_output = "E:/FlashPOD Dropbox/FlashPOD/THANG 11/" + folder_name + "/"
-path_output = "E:/Dropbox/" + folder_month + "/" + folder_name + "/"
+path_input = "E:/US/PDFFILES/Input_HOODIE"
 
-# date = str(today.year) + str(today.month) + str(today.day)
+# path_P1 = "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_name + "/"
+# path_P2 = "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_name + "/"
+# path_P3 = "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_name + "/"
+# path_P4 = "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_name + "/"
 
-P2 = date + "_P2"
-P3 = date + "_P3"
-P4 = date + "_P4"
+path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
+path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
+path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
+path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
+
+P1 = date + "_P1_"
+P2 = date + "_P2_"
+P3 = date + "_P3_"
+P4 = date + "_P4_"
 
 SELF_LABEL = [
     "MERCHFOXSUPPORT",
@@ -71,19 +78,6 @@ class Order:
 
 def create_order(file):
     splitted = splitted_by_underline(file)
-    # match splitted[3]:
-    #     case "S":
-    #         splitted[3] = "SMALL"
-    #     case "M":
-    #         splitted[3] = "MEDIUM"
-    #     case "L":
-    #         splitted[3] = "LARGE"
-    #     case "XL":
-    #         splitted[3] = "XL LARGE"
-    #     case "2XL":
-    #         splitted[3] = "2XL LARGE"
-    #     case default:
-    #         splitted[3] = "3XL LARGE"
     order = Order(
         splitted[0],
         splitted[1],
@@ -99,59 +93,11 @@ def create_order(file):
 
 def create_path(Order):
     order = Order
-    order = Order
-    if order.color == "BLACK":
-        # if order.side == "FB":
-        path = os.path.join(
-            path_output,
-            P3,
-            P3 + "_SWEATSHIRT",
-            # "1-NORMAL",
-            P3 + "_" + order.color + "_SS",
-        )
-        # else:
-        #     path = os.path.join(
-        #         path_output,
-        #         P3,
-        #         P3 + "-HOODIE",
-        #         # "1-NORMAL",
-        #         P3 + "_" + order.color + "_" + order.size,
-        #     )
-    elif order.color == "WHITE":
-        # if order.side == "FB":
-        path = os.path.join(
-            path_output,
-            P3,
-            P3 + "_SWEATSHIRT",
-            # "1-NORMAL",
-            P3 + "_" + order.color + "_SS",
-        )
-        # else:
-        #     path = os.path.join(
-        #         path_output,
-        #         P3,
-        #         P3 + "-HOODIE",
-        #         # "1-NORMAL",
-        #         P3 + "_" + order.color + "_" + order.size,
-        #     )
-    else:
-        path = os.path.join(
-            path_output,
-            P3,
-            P3 + "_SWEATSHIRT",
-            # "1-NORMAL",
-            P3 + "_" + order.color + "_SS",
-        )
+    path = os.path.join(
+        path_P2,
+        P2 + "HOODIE",
+    )
     return path
-
-
-def count_pdf(path):
-    count = 0
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            if file.endswith(".pdf"):
-                count += 1
-    return count
 
 
 def core():
@@ -172,7 +118,7 @@ def core():
 
     for path1 in list_path:
         shutil.copy(
-            "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder.pdf_line",
+            "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf",
             path1,
         )
 
