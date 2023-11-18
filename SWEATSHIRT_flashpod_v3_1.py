@@ -2,35 +2,38 @@ import os
 import shutil
 import datetime
 import arrow
+import promptlib
 
 today = datetime.datetime.now()
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_month = str(today.year) + "_" + str(today.month)
 date = str(arrow.now().format("YYYYMMDD"))
 
-path = "E:/FlashPOD Dropbox/Thang Vo/7_TrungDH/18.11.2023/Done/18_2_hoodie_184_A Trung"
+# path = "E:/FlashPOD Dropbox/Thang Vo/7_TrungDH/18.11.2023/Done/18_2_hoodie_184_A Trung"
 
-path_input = path.replace("''", "/")
+# path_input = path.replace("''", "/")
+prompter = promptlib.Files()
 
-path_P1 = (
-    "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_month + "/" + folder_name + "/"
-)
-path_P2 = (
-    "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_month + "/" + folder_name + "/"
-)
-path_P3 = (
-    "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_month + "/" + folder_name + "/"
-)
-path_P4 = (
-    "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_month + "/" + folder_name + "/"
-)
+path_input = prompter.dir()
+# path_P1 = (
+#     "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_month + "/" + folder_name + "/"
+# )
+# path_P2 = (
+#     "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_month + "/" + folder_name + "/"
+# )
+# path_P3 = (
+#     "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_month + "/" + folder_name + "/"
+# )
+# path_P4 = (
+#     "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_month + "/" + folder_name + "/"
+# )
 
 path_line = "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf"
 
-# path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
-# path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
-# path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
-# path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
+path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
+path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
+path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
+path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
 
 P1 = date + "_P1_"
 P2 = date + "_P2_"
