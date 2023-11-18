@@ -8,17 +8,29 @@ folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_month = str(today.year) + "_" + str(today.month)
 date = str(arrow.now().format("YYYYMMDD"))
 
-path_input = "E:/US/PDFFILES/Input_SWEATSHIRT"
+path = "E:/FlashPOD Dropbox/Thang Vo/7_TrungDH/18.11.2023/Done/18_2_hoodie_184_A Trung"
 
-# path_P1 = "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_name + "/"
-# path_P2 = "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_name + "/"
-# path_P3 = "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_name + "/"
-# path_P4 = "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_name + "/"
+path_input = path.replace("''", "/")
 
-path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
-path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
-path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
-path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
+path_P1 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_month + "/" + folder_name + "/"
+)
+path_P2 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_month + "/" + folder_name + "/"
+)
+path_P3 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_month + "/" + folder_name + "/"
+)
+path_P4 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_month + "/" + folder_name + "/"
+)
+
+path_line = "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf"
+
+# path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
+# path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
+# path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
+# path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
 
 P1 = date + "_P1_"
 P2 = date + "_P2_"
@@ -80,10 +92,10 @@ def create_order(file):
     splitted = splitted_by_underline(file)
     order = Order(
         splitted[0],
-        splitted[1],
-        splitted[2],
         splitted[3],
         splitted[4],
+        splitted[2],
+        splitted[1],
         splitted[5],
         splitted[6],
         splitted[8],
@@ -93,8 +105,9 @@ def create_order(file):
 
 def create_path(Order):
     order = Order
-    order = Order
-    if order.color == "BLACK":
+    if order.set != "1":
+        path = os.path.join(path_P3, P3 + "SET")
+    elif order.color == "BLACK":
         path = os.path.join(
             path_P3,
             P3 + "_" + order.color + "_SWSHIRT",
@@ -130,13 +143,14 @@ def core():
 
     for path1 in list_path:
         shutil.copy(
-            "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf",
+            path_line,
             path1,
         )
 
 
 def main():
     core()
+    os.system("pause")
 
 
 main()

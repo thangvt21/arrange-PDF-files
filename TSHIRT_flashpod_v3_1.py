@@ -7,18 +7,30 @@ today = datetime.datetime.now()
 date = str(arrow.now().format("YYYYMMDD"))
 
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
+folder_month = str(today.year) + "_" + str(today.month)
 
-path_input = "E:/US/PDFFILES/Input_TSHIRT"
+path = "E:/FlashPOD Dropbox/Thang Vo/7_TrungDH/18.11.2023/Done/18_2_hoodie_184_A Trung"
 
-# path_P1 = "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_name + "/"
-# path_P2 = "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_name + "/"
-# path_P3 = "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_name + "/"
-# path_P4 = "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_name + "/"
+path_input = path.replace("''", "/")
 
-path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
-path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
-path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
-path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
+path_P1 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_month + "/" + folder_name + "/"
+)
+path_P2 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_month + "/" + folder_name + "/"
+)
+path_P3 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_month + "/" + folder_name + "/"
+)
+path_P4 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_month + "/" + folder_name + "/"
+)
+
+path_line = "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf"
+# path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
+# path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
+# path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
+# path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
 
 P1 = date + "_P1_"
 P2 = date + "_P2_"
@@ -36,21 +48,6 @@ SELF_LABEL = [
 
 
 def splitted_by_underline(file):
-    """Tên file là dạng String gồm những keyword thể hiện các giá trị : date, seller, size, ... của product
-            phân tách bởi dấu "-" hoặc "_"
-            Để tách keyword cho tùy mục đích sử dụng (chia file, thống kê)
-    Args:
-        File
-
-    Actions:
-        Thay thế dấu "-" thành dấu "_" để đồng nhất
-        Tách các keyword phân cách bởi "_"
-        Xóa khoảng trắng đầu cuối
-        Thêm keyword vào list splitted
-
-    Return:
-        List splitted chứa các keyword
-    """
     name, _ = os.path.splitext(file)
     name = name.replace("-", "_")
     split_by_underline = name.split("_")
@@ -80,10 +77,10 @@ def create_order(file):
     splitted = splitted_by_underline(file)
     order = Order(
         splitted[0],
-        splitted[1],
-        splitted[2],
         splitted[3],
         splitted[4],
+        splitted[2],
+        splitted[1],
         splitted[5],
         splitted[6],
         splitted[8],
@@ -96,21 +93,20 @@ def create_path(Order):
     if order.set != "1":
         path = os.path.join(path_P3, P3 + "SET")
     elif order.color == "BLACK":
-        if order.side == "FB":
-            path = os.path.join(path_P4, P4 + order.color + "_" + order.side)
-        else:
-            path = os.path.join(path_P4, P4 + order.color)
+        # if order.side == "FB":
+        #     path = os.path.join(
+        #         path_P4, P4 + order.color + "_" + order.size + "_" + order.side
+        #     )
+        # else:
+        path = os.path.join(path_P4, P4 + order.color + "_" + order.size)
     elif order.color == "WHITE":
-        if order.side == "FB":
-            path = os.path.join(
-                path_P3,
-                P3 + order.color + "_" + order.side,
-            )
-        else:
-            path = os.path.join(
-                path_P3,
-                P3 + order.color,
-            )
+        # if order.side == "FB":
+        #     path = os.path.join(
+        #         path_P3,
+        #         P3 + order.color + "_" + order.size + "_" + order.side,
+        #     )
+        # else:
+        path = os.path.join(path_P3, P3 + order.color + "_" + order.size)
     else:
         path = os.path.join(
             path_P1,
@@ -139,13 +135,14 @@ def core():
 
     for path1 in list_path:
         shutil.copy(
-            "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf",
+            path_line,
             path1,
         )
 
 
 def main():
     core()
+    os.system("pause")
 
 
 main()
