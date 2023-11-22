@@ -20,6 +20,12 @@ path4 = (
     "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_root + "/" + folder_name + "/"
 )
 
+# path1 = "E:/FlashPOD Dropbox/FlashPOD/Machine 1/2023_11/2023_11_20/"
+# path2 = "E:/FlashPOD Dropbox/FlashPOD/Machine 2/2023_11/2023_11_20/"
+# path3 = "E:/FlashPOD Dropbox/FlashPOD/Machine 3/2023_11/2023_11_20/"
+# path4 = "E:/FlashPOD Dropbox/FlashPOD/Machine 4/2023_11/2023_11_20/"
+
+
 path5 = "E:/FlashPOD Dropbox/Thang Vo/1_Đạt_TSHIRT_only/15_11_2023/TEMP/DONE"
 
 path_tshirt = "E:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Tshirt/"

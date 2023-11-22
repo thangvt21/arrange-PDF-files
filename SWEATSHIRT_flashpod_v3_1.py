@@ -9,31 +9,28 @@ folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_month = str(today.year) + "_" + str(today.month)
 date = str(arrow.now().format("YYYYMMDD"))
 
-# path = "E:/FlashPOD Dropbox/Thang Vo/7_TrungDH/18.11.2023/Done/18_2_hoodie_184_A Trung"
-
-# path_input = path.replace("''", "/")
 prompter = promptlib.Files()
 
 path_input = prompter.dir()
-# path_P1 = (
-#     "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_month + "/" + folder_name + "/"
-# )
-# path_P2 = (
-#     "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_month + "/" + folder_name + "/"
-# )
-# path_P3 = (
-#     "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_month + "/" + folder_name + "/"
-# )
-# path_P4 = (
-#     "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_month + "/" + folder_name + "/"
-# )
+path_P1 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_month + "/" + folder_name + "/"
+)
+path_P2 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_month + "/" + folder_name + "/"
+)
+path_P3 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_month + "/" + folder_name + "/"
+)
+path_P4 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_month + "/" + folder_name + "/"
+)
 
 path_line = "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf"
 
-path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
-path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
-path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
-path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
+# path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
+# path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
+# path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
+# path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
 
 P1 = date + "_P1_"
 P2 = date + "_P2_"
@@ -51,21 +48,6 @@ SELF_LABEL = [
 
 
 def splitted_by_underline(file):
-    """Tên file là dạng String gồm những keyword thể hiện các giá trị : date, seller, size, ... của product
-            phân tách bởi dấu "_" hoặc "_"
-            Để tách keyword cho tùy mục đích sử dụng (chia file, thống kê)
-    Args:
-        File
-
-    Actions:
-        Thay thế dấu "_" thành dấu "_" để đồng nhất
-        Tách các keyword phân cách bởi "_"
-        Xóa khoảng trắng đầu cuối
-        Thêm keyword vào list splitted
-
-    Return:
-        List splitted chứa các keyword
-    """
     name, _ = os.path.splitext(file)
     name = name.replace("-", "_")
     split_by_underline = name.split("_")
@@ -83,12 +65,6 @@ class Order:
         self.set_number = set_number
         self.set = set
         self.seller = seller
-
-    def __str__(self):
-        return f"{self.order_code}{self.side}{self.size}{self.color}{self.set}{self.seller}"
-
-    def __del__(self):
-        return
 
 
 def create_order(file):
