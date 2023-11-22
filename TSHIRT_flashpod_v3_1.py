@@ -11,32 +11,28 @@ date = str(arrow.now().format("YYYYMMDD"))
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_month = str(today.year) + "_" + str(today.month)
 
-# path = "E:/FlashPOD Dropbox/Thang Vo/7_TrungDH/18.11.2023/Done/18_2_hoodie_184_A Trung"
-
-# path_input = path.replace("''", "/")
-
 prompter = promptlib.Files()
 
 path_input = prompter.dir()
 
-# path_P1 = (
-#     "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_month + "/" + folder_name + "/"
-# )
-# path_P2 = (
-#     "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_month + "/" + folder_name + "/"
-# )
-# path_P3 = (
-#     "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_month + "/" + folder_name + "/"
-# )
-# path_P4 = (
-#     "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_month + "/" + folder_name + "/"
-# )
+path_P1 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_month + "/" + folder_name + "/"
+)
+path_P2 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 2/" + folder_month + "/" + folder_name + "/"
+)
+path_P3 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 3/" + folder_month + "/" + folder_name + "/"
+)
+path_P4 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_month + "/" + folder_name + "/"
+)
 
 path_line = "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf"
-path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
-path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
-path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
-path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
+# path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
+# path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
+# path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
+# path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
 
 P1 = date + "_P1_"
 P2 = date + "_P2_"
@@ -72,12 +68,6 @@ class Order:
         self.set = set
         self.seller = seller
 
-    def __str__(self):
-        return f"{self.order_code}{self.side}{self.size}{self.color}{self.set}{self.seller}"
-
-    def __del__(self):
-        return
-
 
 def create_order(file):
     splitted = splitted_by_underline(file)
@@ -99,19 +89,8 @@ def create_path(Order):
     if order.set != "1":
         path = os.path.join(path_P3, P3 + "SET")
     elif order.color == "BLACK":
-        # if order.side == "FB":
-        #     path = os.path.join(
-        #         path_P4, P4 + order.color + "_" + order.size + "_" + order.side
-        #     )
-        # else:
         path = os.path.join(path_P4, P4 + order.color + "_" + order.size)
     elif order.color == "WHITE":
-        # if order.side == "FB":
-        #     path = os.path.join(
-        #         path_P3,
-        #         P3 + order.color + "_" + order.size + "_" + order.side,
-        #     )
-        # else:
         path = os.path.join(path_P3, P3 + order.color + "_" + order.size)
     else:
         path = os.path.join(
