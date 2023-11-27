@@ -4,7 +4,7 @@ from PIL import Image
 from pdf2image import convert_from_path
 import re
 
-PATH_LABEL = r"E:\THANGVT\tools\arranger_v2.2\arrange-PDF-files\download"
+PATH_LABEL = "G:/My Drive/Storage/12-13-14.11"
 PATH_IMAGE = "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/img/"
 
 
@@ -23,19 +23,23 @@ def read_pdf(filename):
             pdf_text = "" + text
             clean_pdf_text = "".join(pdf_text.replace("\n", " "))
             pattern = r"\d{4} \d{4} \d{4} \d{4} \d{4} \d{2}"
-            match = re.search(pattern, clean_pdf_text)
-            if clean_pdf_text:
-                # print(match.group())
-                return match.group()
+            pattern1 = r"\d{4} \d{4} \d{4} \d{4} \d{4} \d{4} \d{2}"
+            match = re.search(pattern1, clean_pdf_text)
+            try:
+                if match:
+                    return match.group()
+                else:
+                    match = re.search(pattern, clean_pdf_text)
+                    if match:
+                        return match.group()
+            except:
+                print("Error: ", IndexError)
     except Exception as e:
         print(str(e))
 
 
 for root, dirs, files in os.walk(PATH_LABEL):
     for file in files:
-        name, _ = file.split(".pdf")
+        name = file.split(".pdf")
         path_pdf = PATH_LABEL + "/" + file
-        print(str(read_pdf(path_pdf)) + " - " + name)
-
-# path_pdf = "E:/US/PDFFILES/Label/label.pdf"
-# read_pdf(path_pdf)
+        print(str(read_pdf(path_pdf)) + " - " + name[0])
