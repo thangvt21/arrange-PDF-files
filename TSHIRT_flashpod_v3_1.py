@@ -118,12 +118,6 @@ def core():
         except IndexError as err:
             print("Error: ", err)
 
-    for path1 in list_path:
-        shutil.copy(
-            path_line,
-            path1,
-        )
-
 
 def main():
     core()
