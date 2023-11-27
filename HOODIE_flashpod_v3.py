@@ -8,15 +8,14 @@ folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_month = str(today.year) + "_" + str(today.month)
 date = str(arrow.now().format("YYYYMMDD"))
 
-path_input = "E:/US/PDFFILES/Input_HOODIE"
-# path_output = "E:/FlashPOD Dropbox/FlashPOD/THANG 11/" + folder_name + "/"
-path_output = "E:/Dropbox/" + folder_month + "/" + folder_name + "/"
-
+path_input = "D:/work/Chiafile/Input_HOODIE"
+path_output = "D:/Dropbox/2023_11/"
+# path_output = "D:/FlashPOD Dropbox/Thang Vo/THANG 11/" + folder_name + "/"
 # date = str(today.year) + str(today.month) + str(today.day)
 
-P2 = date + "_P2"
-P3 = date + "_P3"
-P4 = date + "_P4"
+P2 = "P2"
+P3 = "P3"
+P4 = "P4"
 
 SELF_LABEL = [
     "MERCHFOXSUPPORT",
@@ -104,9 +103,7 @@ def create_path(Order):
         path = os.path.join(
             path_output,
             P3,
-            P3 + "_HOODIE",
-            # "1-NORMAL",
-            P3 + "_" + order.color + "_HD",
+            date + "_P3_" + order.color + "_HOODIE",
         )
         # else:
         #     path = os.path.join(
@@ -121,9 +118,7 @@ def create_path(Order):
         path = os.path.join(
             path_output,
             P3,
-            P3 + "_HOODIE",
-            # "1-NORMAL",
-            P3 + "_" + order.color + "_HD",
+            date + "_P3_" + order.color + "_HOODIE",
         )
         # else:
         #     path = os.path.join(
@@ -137,9 +132,7 @@ def create_path(Order):
         path = os.path.join(
             path_output,
             P3,
-            P3 + "_HOODIE",
-            # "1-NORMAL",
-            P3 + "_" + order.color + "_HD",
+            date + "_P3_" + order.color + "_HOODIE",
         )
     return path
 
@@ -153,8 +146,10 @@ def count_pdf(path):
     return count
 
 
+list_path = []
+
+
 def core():
-    list_path = []
     os.chdir(path_input)
     for file in os.listdir():
         order = create_order(file)
@@ -171,7 +166,7 @@ def core():
 
     for path1 in list_path:
         shutil.copy(
-            "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf",
+            "D:/work/TSHIRT/tool/arrange-PDF-files/end_of_folder_line.pdf",
             path1,
         )
 

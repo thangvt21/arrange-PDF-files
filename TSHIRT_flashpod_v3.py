@@ -8,15 +8,13 @@ folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_month = str(today.year) + "_" + str(today.month)
 date = str(arrow.now().format("YYYYMMDD"))
 
-path_input = "E:/US/PDFFILES/Input"
-# path_output = "E:/FlashPOD Dropbox/FlashPOD/THANG 11/" + folder_name + "/"
-path_output = "E:/Dropbox/" + folder_month + "/" + folder_name + "/"
+path_input = "D:/work/Chiafile/Input"
+# path_output = "D:/Dropbox/THANG 11/" + folder_name + "/"
+path_output = "D:/Dropbox/2023_11/"
+# path_output = "D:/FlashPOD Dropbox/Thang Vo/THANG 11/" + folder_name + "/"
 
 # date = str(today.year) + str(today.month) + str(today.day)
 
-P2 = date + "_P2"
-P3 = date + "_P3"
-P4 = date + "_P4"
 
 SELF_LABEL = [
     "MERCHFOXSUPPORT",
@@ -103,50 +101,44 @@ def create_path(Order):
         if order.seller == seller:
             path = os.path.join(
                 path_output,
-                P3,
-                P3 + "_KHACH TU MUA LABEL",
-                P3 + "_" + order.color + "_" + order.size,
+                "P3",
+                date + "_P3_" + order.color + "_" + order.size + "_TSHIRT_" + "SL",
             )
             return path
         elif order.set != "1":
-            path = os.path.join(path_output, P3, date + "_P3_SET")
+            path = os.path.join(path_output, "P3", date + "_P3_SET")
         elif order.color == "BLACK":
             if order.side == "FB":
                 path = os.path.join(
                     path_output,
-                    P4,
+                    "P4",
                     # "1-NORMAL",
-                    P4 + "_" + order.color + "_" + order.size + "_" + order.side,
+                    date + "_P4_" + order.color + "_" + order.size + "_" + order.side,
                 )
             else:
                 path = os.path.join(
                     path_output,
-                    P4,
+                    "P4",
                     # "1-NORMAL",
-                    P4 + "_" + order.color + "_" + order.size,
+                    date + "_P4_" + order.color + "_" + order.size,
                 )
         elif order.color == "WHITE":
             if order.side == "FB":
                 path = os.path.join(
                     path_output,
-                    P2,
+                    "P2",
                     # "1-NORMAL",
-                    P2 + "_" + order.color + "_" + order.size + "_" + order.side,
+                    date + "_P2_" + order.color + "_" + order.size + "_" + order.side,
                 )
             else:
                 path = os.path.join(
                     path_output,
-                    P2,
+                    "P2",
                     # "1-NORMAL",
-                    P2 + "_" + order.color + "_" + order.size,
+                    date + "_P2_" + order.color + "_" + order.size,
                 )
         else:
-            path = os.path.join(
-                path_output,
-                P2,
-                # "1-NORMAL",
-                P2 + "_" + order.color,
-            )
+            path = os.path.join(path_output, "P2", date + "_P2_" + order.color)
     return path
 
 
@@ -179,28 +171,13 @@ def core():
 
     for path1 in list_path:
         shutil.copy(
-            "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf",
+            "D:/work/TSHIRT/tool/arrange-PDF-files/end_of_folder_line.pdf",
             path1,
         )
-
-    # count = 0
-    # for path2 in list_path:
-    #     for root, dirs, files in os.walk(path2):
-    #         for i, file in enumerate(files):
-    #             if str(file).endswith(".pdf"):
-    #                 count += 1
-    #                 if count < 40:
-    #                     shutil.move(file, os.path.join(path2, "_MC_MS" + str(i)))
-    #                 else:
-    #                     shutil.copy(
-    #                         "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder.pdf",
-    #                         path2,
-    #                     )
 
 
 def main():
     core()
-    # rename()
 
 
 main()
