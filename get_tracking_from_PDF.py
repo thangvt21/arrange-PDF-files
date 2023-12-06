@@ -4,7 +4,7 @@ from PIL import Image
 from pdf2image import convert_from_path
 import re
 
-PATH_LABEL = "G:/My Drive/Storage/12-13-14.11"
+PATH_LABEL = "E:/US/TSHIRT/link label 0212"
 PATH_IMAGE = "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/img/"
 
 

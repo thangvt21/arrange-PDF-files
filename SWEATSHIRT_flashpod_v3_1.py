@@ -24,18 +24,19 @@ path_P3 = (
 path_P4 = (
     "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_month + "/" + folder_name + "/"
 )
+path_P5 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 5/" + folder_month + "/" + folder_name + "/"
+)
+path_P6 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 6/" + folder_month + "/" + folder_name + "/"
+)
 
-path_line = "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/end_of_folder_line.pdf"
-
-# path_P1 = "E:/Dropbox/Machine 1/2023_11/" + folder_name + "/"
-# path_P2 = "E:/Dropbox/Machine 2/2023_11/" + folder_name + "/"
-# path_P3 = "E:/Dropbox/Machine 3/2023_11/" + folder_name + "/"
-# path_P4 = "E:/Dropbox/Machine 4/2023_11/" + folder_name + "/"
-
-P1 = date + "_P1_"
-P2 = date + "_P2_"
-P3 = date + "_P3_"
-P4 = date + "_P4_"
+P1 = "TMP_" + date + "_P1_"
+P2 = "TMP_" + date + "_P2_"
+P3 = "TMP_" + date + "_P3_"
+P4 = "TMP_" + date + "_P4_"
+P5 = "TMP_" + date + "_P5_"
+P6 = "TMP_" + date + "_P6_"
 
 SELF_LABEL = [
     "MERCHFOXSUPPORT",
@@ -85,17 +86,7 @@ def create_order(file):
 def create_path(Order):
     order = Order
     if order.set != "1":
-        path = os.path.join(path_P3, P3 + "SET")
-    elif order.color == "BLACK":
-        path = os.path.join(
-            path_P3,
-            P3 + "_" + order.color + "_SWSHIRT",
-        )
-    elif order.color == "WHITE":
-        path = os.path.join(
-            path_P3,
-            P3 + order.color + "_SWSHIRT",
-        )
+        path = os.path.join(path_P6, P6)
     else:
         path = os.path.join(
             path_P3,
@@ -119,12 +110,6 @@ def core():
                 shutil.move(file, path)
         except IndexError as err:
             print("Error: ", err)
-
-    for path1 in list_path:
-        shutil.copy(
-            path_line,
-            path1,
-        )
 
 
 def main():

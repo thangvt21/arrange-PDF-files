@@ -32,7 +32,7 @@ path_tshirt = "E:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Tshirt/"
 path_hoodie = "E:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Hoodie/"
 path_sweatshirt = "E:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Sweatshirt/"
 
-PATH_LIST = [path1, path2, path3, path4, path5]
+PATH_LIST = [path1, path2, path3, path4]
 # PATH_LIST = [path_tshirt, path_hoodie, path_sweatshirt]
 sum = 0
 for i, path in enumerate(PATH_LIST, start=1):
@@ -41,5 +41,7 @@ for i, path in enumerate(PATH_LIST, start=1):
         for file in files:
             if file.endswith(".pdf"):
                 count += 1
+    sum += count
     print(f"Machine {i}:", count)
+print(sum)
 os.system("pause")
