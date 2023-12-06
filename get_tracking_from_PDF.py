@@ -3,8 +3,11 @@ import pytesseract as tess
 from PIL import Image
 from pdf2image import convert_from_path
 import re
+import promptlib
 
-PATH_LABEL = "E:/US/TSHIRT/link label 0212"
+prompter = promptlib.Files()
+
+PATH_LABEL = prompter.dir()
 PATH_IMAGE = "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/img/"
 
 

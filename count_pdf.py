@@ -1,5 +1,4 @@
 import os
-import shutil
 import datetime
 
 today = datetime.datetime.now()
@@ -25,8 +24,6 @@ path5 = (
 path6 = (
     "E:/FlashPOD Dropbox/FlashPOD/Machine 6/" + folder_root + "/" + folder_name + "/"
 )
-
-path5 = "E:/FlashPOD Dropbox/Thang Vo/1_Đạt_TSHIRT_only/15_11_2023/TEMP/DONE"
 
 path_tshirt = "E:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Tshirt/"
 path_hoodie = "E:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Hoodie/"
