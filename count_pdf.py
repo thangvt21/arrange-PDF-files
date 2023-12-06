@@ -19,12 +19,12 @@ path3 = (
 path4 = (
     "E:/FlashPOD Dropbox/FlashPOD/Machine 4/" + folder_root + "/" + folder_name + "/"
 )
-
-# path1 = "E:/FlashPOD Dropbox/FlashPOD/Machine 1/2023_11/2023_11_20/"
-# path2 = "E:/FlashPOD Dropbox/FlashPOD/Machine 2/2023_11/2023_11_20/"
-# path3 = "E:/FlashPOD Dropbox/FlashPOD/Machine 3/2023_11/2023_11_20/"
-# path4 = "E:/FlashPOD Dropbox/FlashPOD/Machine 4/2023_11/2023_11_20/"
-
+path5 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 5/" + folder_root + "/" + folder_name + "/"
+)
+path6 = (
+    "E:/FlashPOD Dropbox/FlashPOD/Machine 6/" + folder_root + "/" + folder_name + "/"
+)
 
 path5 = "E:/FlashPOD Dropbox/Thang Vo/1_Đạt_TSHIRT_only/15_11_2023/TEMP/DONE"
 
@@ -32,8 +32,8 @@ path_tshirt = "E:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Tshirt/"
 path_hoodie = "E:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Hoodie/"
 path_sweatshirt = "E:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Sweatshirt/"
 
-PATH_LIST = [path1, path2, path3, path4]
-# PATH_LIST = [path_tshirt, path_hoodie, path_sweatshirt]
+PATH_LIST = [path1, path2, path3, path4, path5, path6]
+
 sum = 0
 for i, path in enumerate(PATH_LIST, start=1):
     count = 0
