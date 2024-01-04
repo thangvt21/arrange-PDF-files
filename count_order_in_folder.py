@@ -1,15 +1,12 @@
 import os
 import datetime
 import promptlib
-from pathlib import Path
-import shutil
+
 
 today = datetime.datetime.now()
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_root = str(today.year) + "_" + str(today.month)
-
 prompter = promptlib.Files()
-
 path_input = prompter.dir()
 
 
@@ -65,6 +62,7 @@ def main():
         for dir in dirs:
             patho = os.path.join(path_input, dir)
             print(str(count_order(patho)))
+    os.system("pause")
 
 
 main()
