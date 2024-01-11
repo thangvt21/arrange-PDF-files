@@ -45,13 +45,32 @@ def create_order(file):
     return order
 
 
+def create_order_set(file):
+    splitted = splitted_by_underline(file)
+    order = Order(
+        splitted[0],
+        splitted[1],
+        splitted[4],
+        splitted[2],
+        splitted[3],
+        splitted[5],
+        splitted[6],
+        splitted[8],
+    )
+    return order
+
+
 def count_order(path):
     for root, dirs, files in os.walk(path):
         list_1 = []
         name = os.path.basename(path)
         for file in files:
             if file.endswith(".pdf"):
-                order = create_order(file)
+                splitted = splitted_by_underline(file)
+                if splitted[6] != "1":
+                    order = create_order_set(file)
+                else:
+                    order = create_order(file)
                 list_1.append(order.order_code)
                 list_ok = list(set(list_1))
         return name + "-" + str(len(list_ok))
