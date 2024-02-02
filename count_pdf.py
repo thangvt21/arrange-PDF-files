@@ -4,7 +4,8 @@ import datetime
 today = datetime.datetime.now()
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_root = str(today.year) + "_" + str(today.month)
-
+# folder_name = "2024_1_15"
+# folder_root = "2024_1"
 
 path1 = (
     "D:/FlashPOD Dropbox/FlashPOD/Machine 1/" + folder_root + "/" + folder_name + "/"

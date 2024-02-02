@@ -19,7 +19,9 @@ def splitted_by_underline(file):
 
 
 class Order:
-    def __init__(self, date, order_code, side, size, color, set_number, set, seller):
+    def __init__(
+        self, date, order_code, side, size, color, set_number, set, seller, product_type
+    ):
         self.date = date
         self.order_code = order_code
         self.side = side
@@ -28,6 +30,7 @@ class Order:
         self.set_number = set_number
         self.set = set
         self.seller = seller
+        self.product_type = product_type
 
 
 def create_order(file):
@@ -41,6 +44,7 @@ def create_order(file):
         splitted[5],
         splitted[6],
         splitted[8],
+        splitted[9],
     )
     return order
 
@@ -56,6 +60,7 @@ def create_order_set(file):
         splitted[5],
         splitted[6],
         splitted[8],
+        splitted[9],
     )
     return order
 
@@ -64,6 +69,8 @@ def count_shirts(order):
     variant = (
         order.order_code
         + " - "
+        + order.product_type
+        + "/"
         + order.color
         + "/"
         + order.size
