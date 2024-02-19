@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "luminous-lodge-321503",
+  "private_key_id": "2defcccdcd2d2fc659651cd2b0b68654c65ec4ae",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC1SnbqywT1yReO\nuuC38gBlD1Lsw1uk+hx8wH/J9gkfP+L9qkq2ZcfFNR/3cmi4ql+sGSB/Sc4CIrg+\n8dqfzoolH4wk7XKyRpOqiNel0eOKoq1ioaJ/O3EB3QDVoZ5tr1NYIw++NAqPWghn\n0bbHVzkP3FsrmU6IIIfSsvpj7Iha2CgIPE1IydhX8z18heIpoRuLJ6XnD4zpxfjj\nB2eXlML7VOIsfYYvaTibuvSrbMerELX6CFL2bDlpLFkeE3xeB6x4WcGmbtOxt+oY\ngxn/51Jwxvkox5ha1KKcmFHxN8E9oF+reHpztQJqxyrAiHH0e08vALyNx5PL3it4\nZGRfhFu3AgMBAAECggEAR6yxmEF87Am9kRYMW11Hz6y/zdCs7mxeD+pxe3EVCTBS\nd5S4piVWVn8a7NNkWMIvQhTLFtggpRKCAozPMUhQsL2oxD7Gjno9znn8vFffnMOV\nRj3+R0xCcQil2FBmGRpsmpd+FWZw2F0xno44s9YlvsIRn4qklEg8Os69FP2CqVtL\nGYlE/k0ZX3MyeEeyITJ7QQp4prJfVklxhpir4n7gYT0NHXokB6kNafttjgXZfhTt\n8ezfAgky9Mr3pJ4SbYriAiavylvtP8DfCjVUim9LuXZ/V/3qSghkdcwCWXyM/FiA\nhv0RNJ7aB+mOsLetzZWWeNRTW8RYeHpTcFSgBu2t0QKBgQDZmDiSjFdbtG7rD2QG\nkWLz9FjiAeO0kQUrcW5wglracf4aOJOv8IywQeNzdcR8XAW802hSSfZnRXl9dqPO\nTIHtZuKgh8hBjVPBi6EYSRa/zZIYCCyyop9IaJeoANGvLYE28yJrQT4bMcxPEtFE\nY9JrVmEA6uESmzGKOrHFwMHY5wKBgQDVSeXvfZVw8KziwsqpSnhQkR1OQV9rUout\nwLI4E/L3DeMTbpkL9gYpdiUlyzqttLw321XEx/HfEBKNkLl9QR34NHL3KIEFLhjp\nwZM1vY373lyiWA4QDThx5hpNKM98vDWoTsK/x0x3ZrWaIsMfdqa5yD6g+9HjKJ03\ntZzXFvb8sQKBgQCeqHmHkcEY4uWFi8FZcKUAUIiGsu3/eUaVuK3YZ5Qrd7baE6rM\nPM+4rTJVu+c67jZYyqVkav25q1S8gMdL40lRexWAC8Ge2pfZpiAefxyRWilOUJeW\n4TDXMTxzibVa0AlJsdrE7duFJLheZ9Ai185T6bXtX1YhpPtoWQfKs5QkvQKBgQCi\nR/+zIJI7xGNGhX89H3Q7mK37hLHdLokoQp1XHZaXcvF7L4MzHpXBpirNfru+vu0W\ncsPnXVoipk/3dk4rhwgOeZmfhCnmjxRVhvtCwF7vbFh/DRBmFikEQFdyrcJw3aLV\n1FdJI5KCpps2E4zyu4xPfpRoWDFx7MzyPjR/UvHJgQKBgQCbUZH3w2pQJ52maUSw\n2LQFNT1bsOFVNY88js0UMDw/mJnD4HAwKMXzMQz41M5XownCY3N617glw42oeTT8\nBDtotlqxFMmO10liX6IyGQfTnEGG/oJGM768iGT95he3VNWrT/n5abUP5kSXTXpI\nDFy7X2NYPHHCBPvhbJAw/1qseA==\n-----END PRIVATE KEY-----\n",
+  "client_email": "count-shirts@luminous-lodge-321503.iam.gserviceaccount.com",
+  "client_id": "108207809903997271496",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/count-shirts%40luminous-lodge-321503.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
