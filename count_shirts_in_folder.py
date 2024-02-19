@@ -2,15 +2,12 @@ import datetime
 import promptlib
 import pandas as pd
 import os
-import gspread
 from google.oauth2.service_account import Credentials
 import pygsheets
 
 today = datetime.datetime.now()
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_root = str(today.year) + "_" + str(today.month)
-prompter = promptlib.Files()
-path_input = prompter.dir()
 
 
 def splitted_by_underline(file):
@@ -91,7 +88,6 @@ def count_order(path):
     for root, dirs, files in os.walk(path):
         list_var_raw = []
         name = os.path.basename(path)
-        # print(name)
         for file in files:
             if file.endswith(".pdf"):
                 splitted = splitted_by_underline(file)
@@ -109,32 +105,30 @@ def count_order(path):
 
 
 def main():
-    # scopes = [
-    #     "https://www.googleapis.com/auth/spreadsheets",
-    #     "https://www.googleapis.com/auth/drive",
-    # ]
-
-    # credentials = Credentials.from_service_account_file(
-    #     "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/luminous-lodge-321503-2defcccdcd2d.json",
-    #     scopes=scopes,
-    # )
-
-    # gc = gspread.authorize(credentials)
-    gc = pygsheets.authorize(
-        service_account_file="E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/luminous-lodge-321503-2defcccdcd2d.json"
-    )  # Replace with your credentials file
-    spreadsheet = gc.open_by_key("1iZShXMaHGE_zyHwVkSSfa83dfMpb-qpHHLVXpS7ZxxI")
-    worksheet = spreadsheet.worksheet_by_title("Machine 2")
-    lst = []
-    for root, dirs, files in os.walk(path_input):
-        for dir in dirs:
-            patho = os.path.join(path_input, dir)
-            lst.append(count_order(patho))
-    i = 0
-    for dtf in lst:
-        worksheet.set_dataframe(dtf, start=(3 + i, 3))
-        i = i + len(dtf) + 2
-    os.system("pause")
+    key = ""
+    while key != "0":
+        key = input("Nhập 1 để đếm PDF (Nhập 0 để dừng): ")
+        if key == "1":
+            prompter = promptlib.Files()
+            path_input = prompter.dir()
+            path_str1 = path_input.split("\\")
+            path_str2 = [s.strip() for s in path_str1]
+            machine = str(path_str2[3])
+            gc = pygsheets.authorize(
+                service_account_file="E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/luminous-lodge-321503-2defcccdcd2d.json"
+            )
+            spreadsheet = gc.open_by_key("1iZShXMaHGE_zyHwVkSSfa83dfMpb-qpHHLVXpS7ZxxI")
+            worksheet = spreadsheet.worksheet_by_title(machine)
+            lst = []
+            for root, dirs, files in os.walk(path_input):
+                for dir in dirs:
+                    patho = os.path.join(path_input, dir)
+                    lst.append(count_order(patho))
+            i = 0
+            for dtf in lst:
+                worksheet.set_dataframe(dtf, start=(3 + i, 1))
+                i = i + len(dtf) + 2
+    # os.system("pause")
 
 
 main()

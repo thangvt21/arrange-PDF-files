@@ -6,8 +6,6 @@ import promptlib
 today = datetime.datetime.now()
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_root = str(today.year) + "_" + str(today.month)
-prompter = promptlib.Files()
-path_input = prompter.dir()
 
 
 def splitted_by_underline(file):
@@ -78,11 +76,17 @@ def count_order(path):
 
 
 def main():
-    for root, dirs, files in os.walk(path_input):
-        for dir in dirs:
-            patho = os.path.join(path_input, dir)
-            print(str(count_order(patho)))
-    os.system("pause")
+    key = ""
+    while key != "0":
+        key = input("Nhập 1 để đếm PDF (Nhập 0 để dừng): ")
+        if key == "1":
+            prompter = promptlib.Files()
+            path_input = prompter.dir()
+            for root, dirs, files in os.walk(path_input):
+                for dir in dirs:
+                    patho = os.path.join(path_input, dir)
+                    print(str(count_order(patho)))
+    # os.system("pause")
 
 
 main()
