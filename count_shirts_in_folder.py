@@ -1,7 +1,10 @@
-import os
 import datetime
 import promptlib
 import pandas as pd
+import os
+import gspread
+from google.oauth2.service_account import Credentials
+import pygsheets
 
 today = datetime.datetime.now()
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
@@ -88,7 +91,7 @@ def count_order(path):
     for root, dirs, files in os.walk(path):
         list_var_raw = []
         name = os.path.basename(path)
-        print(name)
+        # print(name)
         for file in files:
             if file.endswith(".pdf"):
                 splitted = splitted_by_underline(file)
@@ -98,22 +101,39 @@ def count_order(path):
                     order = create_order(file)
                 variant = count_shirts(order)
                 list_var_raw.append(variant)
-        list_res = list(set(list_var_raw))
-        count = pd.Series(list_res).value_counts()
-        count1 = pd.Series(list_var_raw)
-        count2 = count1.drop_duplicates()
-        df = pd.DataFrame([sub.split(" - ") for sub in count2])
-        count = df[1].value_counts()
-        print(count)
-        # return name + "-" + str(len(list_ok))
-        # print(name + "_" + str(len(list_ok)), list_ok)
+        df = pd.DataFrame([sub.split(" - ") for sub in list_var_raw]).drop_duplicates()
+        df["count"] = df[1].map(df[1].value_counts())
+        df.columns = ["order_code", name, "set", "side", "count"]
+        df.head()
+        return df[[name, "count"]].drop_duplicates()
 
 
 def main():
+    # scopes = [
+    #     "https://www.googleapis.com/auth/spreadsheets",
+    #     "https://www.googleapis.com/auth/drive",
+    # ]
+
+    # credentials = Credentials.from_service_account_file(
+    #     "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/luminous-lodge-321503-2defcccdcd2d.json",
+    #     scopes=scopes,
+    # )
+
+    # gc = gspread.authorize(credentials)
+    gc = pygsheets.authorize(
+        service_account_file="E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/luminous-lodge-321503-2defcccdcd2d.json"
+    )  # Replace with your credentials file
+    spreadsheet = gc.open_by_key("1iZShXMaHGE_zyHwVkSSfa83dfMpb-qpHHLVXpS7ZxxI")
+    worksheet = spreadsheet.worksheet_by_title("Machine 2")
+    lst = []
     for root, dirs, files in os.walk(path_input):
         for dir in dirs:
             patho = os.path.join(path_input, dir)
-            print(str(count_order(patho)))
+            lst.append(count_order(patho))
+    i = 0
+    for dtf in lst:
+        worksheet.set_dataframe(dtf, start=(3 + i, 3))
+        i = i + len(dtf) + 2
     os.system("pause")
 
 

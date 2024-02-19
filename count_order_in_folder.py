@@ -74,7 +74,7 @@ def count_order(path):
                 list_1.append(order.order_code)
                 list_ok = list(set(list_1))
         return name + "-" + str(len(list_ok))
-        # print(name + "_" + str(len(list_ok)), list_ok)
+        # return (name + "_" + str(len(list_ok)), list_ok)
 
 
 def main():

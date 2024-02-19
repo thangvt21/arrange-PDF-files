@@ -31,11 +31,17 @@ path7 = (
 path8 = (
     "D:/FlashPOD Dropbox/FlashPOD/Machine 8/" + folder_root + "/" + folder_name + "/"
 )
+path9 = (
+    "D:/FlashPOD Dropbox/FlashPOD/Machine 9/" + folder_root + "/" + folder_name + "/"
+)
+path10 = (
+    "D:/FlashPOD Dropbox/FlashPOD/Machine 10/" + folder_root + "/" + folder_name + "/"
+)
 path_tshirt = "D:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Tshirt/"
 path_hoodie = "D:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Hoodie/"
 path_sweatshirt = "D:/FlashPOD Dropbox/Thang Vo/20231111_P2/20231111_Sweatshirt/"
 
-PATH_LIST = [path1, path2, path3, path4, path5, path6, path7, path8]
+PATH_LIST = [path1, path2, path3, path4, path5, path6, path7, path8, path9, path10]
 
 
 def main():
