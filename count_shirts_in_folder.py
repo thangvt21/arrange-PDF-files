@@ -2,7 +2,6 @@ import datetime
 import promptlib
 import pandas as pd
 import os
-import gspread
 from google.oauth2.service_account import Credentials
 import pygsheets
 
@@ -91,7 +90,6 @@ def count_order(path):
     for root, dirs, files in os.walk(path):
         list_var_raw = []
         name = os.path.basename(path)
-        # print(name)
         for file in files:
             if file.endswith(".pdf"):
                 splitted = splitted_by_underline(file)
@@ -105,24 +103,14 @@ def count_order(path):
         df["count"] = df[1].map(df[1].value_counts())
         df.columns = ["order_code", name, "set", "side", "count"]
         df.head()
+
         return df[[name, "count"]].drop_duplicates()
 
 
 def main():
-    # scopes = [
-    #     "https://www.googleapis.com/auth/spreadsheets",
-    #     "https://www.googleapis.com/auth/drive",
-    # ]
-
-    # credentials = Credentials.from_service_account_file(
-    #     "E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/luminous-lodge-321503-2defcccdcd2d.json",
-    #     scopes=scopes,
-    # )
-
-    # gc = gspread.authorize(credentials)
     gc = pygsheets.authorize(
         service_account_file="E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/luminous-lodge-321503-2defcccdcd2d.json"
-    )  # Replace with your credentials file
+    )
     spreadsheet = gc.open_by_key("1iZShXMaHGE_zyHwVkSSfa83dfMpb-qpHHLVXpS7ZxxI")
     worksheet = spreadsheet.worksheet_by_title("Machine 2")
     lst = []
@@ -132,7 +120,7 @@ def main():
             lst.append(count_order(patho))
     i = 0
     for dtf in lst:
-        worksheet.set_dataframe(dtf, start=(3 + i, 3))
+        worksheet.set_dataframe(dtf, start=(3 + i, 1))
         i = i + len(dtf) + 2
     os.system("pause")
 
