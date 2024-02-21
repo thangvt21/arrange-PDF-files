@@ -1,7 +1,8 @@
 import os
 import datetime
 import promptlib
-
+import pygsheets
+import pandas as pd
 
 today = datetime.datetime.now()
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
@@ -71,21 +72,35 @@ def count_order(path):
                     order = create_order(file)
                 list_1.append(order.order_code)
                 list_ok = list(set(list_1))
-        return name + "-" + str(len(list_ok))
+        return (name, len(list_ok))
+        # return name + "-" + str(len(list_ok))
         # return (name + "_" + str(len(list_ok)), list_ok)
 
 
 def main():
-    key = ""
-    while key != "0":
-        key = input("Nhập 1 để đếm PDF (Nhập 0 để dừng): ")
-        if key == "1":
-            prompter = promptlib.Files()
-            path_input = prompter.dir()
-            for root, dirs, files in os.walk(path_input):
-                for dir in dirs:
-                    patho = os.path.join(path_input, dir)
-                    print(str(count_order(patho)))
+    prompter = promptlib.Files()
+    path_input = prompter.dir()
+    path_str1 = path_input.split("\\")
+    path_str2 = [s.strip() for s in path_str1]
+    machine = str(path_str2[3])
+    gc = pygsheets.authorize(
+        service_account_file="E:/THANGVT/tools/arranger_v2.2/arrange-PDF-files/luminous-lodge-321503-2defcccdcd2d.json"
+    )
+    spreadsheet = gc.open_by_key("1zPjUEOQ8iyHGvL_rfjJWRpAo63hTVKjEx_tCUFFax4k")
+    worksheet = spreadsheet.worksheet_by_title(machine)
+    lst_folder = []
+    lst_order = []
+    for root, dirs, files in os.walk(path_input):
+        for dir in dirs:
+            patho = os.path.join(path_input, dir)
+            # print(str(count_order(patho)))
+            res = count_order(patho)
+            lst_folder.append(res[0])
+            lst_order.append(res[1])
+    df = pd.DataFrame(lst_folder)
+    df["1"] = lst_order
+    worksheet.set_dataframe(df, start=(5, 2), copy_head=False)
+    # print(df)
     # os.system("pause")
 
 
