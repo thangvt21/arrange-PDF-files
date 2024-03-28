@@ -102,6 +102,11 @@ def main():
     worksheet.set_dataframe(df, start=(5, 2), copy_head=False)
     # print(df)
     # os.system("pause")
-
+    sum_24H = 0
+    for idx in df.index:
+        a = splitted_by_underline(df[0][idx])
+        if a[1] == "24H":
+            sum_24H += int(df["1"][idx])
+    worksheet.update_value("D1", sum_24H)
 
 main()
