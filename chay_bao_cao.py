@@ -8,8 +8,6 @@ import pygsheets
 today = datetime.datetime.now()
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_root = str(today.year) + "_" + str(today.month)
-# folder_name = "2024_5_19"
-# folder_root = "2024_5"
 
 
 def splitted_by_underline(file):
@@ -22,17 +20,7 @@ def splitted_by_underline(file):
 
 class Order:
     def __init__(
-        self,
-        date,
-        order_code,
-        side,
-        size,
-        color,
-        set_number,
-        set,
-        seller,
-        product_type,
-        provider,
+        self, date, order_code, side, size, color, set_number, set, seller, product_type
     ):
         self.date = date
         self.order_code = order_code
@@ -43,7 +31,6 @@ class Order:
         self.set = set
         self.seller = seller
         self.product_type = product_type
-        self.provider = provider
 
 
 def create_order(file):
@@ -58,7 +45,6 @@ def create_order(file):
         splitted[6],
         splitted[8],
         splitted[9],
-        splitted[10],
     )
     return order
 
@@ -75,7 +61,6 @@ def create_order_set(file):
         splitted[6],
         splitted[8],
         splitted[9],
-        splitted[10],
     )
     return order
 
@@ -84,8 +69,6 @@ def count_shirts(order):
     variant = (
         order.order_code
         + " - "
-        + order.provider
-        + "/"
         + order.product_type
         + "/"
         + order.color
@@ -121,6 +104,22 @@ def count_list_shirts(path):
         return df[[name, "count"]].drop_duplicates()
 
 
+def count_order(path):
+    for root, dirs, files in os.walk(path):
+        list_1 = []
+        name = os.path.basename(path)
+        for file in files:
+            if file.endswith(".pdf"):
+                splitted = splitted_by_underline(file)
+                if splitted[6] != "1":
+                    order = create_order_set(file)
+                else:
+                    order = create_order(file)
+                list_1.append(order.order_code)
+                list_ok = list(set(list_1))
+        return (name, len(list_ok))
+
+
 def main():
     # prompter = promptlib.Files()
     # path_input = prompter.dir()
@@ -128,8 +127,22 @@ def main():
     # path_str2 = [s.strip() for s in path_str1]
     # machine = str(path_str2[3])
 
+    while True:
+        try:
+            set_part = input("Nhap part: ")
+            if set_part == "0":
+                return
+            else:
+                tmp = float(set_part)
+            break
+
+        except ValueError:
+            set_part = input("Nhap part: ")
+
+    name_sheet = folder_name + " PART " + str(set_part)
+
     MACHINE_LIST = [
-        "PRINTED",
+        # "PRINTED",
         "HOTSHOT",
         "Machine 1",
         "Machine 2",
@@ -143,10 +156,6 @@ def main():
         "Machine 10",
         "Machine 20",
         "Machine 21",
-        "Machine 22",
-        "Machine 23",
-        "Machine 24",
-        "Machine 25",
     ]
 
     for m in MACHINE_LIST:
@@ -156,9 +165,35 @@ def main():
         gc = pygsheets.authorize(
             service_account_file="E:/THANGVT/vtt_tools/arrange-PDF-files/luminous-lodge-321503-2defcccdcd2d.json"
         )
+
+        # Bảng Check files 2024
+        spreadsheet1 = gc.open_by_key("1zPjUEOQ8iyHGvL_rfjJWRpAo63hTVKjEx_tCUFFax4k")
+        worksheet1 = spreadsheet1.worksheet_by_title(m)
+        worksheet1.clear(start="B5", end="C50")
+        worksheet1.clear(start="D1", end="D1")
+        worksheet1.update_value("B1", name_sheet)
+
+        lst_folder = []
+        lst_order = []
+        for root, dirs, files in os.walk(pathR):
+            for dir in dirs:
+                patho = os.path.join(pathR, dir)
+                res = count_order(patho)
+                lst_folder.append(res[0])
+                lst_order.append(res[1])
+        df = pd.DataFrame(lst_folder)
+        df["1"] = lst_order
+        worksheet1.set_dataframe(df, start=(5, 2), copy_head=False)
+        sum_24H = 0
+        for idx in df.index:
+            a = splitted_by_underline(df[0][idx])
+            if a[1] == "24H":
+                sum_24H += int(df["1"][idx])
+        worksheet1.update_value("D1", sum_24H)
+
+        # Bảng thống kê số áo
         spreadsheet = gc.open_by_key("1iZShXMaHGE_zyHwVkSSfa83dfMpb-qpHHLVXpS7ZxxI")
         worksheet = spreadsheet.worksheet_by_title(m)
-
         worksheet.clear(start="A1", end="A1")
         worksheet.clear(start="A3", end="B666")
         worksheet.update_value("A1", folder_name)
