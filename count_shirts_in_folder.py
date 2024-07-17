@@ -8,8 +8,8 @@ import pygsheets
 today = datetime.datetime.now()
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_root = str(today.year) + "_" + str(today.month)
-# folder_name = "2024_5_19"
-# folder_root = "2024_5"
+# folder_name = "2024_7_10"
+# folder_root = "2024_7"
 
 
 def splitted_by_underline(file):
@@ -118,35 +118,31 @@ def count_list_shirts(path):
         df["count"] = df[1].map(df[1].value_counts())
         df.columns = ["order_code", name, "set", "side", "count"]
         df.head()
-        return df[[name, "count"]].drop_duplicates()
+        return df[["order_code", name]].drop_duplicates()
 
 
 def main():
-    # prompter = promptlib.Files()
-    # path_input = prompter.dir()
-    # path_str1 = path_input.split("\\")
-    # path_str2 = [s.strip() for s in path_str1]
-    # machine = str(path_str2[3])
-
     MACHINE_LIST = [
-        "PRINTED",
+        # "PRINTED",
         "HOTSHOT",
-        "Machine 1",
-        "Machine 2",
-        "Machine 3",
-        "Machine 4",
-        "Machine 5",
-        "Machine 6",
-        "Machine 7",
-        "Machine 8",
-        "Machine 9",
-        "Machine 10",
-        "Machine 20",
-        "Machine 21",
-        "Machine 22",
-        "Machine 23",
-        "Machine 24",
-        "Machine 25",
+        # "Machine 1",
+        # "Machine 2",
+        # "Machine 3",
+        # "Machine 4",
+        # "Machine 5",
+        # "Machine 6",
+        # "Machine 7",
+        # "Machine 8",
+        # "Machine 9",
+        # "Machine 10",
+        # "Machine 20",
+        # "Machine 21",
+        # "Machine 22",
+        # "Machine 23",
+        # "Machine 24",
+        # "Machine 25",
+        # "Machine 26",
+        # "Machine 27",
     ]
 
     for m in MACHINE_LIST:
@@ -154,13 +150,18 @@ def main():
         pathR = os.path.join(root, m + "\\" + folder_root + "\\" + folder_name)
 
         gc = pygsheets.authorize(
-            service_account_file="E:/THANGVT/vtt_tools/arrange-PDF-files/luminous-lodge-321503-2defcccdcd2d.json"
+            service_account_file="E:\\THANGVT\\vtt_tools\\arrange-PDF-files\\luminous-lodge-321503-2defcccdcd2d.json"
         )
         spreadsheet = gc.open_by_key("1iZShXMaHGE_zyHwVkSSfa83dfMpb-qpHHLVXpS7ZxxI")
         worksheet = spreadsheet.worksheet_by_title(m)
 
+        # Xóa ô ngày cũ
         worksheet.clear(start="A1", end="A1")
+
+        # Xóa thống kê áo ngày cũ
         worksheet.clear(start="A3", end="B666")
+
+        # Thêm ô ngày mới
         worksheet.update_value("A1", folder_name)
 
         lst = []

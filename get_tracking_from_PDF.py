@@ -8,7 +8,7 @@ import promptlib
 prompter = promptlib.Files()
 
 PATH_LABEL = prompter.dir()
-PATH_IMAGE = "E:/THANGVT/vtt_tools/arrange-PDF-files/img"
+PATH_IMAGE = "E:/THANGVT/vtt_tools/arrange-PDF-files/img/7.9/"
 
 
 def read_pdf(filename):
