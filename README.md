@@ -6,6 +6,8 @@ Simple python tool for:
   4. OCR PDF files, extract text by regex (get_tracking_from_pdf.py)
 ...
 
+---- --- "LESS IS MORE" --- -----
+
 Change PATHS and LISTS to yours before running.
 
 
