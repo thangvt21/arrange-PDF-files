@@ -100,6 +100,8 @@ def main():
         "Machine 27",
         "Machine 28",
         "Machine 29",
+        "Machine 30",
+        "Machine 31",
     ]
 
     i = 1

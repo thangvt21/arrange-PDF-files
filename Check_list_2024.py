@@ -1,16 +1,22 @@
 import os
 import datetime
 from pathlib import PurePath
-import promptlib
 import pygsheets
 import pandas as pd
 
 today = datetime.datetime.now()
-folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
-folder_root = str(today.year) + "_" + str(today.month)
+FOLDER_NAME = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
+FOLDER_DIR = str(today.year) + "_" + str(today.month)
 
 # folder_name = "2024_6_2"
 # folder_root = "2024_6"
+
+DROPBOX_PATH = "D:\\FlashPOD Dropbox\\FlashPOD\\"
+JSON_PATH = (
+    "E:\\THANGVT\\vtt_tools\\arrange-PDF-files\\luminous-lodge-321503-2defcccdcd2d.json"
+)
+SHEET_ID = "1zPjUEOQ8iyHGvL_rfjJWRpAo63hTVKjEx_tCUFFax4k"
+MACHINE_LIST = [1,2,3,4,5,6,7,8,9,10,20,21,22,23,24,25,26,27,28,29,30,31]
 
 
 def splitted_by_underline(file):
@@ -64,7 +70,7 @@ def create_order_set(file):
 
 
 def count_order(path):
-    for root, dirs, files in os.walk(path):
+    for _, _, files in os.walk(path):
         list_1 = []
         count_pdf = 0
         name = os.path.basename(path)
@@ -95,77 +101,31 @@ def main():
         except ValueError:
             set_part = input("Nhap part: ")
 
-    name_sheet = folder_name + " PART " + str(set_part)
-
-    MACHINE_LIST = [
-        # "PRINTED",
-        # "HOTSHOT",
-        "Machine 1",
-        "Machine 2",
-        "Machine 3",
-        "Machine 4",
-        "Machine 5",
-        "Machine 6",
-        "Machine 7",
-        "Machine 8",
-        "Machine 9",
-        "Machine 10",
-        "Machine 20",
-        "Machine 21",
-        "Machine 22",
-        "Machine 23",
-        "Machine 24",
-        "Machine 25",
-        "Machine 26",
-        "Machine 27",
-        "Machine 28",
-        "Machine 29",
-    ]
+    name_sheet = FOLDER_NAME + " PART " + str(set_part)
 
     for m in MACHINE_LIST:
-        root = "D:\\FlashPOD Dropbox\\FlashPOD\\"
-        pathR = os.path.join(root, m + "\\" + folder_root + "\\" + folder_name)
-
-        gc = pygsheets.authorize(
-            service_account_file="E:\\THANGVT\\vtt_tools\\arrange-PDF-files\\luminous-lodge-321503-2defcccdcd2d.json"
+        machine_path = os.path.join(
+            DROPBOX_PATH, "Machine" + str(m) + "\\" + FOLDER_DIR + "\\" + FOLDER_NAME
         )
-        spreadsheet_1stclass = gc.open_by_key(
-            "1zPjUEOQ8iyHGvL_rfjJWRpAo63hTVKjEx_tCUFFax4k"
-        )
-        # spreadsheet_special = gc.open_by_key(
-        #     "1Fw5sweTi9vT-CmIr1KYBmqsfz_LJCBPnzCS4Wvo0An0"
-        # )
-        worksheet_1stclass = spreadsheet_1stclass.worksheet_by_title(m)
-        worksheet_1stclass.clear(start="B5", end="D50")
-        worksheet_1stclass.update_value("B1", name_sheet)
-
-        # worksheet_special = spreadsheet_special.worksheet_by_title(m)
-        # worksheet_special.clear(start="B5", end="D50")
-        # worksheet_special.update_value("B1", name_sheet)
-
-        # lst_folder_special = []
-        lst_folder_1stclass = []
-        lst_files_1stclass = []
-        lst_order_1stclass = []
-        # lst_order = []
-        for root, dirs, files in os.walk(pathR):
+        gc = pygsheets.authorize(service_account_file=JSON_PATH)
+        spreadsheet = gc.open_by_key(SHEET_ID)
+        worksheet = spreadsheet.worksheet_by_title(m)
+        worksheet.clear(start="B5", end="D50")
+        worksheet.update_value("B1", name_sheet)
+        lst_folder = []
+        lst_files = []
+        lst_order = []
+        for root, dirs, _ in os.walk(machine_path):
             for dir in dirs:
-                patho = os.path.join(pathR, dir)
+                patho = os.path.join(machine_path, dir)
                 res = count_order(patho)
-                # test = res[0]
-                # test1 = test[:6]
-                # if test1[-3:] == "24H" or test1[-3:] == "EX_" or test1[-3:] == "CAR":
-                # lst_folder_special.append(res[0])
-                # else:
-                lst_folder_1stclass.append(res[0])
-                lst_files_1stclass.append(res[1])
-                lst_order_1stclass.append(res[2])
-        # df_special = pd.DataFrame(lst_folder_special)
-        df_1stclass = pd.DataFrame(lst_folder_1stclass)
-        df_1stclass["1"] = pd.DataFrame(lst_files_1stclass)
-        df_1stclass["2"] = pd.DataFrame(lst_order_1stclass)
-        # worksheet_special.set_dataframe(df_special, start=(5, 2), copy_head=False)
-        worksheet_1stclass.set_dataframe(df_1stclass, start=(5, 2), copy_head=False)
+                lst_folder.append(res[0])
+                lst_files.append(res[1])
+                lst_order.append(res[2])
+        df = pd.DataFrame(lst_folder)
+        df["1"] = pd.DataFrame(lst_files)
+        df["2"] = pd.DataFrame(lst_order)
+        worksheet.set_dataframe(df, start=(5, 2), copy_head=False)
 
 
 main()
