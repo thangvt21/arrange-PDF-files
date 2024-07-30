@@ -1,7 +1,6 @@
 import os
 import datetime
 from pathlib import PurePath
-import promptlib
 import pygsheets
 import pandas as pd
 
@@ -11,6 +10,36 @@ folder_root = str(today.year) + "_" + str(today.month)
 
 # folder_name = "2024_7_3"
 # folder_root = "2024_7"
+
+DROPBOX_PATH = "D:\\FlashPOD Dropbox\\FlashPOD\\"
+JSON_PATH = (
+    "E:\\THANGVT\\vtt_tools\\arrange-PDF-files\\luminous-lodge-321503-2defcccdcd2d.json"
+)
+SHEET_ID = "1zPjUEOQ8iyHGvL_rfjJWRpAo63hTVKjEx_tCUFFax4k"
+MACHINE_LIST = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+]
 
 
 def splitted_by_underline(file):
@@ -75,50 +104,20 @@ def count_order(path):
 
 
 def main():
-    # name_sheet = str(today.month) + "." + str(today.day)
-
-    MACHINE_LIST = [
-        # "PRINTED",
-        # "HOTSHOT",
-        "Machine 1",
-        "Machine 2",
-        "Machine 3",
-        "Machine 4",
-        "Machine 5",
-        "Machine 6",
-        "Machine 7",
-        "Machine 8",
-        "Machine 9",
-        "Machine 10",
-        "Machine 20",
-        "Machine 21",
-        "Machine 22",
-        "Machine 23",
-        "Machine 24",
-        "Machine 25",
-        "Machine 26",
-        "Machine 27",
-        "Machine 28",
-        "Machine 29",
-        "Machine 30",
-        "Machine 31",
-    ]
-
     i = 1
     for m in MACHINE_LIST:
-        root = "D:\\FlashPOD Dropbox\\FlashPOD\\"
-        pathR = os.path.join(root, m + "\\" + folder_root + "\\" + folder_name)
-
-        gc = pygsheets.authorize(
-            service_account_file="E:\\THANGVT\\vtt_tools\\arrange-PDF-files\\luminous-lodge-321503-2defcccdcd2d.json"
+        machine_path = os.path.join(
+            DROPBOX_PATH, "Machine " + m + "\\" + folder_root + "\\" + folder_name
         )
-        spreadsheet = gc.open_by_key("1zPjUEOQ8iyHGvL_rfjJWRpAo63hTVKjEx_tCUFFax4k")
+
+        gc = pygsheets.authorize(service_account_file=JSON_PATH)
+        spreadsheet = gc.open_by_key(SHEET_ID)
         worksheet = spreadsheet.worksheet_by_title("PICK/CUT")
 
         lst_folder = []
-        for root, dirs, files in os.walk(pathR):
+        for _, dirs, _ in os.walk(machine_path):
             for dir in dirs:
-                patho = os.path.join(pathR, dir)
+                patho = os.path.join(machine_path, dir)
                 res = count_order(patho)
                 lst_folder.append(res[0])
         df = pd.DataFrame(lst_folder)

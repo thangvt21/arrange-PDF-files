@@ -3,6 +3,8 @@ import datetime
 from pathlib import PurePath
 import pygsheets
 import pandas as pd
+import pyinputplus as pyip
+
 
 today = datetime.datetime.now()
 FOLDER_NAME = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
@@ -17,28 +19,28 @@ JSON_PATH = (
 )
 SHEET_ID = "1zPjUEOQ8iyHGvL_rfjJWRpAo63hTVKjEx_tCUFFax4k"
 MACHINE_LIST = [
-    # 1,
-    # 2,
-    # 3,
-    # 4,
-    # 5,
-    # 6,
-    # 7,
-    # 8,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
     9,
-    # 10,
-    # 20,
-    # 21,
-    # 22,
-    # 23,
-    # 24,
-    # 25,
-    # 26,
-    # 27,
-    # 28,
-    # 29,
-    # 30,
-    # 31,
+    10,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
 ]
 
 
@@ -112,33 +114,21 @@ def count_order(path):
 
 
 def main():
-    while True:
-        try:
-            set_part = input("Nhap part: ")
-            if set_part == "0":
-                return
-            else:
-                tmp = float(set_part)
-            break
-
-        except ValueError:
-            set_part = input("Nhap part: ")
-
+    set_part = pyip.inputNum("Nhap part: ", min=1)
     name_sheet = FOLDER_NAME + " PART " + str(set_part)
-
+    gc = pygsheets.authorize(service_account_file=JSON_PATH)
+    spreadsheet = gc.open_by_key(SHEET_ID)
     for m in MACHINE_LIST:
         machine_path = os.path.join(
-            DROPBOX_PATH, "Machine " + str(m) + "\\" + FOLDER_DIR + "\\" + FOLDER_NAME
+            DROPBOX_PATH, "Machine " + str(m), FOLDER_DIR, FOLDER_NAME
         )
-        gc = pygsheets.authorize(service_account_file=JSON_PATH)
-        spreadsheet = gc.open_by_key(SHEET_ID)
         worksheet = spreadsheet.worksheet_by_title("Machine " + str(m))
         worksheet.clear(start="B5", end="D50")
         worksheet.update_value("B1", name_sheet)
         lst_folder = []
         lst_files = []
         lst_order = []
-        for root, dirs, _ in os.walk(machine_path):
+        for _, dirs, _ in os.walk(machine_path):
             for dir in dirs:
                 patho = os.path.join(machine_path, dir)
                 res = count_order(patho)

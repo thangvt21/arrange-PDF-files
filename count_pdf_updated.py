@@ -1,14 +1,25 @@
 import os
 import datetime
+import pyinputplus as pyip
+import logging
+
 
 today = datetime.datetime.now()
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_root = str(today.year) + "_" + str(today.month)
+log_file = today.strftime("%Y%m%d_%H%M%S")
 # folder_name = "2024_6_4"
 # folder_root = "2024_6"
 
+logging.basicConfig(
+    filename=f"E:\\THANGVT\\vtt_tools\\arrange-PDF-files\\logging\\{log_file}.txt",
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+)
+
 
 def get_path(machine):
+    logging.debug("Get path: (%s)" % (machine))
     path_root = (
         "D:/FlashPOD Dropbox/FlashPOD/Machine "
         + str(machine)
@@ -18,6 +29,7 @@ def get_path(machine):
         + folder_name
         + "/"
     )
+    logging.debug("Path: (%s)" % (path_root))
     return path_root
 
 
@@ -49,16 +61,18 @@ MACHINE_LIST = [
 
 def main():
     key = ""
-    while key != "0":
-        key = input("Nhập 1 để đếm PDF (Nhập 0 để dừng): ")
-        if key == "1":
+    while key != 0:
+        key = pyip.inputInt("Nhập 1 để đếm PDF (Nhập 0 để dừng): ", min=0)
+        if key == 1:
             sum = 0
-            print("DATE: ", folder_name)
+            print("DATE\t   :", folder_name)
             for m in MACHINE_LIST:
+                logging.debug("Start get data from machine: (%s)" % (m))
                 count = 0
                 path = get_path(m)
-                for root, dirs, files in os.walk(path):
+                for _, _, files in os.walk(path):
                     for file in files:
+                        # logging.debug("File: (%s)" % (file))
                         if file.endswith(".pdf"):
                             count += 1
                 sum += count
@@ -66,7 +80,8 @@ def main():
                     print("Machine 0" + str(m), ":", count)
                 else:
                     print("Machine " + str(m), ":", count)
-            print("Tổng:", sum)
+            print("Tổng\t   :", sum)
+            logging.debug("Machine (%s) has (%s)" % (m, count))
 
 
 main()

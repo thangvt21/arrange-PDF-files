@@ -6,10 +6,10 @@ from google.oauth2.service_account import Credentials
 import pygsheets
 
 today = datetime.datetime.now()
-folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
-folder_root = str(today.year) + "_" + str(today.month)
-# folder_name = "2024_7_10"
-# folder_root = "2024_7"
+# folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
+# folder_root = str(today.year) + "_" + str(today.month)
+folder_name = "2024_7_25"
+folder_root = "2024_7"
 
 
 def splitted_by_underline(file):
