@@ -8,15 +8,38 @@ today = datetime.datetime.now()
 FOLDER_NAME = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 FOLDER_DIR = str(today.year) + "_" + str(today.month)
 
-# folder_name = "2024_6_2"
-# folder_root = "2024_6"
+# FOLDER_NAME = "2024_7_29"
+# FOLDER_DIR = "2024_7"
 
 DROPBOX_PATH = "D:\\FlashPOD Dropbox\\FlashPOD\\"
 JSON_PATH = (
     "E:\\THANGVT\\vtt_tools\\arrange-PDF-files\\luminous-lodge-321503-2defcccdcd2d.json"
 )
 SHEET_ID = "1zPjUEOQ8iyHGvL_rfjJWRpAo63hTVKjEx_tCUFFax4k"
-MACHINE_LIST = [1,2,3,4,5,6,7,8,9,10,20,21,22,23,24,25,26,27,28,29,30,31]
+MACHINE_LIST = [
+    # 1,
+    # 2,
+    # 3,
+    # 4,
+    # 5,
+    # 6,
+    # 7,
+    # 8,
+    9,
+    # 10,
+    # 20,
+    # 21,
+    # 22,
+    # 23,
+    # 24,
+    # 25,
+    # 26,
+    # 27,
+    # 28,
+    # 29,
+    # 30,
+    # 31,
+]
 
 
 def splitted_by_underline(file):
@@ -105,11 +128,11 @@ def main():
 
     for m in MACHINE_LIST:
         machine_path = os.path.join(
-            DROPBOX_PATH, "Machine" + str(m) + "\\" + FOLDER_DIR + "\\" + FOLDER_NAME
+            DROPBOX_PATH, "Machine " + str(m) + "\\" + FOLDER_DIR + "\\" + FOLDER_NAME
         )
         gc = pygsheets.authorize(service_account_file=JSON_PATH)
         spreadsheet = gc.open_by_key(SHEET_ID)
-        worksheet = spreadsheet.worksheet_by_title(m)
+        worksheet = spreadsheet.worksheet_by_title("Machine " + str(m))
         worksheet.clear(start="B5", end="D50")
         worksheet.update_value("B1", name_sheet)
         lst_folder = []
