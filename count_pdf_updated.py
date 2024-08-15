@@ -19,7 +19,7 @@ logging.basicConfig(
 
 
 def get_path(machine):
-    logging.debug("Get path: (%s)" % (machine))
+    logging.debug("Get path: (%s)" % machine)
     path_root = (
         "D:/FlashPOD Dropbox/FlashPOD/Machine "
         + str(machine)
@@ -29,7 +29,7 @@ def get_path(machine):
         + folder_name
         + "/"
     )
-    logging.debug("Path: (%s)" % (path_root))
+    logging.debug("Path: (%s)" % path_root)
     return path_root
 
 
@@ -64,10 +64,10 @@ def main():
     while key != 0:
         key = pyip.inputInt("Nhập 1 để đếm PDF (Nhập 0 để dừng): ", min=0)
         if key == 1:
-            sum = 0
+            total = 0
             print("DATE\t   :", folder_name)
             for m in MACHINE_LIST:
-                logging.debug("Start get data from machine: (%s)" % (m))
+                logging.debug("Start get data from machine: (%s)" % m)
                 count = 0
                 path = get_path(m)
                 for _, _, files in os.walk(path):
@@ -75,13 +75,13 @@ def main():
                         # logging.debug("File: (%s)" % (file))
                         if file.endswith(".pdf"):
                             count += 1
-                sum += count
+                total += count
                 if m < 10:
                     print("Machine 0" + str(m), ":", count)
                 else:
                     print("Machine " + str(m), ":", count)
-            print("Tổng\t   :", sum)
-            logging.debug("Machine (%s) has (%s)" % (m, count))
+            print("Tổng\t   :", total)
+            # logging.debug("Machine (%s) has (%s)" % (m, count))
 
 
 main()

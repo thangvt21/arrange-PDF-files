@@ -4,13 +4,14 @@ from PIL import Image
 from pdf2image import convert_from_path
 import re
 import pygsheets
-from urllib.parse import urlparse
 import requests
-import logging
 
-logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+# import logging
+
+
+# logging.basicConfig(
+#     level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
+# )
 SHEET_ID = "1lX8xs3zJVinhRs_r4itv6V8gAw4Aut8rY_waj3LHql4"
 JSON_PATH = (
     "E:\\THANGVT\\vtt_tools\\arrange-PDF-files\\luminous-lodge-321503-2defcccdcd2d.json"
@@ -32,19 +33,16 @@ TRACKING_26 = r"\d{4} \d{4} \d{4} \d{4} \d{4} \d{4} \d{2}"
 TESSERACT_PATH = "C:\\Program Files\\Tesseract-OCR\\tesseract"
 
 
-def connect_to_sheet(sheet_id):
-    logging.debug("Connecting to Sheet(%s)" % (sheet_id))
+def connect_to_sheet(sheet_id: str):
     sheet_name = input("Tên sheet: ")
     gc = pygsheets.authorize(service_account_file=JSON_PATH)
     spreadsheet = gc.open_by_key(sheet_id)
     worksheet = spreadsheet.worksheet_by_title(sheet_name.strip())
-    logging.debug("End of connect(%s)" % (sheet_name))
     return worksheet
 
 
-def ocr_pdf_and_find_text(filename):
-    pdf_text = ""
-    logging.debug("Start OCR (%s)" % (filename))
+def ocr_pdf_and_find_text(filename: str):
+    # logging.debug("Start OCR (%s)" % (filename))
     try:
         images = convert_from_path(filename)
         for i, image in enumerate(images):
@@ -55,7 +53,6 @@ def ocr_pdf_and_find_text(filename):
             )
             tess.pytesseract.tesseract_cmd = TESSERACT_PATH
             text = tess.image_to_string(Image.open(PATH_IMAGE + name))
-            logging.debug("Get text: (%s)" % (text))
             pdf_text = "" + text
             clean_pdf_text = "".join(pdf_text.replace("\n", " "))
             match = re.search(TRACKING_26, clean_pdf_text)
@@ -72,7 +69,7 @@ def ocr_pdf_and_find_text(filename):
         print(str(e))
 
 
-def convert_drive_link(drive_link):
+def convert_drive_link(drive_link: str):
     try:
         file_id = drive_link.split("/d/")[1].split("/")[0]
         return f"https://drive.google.com/uc?id={file_id}"

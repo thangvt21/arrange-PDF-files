@@ -53,14 +53,14 @@ def splitted_by_underline(file):
 
 
 class Order:
-    def __init__(self, date, order_code, side, size, color, set_number, set, seller):
+    def __init__(self, date, order_code, side, size, color, set_number, set_order, seller):
         self.date = date
         self.order_code = order_code
         self.side = side
         self.size = size
         self.color = color
         self.set_number = set_number
-        self.set = set
+        self.set = set_order
         self.seller = seller
 
 
@@ -97,6 +97,7 @@ def create_order_set(file):
 def count_order(path):
     for _, _, files in os.walk(path):
         list_1 = []
+        list_ok = []
         count_pdf = 0
         name = os.path.basename(path)
         for file in files:
@@ -110,7 +111,7 @@ def count_order(path):
             list_1.append(order.order_code)
             list_ok = list(set(list_1))
         order = len(list_ok)
-        return (name, count_pdf, order)
+        return name, count_pdf, order
 
 
 def main():
@@ -129,8 +130,8 @@ def main():
         lst_files = []
         lst_order = []
         for _, dirs, _ in os.walk(machine_path):
-            for dir in dirs:
-                patho = os.path.join(machine_path, dir)
+            for d in dirs:
+                patho = os.path.join(machine_path, d)
                 res = count_order(patho)
                 lst_folder.append(res[0])
                 lst_files.append(res[1])
