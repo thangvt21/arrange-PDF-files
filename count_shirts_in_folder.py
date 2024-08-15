@@ -1,15 +1,14 @@
 import datetime
-import promptlib
 import pandas as pd
 import os
 from google.oauth2.service_account import Credentials
 import pygsheets
 
 today = datetime.datetime.now()
-folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
-folder_root = str(today.year) + "_" + str(today.month)
-# folder_name = "2024_7_10"
-# folder_root = "2024_7"
+# folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
+# folder_root = str(today.year) + "_" + str(today.month)
+folder_name = "2024_7_31"
+folder_root = "2024_7"
 
 
 def splitted_by_underline(file):
@@ -29,7 +28,7 @@ class Order:
         size,
         color,
         set_number,
-        set,
+        set_order,
         seller,
         product_type,
         provider,
@@ -40,7 +39,7 @@ class Order:
         self.size = size
         self.color = color
         self.set_number = set_number
-        self.set = set
+        self.set = set_order
         self.seller = seller
         self.product_type = product_type
         self.provider = provider
@@ -122,7 +121,7 @@ def count_list_shirts(path):
 
 
 def main():
-    MACHINE_LIST = [
+    machine_list = [
         # "PRINTED",
         "HOTSHOT",
         # "Machine 1",
@@ -145,9 +144,9 @@ def main():
         # "Machine 27",
     ]
 
-    for m in MACHINE_LIST:
+    for m in machine_list:
         root = "D:\\FlashPOD Dropbox\\FlashPOD\\"
-        pathR = os.path.join(root, m + "\\" + folder_root + "\\" + folder_name)
+        path_r = os.path.join(root, m + "\\" + folder_root + "\\" + folder_name)
 
         gc = pygsheets.authorize(
             service_account_file="E:\\THANGVT\\vtt_tools\\arrange-PDF-files\\luminous-lodge-321503-2defcccdcd2d.json"
@@ -165,9 +164,9 @@ def main():
         worksheet.update_value("A1", folder_name)
 
         lst = []
-        for root, dirs, files in os.walk(pathR):
-            for dir in dirs:
-                patho = os.path.join(pathR, dir)
+        for root, dirs, files in os.walk(path_r):
+            for d in dirs:
+                patho = os.path.join(path_r, d)
                 lst.append(count_list_shirts(patho))
         i = 0
         for dtf in lst:
