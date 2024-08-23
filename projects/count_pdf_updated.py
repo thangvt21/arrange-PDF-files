@@ -1,25 +1,15 @@
 import os
 import datetime
 import pyinputplus as pyip
-import logging
-
 
 today = datetime.datetime.now()
 folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_root = str(today.year) + "_" + str(today.month)
-log_file = today.strftime("%Y%m%d_%H%M%S")
 # folder_name = "2024_6_4"
 # folder_root = "2024_6"
 
-logging.basicConfig(
-    filename=f"E:\\THANGVT\\vtt_tools\\arrange-PDF-files\\logging\\{log_file}.txt",
-    level=logging.DEBUG,
-    format="%(asctime)s - %(levelname)s - %(message)s",
-)
-
 
 def get_path(machine):
-    logging.debug("Get path: (%s)" % machine)
     path_root = (
         "D:/FlashPOD Dropbox/FlashPOD/Machine "
         + str(machine)
@@ -29,7 +19,6 @@ def get_path(machine):
         + folder_name
         + "/"
     )
-    logging.debug("Path: (%s)" % path_root)
     return path_root
 
 
@@ -44,6 +33,10 @@ MACHINE_LIST = [
     8,
     9,
     10,
+    11,
+    12,
+    13,
+    14,
     20,
     21,
     22,
@@ -67,12 +60,10 @@ def main():
             total = 0
             print("DATE\t   :", folder_name)
             for m in MACHINE_LIST:
-                logging.debug("Start get data from machine: (%s)" % m)
                 count = 0
                 path = get_path(m)
                 for _, _, files in os.walk(path):
                     for file in files:
-                        # logging.debug("File: (%s)" % (file))
                         if file.endswith(".pdf"):
                             count += 1
                 total += count
@@ -81,7 +72,6 @@ def main():
                 else:
                     print("Machine " + str(m), ":", count)
             print("Tổng\t   :", total)
-            # logging.debug("Machine (%s) has (%s)" % (m, count))
 
 
 main()
