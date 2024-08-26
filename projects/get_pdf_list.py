@@ -102,7 +102,7 @@ def count_shirts(order):
 def get_pdf_list(path):
     for _, _, files in os.walk(path):
         list_var_raw = []
-        name = os.path.basename(path)
+        # name = os.path.basename(path)
         for file in files:
             if file.endswith(".pdf"):
                 split = split_by_underline(file)

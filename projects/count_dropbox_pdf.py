@@ -7,7 +7,7 @@ folder_name = str(today.year) + "_" + str(today.month) + "_" + str(today.day)
 folder_root = str(today.year) + "_" + str(today.month)
 # folder_name = "2024_6_4"
 # folder_root = "2024_6"
-
+MACHINE_LIST = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
 
 def get_path(machine):
     path_root = (
@@ -20,37 +20,6 @@ def get_path(machine):
         + "/"
     )
     return path_root
-
-
-MACHINE_LIST = [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8,
-    9,
-    10,
-    11,
-    12,
-    13,
-    14,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30,
-    31,
-]
-
 
 def main():
     key = ""
