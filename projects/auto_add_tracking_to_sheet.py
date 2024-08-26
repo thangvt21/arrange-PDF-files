@@ -59,7 +59,7 @@ def ocr_pdf_and_match(filename: str):
         print(str(e))
 
 
-def convert_ggdrive_link(drive_link: str):
+def convert_ggdrive_link_to_download(drive_link: str):
     try:
         file_id = drive_link.split("/d/")[1].split("/")[0]
         return f"https://drive.google.com/uc?id={file_id}"
@@ -78,7 +78,7 @@ def main():
     for i, v in enumerate(a, start=1):
         if v:
             output_path = os.path.join(PATH_IMAGE, f"{v[0]}.pdf")
-            url = convert_ggdrive_link(v[3])
+            url = convert_ggdrive_link_to_download(v[3])
             if url:
                 with requests.get(url, stream=True) as r:
                     r.raise_for_status()

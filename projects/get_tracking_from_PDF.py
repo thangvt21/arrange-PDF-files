@@ -28,15 +28,12 @@ def read_pdf(filename: str):
             pattern = r"\d{4} \d{4} \d{4} \d{4} \d{4} \d{2}"
             pattern1 = r"\d{4} \d{4} \d{4} \d{4} \d{4} \d{4} \d{2}"
             match = re.search(pattern1, clean_pdf_text)
-            try:
+            if match:
+                return match.group()
+            else:
+                match = re.search(pattern, clean_pdf_text)
                 if match:
                     return match.group()
-                else:
-                    match = re.search(pattern, clean_pdf_text)
-                    if match:
-                        return match.group()
-            except:
-                print("Error: ", IndexError)
     except Exception as e:
         print(str(e))
 
