@@ -36,7 +36,7 @@ machine_list = [
 ]
 
 
-def splitByUnderline(file):
+def split_by_underline(file):
     name, _ = os.path.splitext(file)
     name = name.replace("-", "_")
     transform_str = name.split("_")
@@ -72,8 +72,8 @@ class Order:
         self.provider = provider
 
 
-def createOrderSingle(file):
-    split = splitByUnderline(file)
+def create_order_single(file):
+    split = split_by_underline(file)
     order = Order(
         split[0],
         split[3],
@@ -90,8 +90,8 @@ def createOrderSingle(file):
     return order
 
 
-def createOrderSet(file):
-    split = splitByUnderline(file)
+def create_order_set(file):
+    split = split_by_underline(file)
     order = Order(
         split[0],
         split[1],
@@ -108,7 +108,7 @@ def createOrderSet(file):
     return order
 
 
-def getFileName(order):
+def get_file_name(order):
     variant = (
         order.date
         + "_"
@@ -131,7 +131,7 @@ def getFileName(order):
     return variant
 
 
-def connectToSheet(json_dir, spread_sheets_id, sheet_name):
+def connect_to_sheet(json_dir, spread_sheets_id, sheet_name):
     gc = pygsheets.authorize(service_account_file=json_dir)
     spreadsheet = gc.open_by_key(spread_sheets_id)
     worksheet = spreadsheet.worksheet_by_title(sheet_name)
@@ -144,16 +144,16 @@ def get_pdf_list(path):
     for _, _, files in os.walk(path):
         for file in files:
             if file.endswith(".pdf"):
-                split = splitByUnderline(file)
+                split = split_by_underline(file)
                 if split[6] != "1":
-                    order = createOrderSet(file)
-                    file_name = getFileName(order)
+                    order = create_order_set(file)
+                    file_name = get_file_name(order)
                     lst_set.append(file_name)
                 else:
-                    order = createOrderSingle(file)
-                    file_name = getFileName(order)
+                    order = create_order_single(file)
+                    file_name = get_file_name(order)
                     lst_single.append(file_name)
-    return (lst_single, lst_set)
+    return lst_single, lst_set
 
 
 def main():

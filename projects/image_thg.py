@@ -1,5 +1,3 @@
-from PIL import Image
-from IPython.display import display
 import cv2
 
 img = cv2.imread("E:\\THANGVT\\vtt_tools\\arrange-PDF-files\\Retro_Lil_AJ_11_Low_Diffused_Blue_png.png")
